@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__uddeim` (
+CREATE TABLE IF NOT EXISTS `#__jj_pm` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `replyid` int(11) NOT NULL default '0',
   `fromid` int(11) NOT NULL default '0',
@@ -33,16 +33,16 @@ CREATE TABLE IF NOT EXISTS `#__uddeim` (
   KEY `archived_totrash_toid_datum` (`archived`,`totrash`,`toid`,`datum`),
   KEY `systemflag` (`systemflag`),
   KEY `delayed` (`delayed`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__uddeim_blocks` (
+CREATE TABLE IF NOT EXISTS `#__jj_pm_blocks` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `blocker` int(11) NOT NULL default '0',
   `blocked` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__uddeim_emn` (
+CREATE TABLE IF NOT EXISTS `#__jj_pm_emn` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `userid` int(11) NOT NULL default '0',
   `status` int(1) NOT NULL default '0',
@@ -58,15 +58,15 @@ CREATE TABLE IF NOT EXISTS `#__uddeim_emn` (
   `moderated` INT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__uddeim_config` (
+CREATE TABLE IF NOT EXISTS `#__jj_pm_config` (
   `varname` tinytext NOT NULL,
   `value` tinytext NOT NULL,
   PRIMARY KEY  (`varname`(30))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__uddeim_userlists` (
+CREATE TABLE IF NOT EXISTS `#__jj_pm_userlists` (
    `id` int(11) NOT NULL auto_increment,
    `userid` int(11) NOT NULL default '0',
    `name` varchar(40) NOT NULL default '',
@@ -76,9 +76,9 @@ CREATE TABLE IF NOT EXISTS `#__uddeim_userlists` (
    PRIMARY KEY  (`id`),
    KEY `userid` (`userid`),
    KEY `global` (`global`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__uddeim_spam` (
+CREATE TABLE IF NOT EXISTS `#__jj_pm_spam` (
    `id` int(10) unsigned NOT NULL auto_increment,
    `mid` int(11) NOT NULL default '0',
    `datum` int(11) default NULL,
@@ -90,9 +90,9 @@ CREATE TABLE IF NOT EXISTS `#__uddeim_spam` (
    KEY `mid` (`mid`),
    KEY `fromid` (`fromid`),
    KEY `toid` (`toid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__uddeim_attachments` (
+CREATE TABLE IF NOT EXISTS `#__jj_pm_attachments` (
    `id` int(10) unsigned NOT NULL auto_increment,
    `mid` int(1) NOT NULL default '0',
    `tempname` TEXT NOT NULL,
@@ -104,4 +104,4 @@ CREATE TABLE IF NOT EXISTS `#__uddeim_attachments` (
    KEY `mid` (`mid`),
    KEY `fileid` (`fileid`),
    KEY `datum` (`datum`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
