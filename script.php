@@ -2,69 +2,86 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-class com_uddeimInstallerScript
+class com_ujumbeInstallerScript
 {
-	function install($parent) {
+	function install($parent) 
+	{
         echo '<p>' . JText::_('COM_UDDEIM_INSTALL_TEXT') . '</p>';
 		uddeIM_com_install();
-        // $parent->getParent()->setRedirectURL('index.php?option=com_uddeim');
+        // $parent->getParent()->setRedirectURL('index.php?option=com_ujumbe');
     }
  
-    function uninstall($parent) {
+    function uninstall($parent) 
+	{
         echo '<p>' . JText::_('COM_UDDEIM_UNINSTALL_TEXT') . '</p>';
     }
  
-    function update($parent) {
+    function update($parent) 
+	{
         echo '<p>' . JText::_('COM_UDDEIM_UPDATE_TEXT') . '</p>';
     }
  
-    function preflight($type, $parent) {
+    function preflight($type, $parent) 
+	{
         // $type is the type of change (install, update or discover_install)
         echo '<p>' . JText::_('COM_UDDEIM_PREFLIGHT_' . $type . '_TEXT') . '</p>';
 
 		$ver = new JVersion();
+		
 		// Installing component manifest file version
 		$this->release = $parent->get( "manifest" )->version;
+		
  		// Manifest file minimum Joomla version
 		$this->minimum_joomla_release = $parent->get( "manifest" )->attributes()->version;
 		
-		if ( version_compare( $ver->getShortVersion(), $this->minimum_joomla_release, 'lt' ) ) {
+		if ( version_compare( $ver->getShortVersion(), $this->minimum_joomla_release, 'lt' ) ) 
+		{
 			Jerror::raiseWarning(null, 'Cannot install uddeIM in a Joomla release prior to '.$this->minimum_joomla_release);
 			return false;
 		}
 		
-		if ( $type=='update' ) {
+		if ( $type=='update' ) 
+		{
 			$oldRelease = $this->getParam('version');
 			$rel = $oldRelease . ' to ' . $this->release;
-			if ( version_compare( $this->release, $oldRelease, 'le' ) ) {		// lt/le
+			
+			if ( version_compare( $this->release, $oldRelease, 'le' ) ) 
+			{
 				Jerror::raiseWarning(null, 'Cannot upgrade ' . $rel);
 				return false;
 			}
 		}
 	}
  
-    function postflight($type, $parent) {
+    function postflight($type, $parent) 
+	{
         // $type is the type of change (install, update or discover_install)
         echo '<p>' . JText::_('COM_UDDEIM_POSTFLIGHT_' . $type . '_TEXT') . '</p>';
     }
 	
-	function getParam( $name ) {
+	function getParam( $name ) 
+	{
 		$db = JFactory::getDbo();
 		$db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "uddeim"');
 		$manifest = json_decode( $db->loadResult(), true );
 		return $manifest[ $name ];
 	}
 	
-	function setParams($param_array) {
-		if ( count($param_array) > 0 ) {
+	function setParams($param_array) 
+	{
+		if ( count($param_array) > 0 ) 
+		{
 			// read the existing component value(s)
 			$db = JFactory::getDbo();
 			$db->setQuery('SELECT params FROM #__extensions WHERE name = "uddeim"');
 			$params = json_decode( $db->loadResult(), true );
+			
 			// add the new variable(s) to the existing one(s)
-			foreach ( $param_array as $name => $value ) {
+			foreach ( $param_array as $name => $value ) 
+			{
 				$params[ (string) $name ] = (string) $value;
 			}
+			
 			// store the combined new and existing values back as a JSON string
 			$paramsString = json_encode( $params );
 			$db->setQuery('UPDATE #__extensions SET params = ' .
@@ -75,21 +92,25 @@ class com_uddeimInstallerScript
 	}
 }
 
-function uddeIM_com_install() {
+function uddeIM_com_install() 
+{
 	$ver = new JVersion();
 
-	if ( defined( 'JPATH_ADMINISTRATOR' ) ) {
-		require_once(JPATH_SITE.'/components/com_uddeim/uddeimlib.php');
-		require_once(JPATH_SITE.'/administrator/components/com_uddeim/admin.uddeimlib.php');
-	} else {
+	if ( defined( 'JPATH_ADMINISTRATOR' ) ) 
+	{
+		require_once(JPATH_SITE.'/components/com_ujumbe/ujumbelib.php');
+		require_once(JPATH_SITE.'/administrator/components/com_ujumbe/admin.ujumbelib.php');
+	} 
+	else 
+	{
 		global $mainframe;
-		require_once($mainframe->getCfg('absolute_path').'/components/com_uddeim/uddeimlib.php');
-		require_once($mainframe->getCfg('absolute_path').'/administrator/components/com_uddeim/admin.uddeimlib.php');
+		require_once($mainframe->getCfg('absolute_path').'/components/com_ujumbe/ujumbelib.php');
+		require_once($mainframe->getCfg('absolute_path').'/administrator/components/com_ujumbe/admin.ujumbelib.php');
 	}
 
-	require_once(uddeIMgetPath('absolute_path')."/administrator/components/com_uddeim/config.class.php");
-	require_once(uddeIMgetPath('absolute_path')."/administrator/components/com_uddeim/admin.shared.php");
-	require_once(uddeIMgetPath('absolute_path')."/administrator/components/com_uddeim/admin.includes.php");
+	require_once(uddeIMgetPath('absolute_path')."/administrator/components/com_ujumbe/config.class.php");
+	require_once(uddeIMgetPath('absolute_path')."/administrator/components/com_ujumbe/admin.shared.php");
+	require_once(uddeIMgetPath('absolute_path')."/administrator/components/com_ujumbe/admin.includes.php");
 
 	$mosConfig_locale = uddeIMgetLocale();
 	$mosConfig_sitename = uddeIMgetSitename();
@@ -265,17 +286,20 @@ function uddeIM_com_install() {
 
 	// try to determine the best settings for uddeIM on this installation 
 	// is uddeIM already installed and are messages in the archive?
-	$sql="SELECT count(id) FROM #__jj_pm WHERE archived=1";
+	$sql="SELECT count(id) FROM #__ujumbe WHERE archived=1";
 	$database->setQuery($sql);
 	$archivedmessages=$database->loadResult();
 	$config->allowarchive = 0;
 	$config->enabledownload = 0;
-	if ($archivedmessages) {
+	
+	if ($archivedmessages) 
+	{
 		$config->allowarchive = 1;
 		$config->enabledownload = 1;	
 	}
 
-	switch ($mosConfig_lang) {
+	switch ($mosConfig_lang) 
+	{
 		case "germani":
 		case "germanf":
 		case "german":
@@ -294,77 +318,119 @@ function uddeIM_com_install() {
 	$config->showconnex = 0;
 	$config->checkbanned = 0;
 	$config->realnames = 0;
-	if (uddeIMfileExists("/components/com_comprofiler/comprofiler.php")) {
+	
+	if (uddeIMfileExists("/components/com_comprofiler/comprofiler.php")) 
+	{
 		$config->showcblink = 1;
 		$config->showcbpic = 1;
 		$config->showconnex = 1;
 		$config->checkbanned = 1;
+		
 		// now look for the CB config file
 		// if realnames are used in CB, use realnames in uddeIM as well
-		if (uddeIMfileExists("/administrator/components/com_comprofiler/ue_config.php")) {
+		if (uddeIMfileExists("/administrator/components/com_comprofiler/ue_config.php")) 
+		{
 			global $ueConfig;
 			include_once(uddeIMgetPath('absolute_path')."/administrator/components/com_comprofiler/ue_config.php");
-			if (isset($ueConfig['name_format'])) {
-				if ($ueConfig['name_format']=='1') {
+			
+			if (isset($ueConfig['name_format'])) 
+			{
+				if ($ueConfig['name_format']=='1') 
+				{
 					$config->realnames=1;
 					$config->pubrealnames=1;
 				}
 			}
 		}
 	}
-	if (uddeIMfileExists("/components/com_cbe/cbe.php")) {
+	
+	if (uddeIMfileExists("/components/com_cbe/cbe.php")) 
+	{
 		$config->showcblink = 4;
 		$config->showcbpic = 4;
 		$config->showconnex = 1;
 		$config->checkbanned = 1;
+		
 		// now look for the CBE config file
 		// if realnames are used in CBE, use realnames in uddeIM as well
-		if (uddeIMfileExists("/administrator/components/com_cbe/ue_config.php")) {
+		if (uddeIMfileExists("/administrator/components/com_cbe/ue_config.php")) 
+		{
 			global $ueConfig;
 			include_once(uddeIMgetPath('absolute_path')."/administrator/components/com_cbe/ue_config.php");
-			if (isset($ueConfig['name_format'])) {
-				if ($ueConfig['name_format']=='1') {
+			
+			if (isset($ueConfig['name_format'])) 
+			{
+				if ($ueConfig['name_format']=='1') 
+				{
 					$config->realnames=1;
 					$config->pubrealnames=1;
 				}
 			}
 		}
 	}
-	if (uddeIMfileExists("/administrator/components/com_comprofiler/ue_config.php")) {
+	
+	if (uddeIMfileExists("/administrator/components/com_comprofiler/ue_config.php")) 
+	{
 		global $ueConfig;
 		include_once(uddeIMgetPath('absolute_path')."/administrator/components/com_comprofiler/ue_config.php");
-		if (isset($ueConfig['thumbWidth'])) {
+		
+		if (isset($ueConfig['thumbWidth'])) 
+		{
 			if ($ueConfig['thumbWidth'])
+			{
 				$config->avatarw = (int)$ueConfig['thumbWidth'];
+			}
 		}
-		if (isset($ueConfig['thumbHeight'])) {
+		
+		if (isset($ueConfig['thumbHeight'])) 
+		{
 			if ($ueConfig['thumbHeight'])
+			{
 				$config->avatarh = (int)$ueConfig['thumbHeight'];
+			}
 		}
-	} elseif (uddeIMfileExists("/administrator/components/com_cbe/ue_config.php")) {
+	} 
+	elseif (uddeIMfileExists("/administrator/components/com_cbe/ue_config.php")) 
+	{
 		global $ueConfig;
 		include_once(uddeIMgetPath('absolute_path')."/administrator/components/com_cbe/ue_config.php");
-		if (isset($ueConfig['thumbWidth'])) {
+		
+		if (isset($ueConfig['thumbWidth'])) 
+		{
 			if ($ueConfig['thumbWidth'])
+			{
 				$config->avatarw = (int)$ueConfig['thumbWidth'];
+			}
 		}
-		if (isset($ueConfig['thumbHeight'])) {
+		if (isset($ueConfig['thumbHeight'])) 
+		{
 			if ($ueConfig['thumbHeight'])
+			{
 				$config->avatarh = (int)$ueConfig['thumbHeight'];
+			}
 		}
 	}
 
 	$postfix = "";
+	
 	if ($config->languagecharset)
+	{
 		$postfix = ".utf8";
+	}
+	
 	// is the correct lang file installed?
-	if (file_exists($pathtoadmin.'/language'.$postfix.'/'.$mosConfig_lang.'.php')) {
+	if (file_exists($pathtoadmin.'/language'.$postfix.'/'.$mosConfig_lang.'.php')) 
+	{
 		include_once($pathtoadmin.'/language'.$postfix.'/'.$mosConfig_lang.'.php');
 		$langinfo="";
-	} elseif (file_exists($pathtoadmin.'/language'.$postfix.'/english.php')) {
+	} 
+	elseif (file_exists($pathtoadmin.'/language'.$postfix.'/english.php')) 
+	{
 		include_once($pathtoadmin.'/language'.$postfix.'/english.php');
 		$langinfo="<p>There is no <b>".ucfirst($mosConfig_lang)." (UTF-8)</b> language file installed. uddeIM will use English (UTF-8).</p>";
-	} elseif (file_exists($pathtoadmin.'/language/english.php')) {
+	} 
+	elseif (file_exists($pathtoadmin.'/language/english.php')) 
+	{
 		include_once($pathtoadmin.'/language/english.php');
 		$langinfo="<p>There is no <b>".ucfirst($mosConfig_lang)."</b> language file installed. uddeIM will use English.</p>";
 		$config->languagecharset=0;
@@ -376,7 +442,9 @@ function uddeIM_com_install() {
 	// en, fr_FR, es_ES, it_IT, pt_PT
 	// http://code.elxis.org/20080/nav.html?includes/Core/locale.php.source.html
 	$tag = strtolower(substr($mosConfig_locale,0,2));
-	switch ($tag) {
+	
+	switch ($tag) 
+	{
 		case "bg":
 		case "ru":	
 			$config->charset = 'cp1251';
@@ -397,7 +465,9 @@ function uddeIM_com_install() {
 			$config->mailcharset = 'ISO-8859-1';
 			break;
 	}
-	if ($config->languagecharset==1) {
+	
+	if ($config->languagecharset==1) 
+	{
 		$config->charset = 'UTF-8';
 		$config->mailcharset = 'UTF-8';
 	}
@@ -407,8 +477,11 @@ function uddeIM_com_install() {
 
 	// Now write a welcome message to the Admin
 	$userid = uddeIMgetUserID();
-	if ($userid) {
-		if ($config->languagecharset) {			// UTF-8 fix, not tested so far
+	
+	if ($userid) 
+	{
+		if ($config->languagecharset) 
+		{// UTF-8 fix, not tested so far
 			$sql = "SET NAMES utf8;";
 			$database->setQuery($sql);
 			$isok = $database->query();
@@ -419,22 +492,31 @@ function uddeIM_com_install() {
 		$welcome_user = "uddeIM";
 		$welcome_msg = _UDDEADM_WELCOMEMSG;
 		// its not a reply, so replyid=0
-		$sql="INSERT INTO #__jj_pm (fromid, toid, toread, message, datum, systemflag, disablereply, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".$userid.", ".$userid.", 0, '".$welcome_msg."', ".$welcome_time.", 1, 1, '".$welcome_user."', 1, ".$welcome_time.")";
+		$sql="INSERT INTO #__ujumbe (fromid, toid, toread, message, datum, systemflag, disablereply, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".$userid.", ".$userid.", 0, '".$welcome_msg."', ".$welcome_time.", 1, 1, '".$welcome_user."', 1, ".$welcome_time.")";
 		$database->setQuery($sql);
-		if (!$database->query()) {
+		
+		if (!$database->query()) 
+		{
 			die("SQL error when attempting to save a message" . $database->stderr(true));
 		}	
 	}
 
 	// create folder for attachments
 	$folder = "/images/uddeimfiles";
-	if (!uddeIMfolderExists($folder)) {
-		if (!uddeIMmkdir($folder)) {
+	
+	if (!uddeIMfolderExists($folder)) 
+	{
+		if (!uddeIMmkdir($folder)) 
+		{
 			echo "<b><span style='color: red;'>"._UDDEADM_FOLDERCREATE_ERROR.$folder."</span></b>";
-		} else {
+		} 
+		else 
+		{
 			// uddeIMchmod($folder, "766");		// BUGBUG: Joomla send CHMOD instead of SITE CHMOD
 			$file = $folder."/index.html";
-			if (!uddeIMfileExists($file)) {
+			
+			if (!uddeIMfileExists($file)) 
+			{
 				$cf  = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n";
 				$cf .= "<html><head></head><body></body></html>";
 				uddeIMwriteFile($file, $cf);
@@ -460,12 +542,14 @@ function uddeIM_com_install() {
 	echo "<li>"._UDDEADM_REVIEWEMAILSTOP."</li>";
 	echo "<li>"._UDDEADM_REVIEWUPDATE."</li>";
 	$folder = "/uddeimfiles";
-	if (uddeIMfolderExists($folder)) {
+	
+	if (uddeIMfolderExists($folder)) 
+	{
 		echo "<li>"._UDDEADM_CHECKFILESFOLDER."</li>";
 	}
 	echo "</ul>";
 
 	// redirect to settings
-	echo "<p><a href='".uddeIMredirectIndex()."?option=com_uddeim'>".ucfirst(_UDDEADM_CONTINUE)."</a></p>";
+	echo "<p><a href='".uddeIMredirectIndex()."?option=com_ujumbe'>".ucfirst(_UDDEADM_CONTINUE)."</a></p>";
 	echo "</div>";
 }

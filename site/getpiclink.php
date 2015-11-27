@@ -11,7 +11,7 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMinitGetPicLink($config) {
 	$id = 0;

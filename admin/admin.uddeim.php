@@ -11,16 +11,16 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 $uddeim_isadmin = 1;
 if ( defined( 'JPATH_ADMINISTRATOR' ) ) {
-	require_once(JPATH_SITE.'/components/com_uddeim/uddeimlib.php');
-	require_once(JPATH_SITE.'/administrator/components/com_uddeim/admin.uddeimlib.php');
+	require_once(JPATH_SITE.'/components/com_ujumbe/ujumbelib.php');
+	require_once(JPATH_SITE.'/administrator/components/com_ujumbe/admin.ujumbelib.php');
 } else {
 	global $mainframe;
-	require_once($mainframe->getCfg('absolute_path').'/components/com_uddeim/uddeimlib.php');
-	require_once($mainframe->getCfg('absolute_path').'/administrator/components/com_uddeim/admin.uddeimlib.php');
+	require_once($mainframe->getCfg('absolute_path').'/components/com_ujumbe/ujumbelib.php');
+	require_once($mainframe->getCfg('absolute_path').'/administrator/components/com_ujumbe/admin.ujumbelib.php');
 }
 
 $pathtoadmin = uddeIMgetPath('admin');
@@ -28,7 +28,7 @@ $pathtouser  = uddeIMgetPath('user');
 $pathtosite  = uddeIMgetPath('live_site');
 
 //if( !($acl->acl_check('administration', 'edit', 'users', $my->usertype, 'components', 'all') |
-//$acl->acl_check('administration', 'edit', 'users',$my->usertype,'components', 'com_uddeim') ) )
+//$acl->acl_check('administration', 'edit', 'users',$my->usertype,'components', 'com_ujumbe') ) )
 //{
 //    uddeIMmosRedirect('index.php', _NOT_AUTH );
 //} 
@@ -61,7 +61,7 @@ $usedlanguage = uddeIMloadLanguage($pathtoadmin, $config);
 uddeIMcompTitle(""._UDDEADM_UDDEIM."");
 
 $task	= uddeIMmosGetParam( $_REQUEST, 'task', 'settings');
-$option	= uddeIMmosGetParam( $_REQUEST, 'option', 'com_uddeim');
+$option	= uddeIMmosGetParam( $_REQUEST, 'option', 'com_ujumbe');
 
 if ($config->version!=$configversion) {
 	$task='convertconfig';	// its the wrong configuration file, so we have to convert it first
@@ -70,7 +70,7 @@ if ($config->version!=$configversion) {
 if (uddeIMcheckJversion()>=4) {	// Joomla >=2.5
 	// Action: "Access Administration Interface "
 	// Access check: is this user allowed to access the backend of this component?
-	if (!JFactory::getUser()->authorise('core.manage', 'com_uddeim')) {
+	if (!JFactory::getUser()->authorise('core.manage', 'com_ujumbe')) {
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
 } else {
@@ -96,11 +96,11 @@ if (uddeIMcheckJversion()>=5) {
 	// load the admin css file for Joomla 3.0+
 	$css = "";
 	if(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/admin.uddeim.css')) {
-		$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/admin.uddeim.css";
+		$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/admin.uddeim.css";
 	} else {
 		// template css doesn't exist, now we try to load the default css file
 		if(file_exists($pathtouser.'/templates/default/css/admin.uddeim.css'))
-			$css = $pathtosite."/components/com_uddeim/templates/default/css/admin.uddeim.css";
+			$css = $pathtosite."/components/com_ujumbe/templates/default/css/admin.uddeim.css";
 	}
 	if ($css)
 		uddeIMaddCSS($css);
@@ -440,7 +440,7 @@ function uddeIMsaveSettings($option, $task, $pathtoadmin, $config) {
 		return;
 
 // Change $config->notifydefault using "ALTER TABLE"
-//				$upgrade =  "ALTER TABLE `#__jj_pm_emn` CHANGE `status` `status` INT( 1 ) NOT NULL DEFAULT '".$config->notifydefault."';";
+//				$upgrade =  "ALTER TABLE `#__ujumbe_emn` CHANGE `status` `status` INT( 1 ) NOT NULL DEFAULT '".$config->notifydefault."';";
 //				$database->setQuery($upgrade);
 //				if(!$database->query()) {
 //					// ALTER TABLE failed
@@ -448,12 +448,12 @@ function uddeIMsaveSettings($option, $task, $pathtoadmin, $config) {
 
 	if($oldsetting_allowarchive==1 && $config->allowarchive==0) {
 		$mosmsg = _UDDEADM_SETTINGSSAVED;
-		$redirecturl = uddeIMredirectIndex()."?option=com_uddeim&task=archivetotrash";
+		$redirecturl = uddeIMredirectIndex()."?option=com_ujumbe&task=archivetotrash";
 		uddeIMmosRedirect($redirecturl, $mosmsg); 
 	}
 	
 	$mosmsg=_UDDEADM_SETTINGSSAVED;
-	$redirecturl = uddeIMredirectIndex()."?option=com_uddeim&task=settings";
+	$redirecturl = uddeIMredirectIndex()."?option=com_ujumbe&task=settings";
 	uddeIMmosRedirect($redirecturl, $mosmsg); 
 }
 
@@ -504,7 +504,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$toread=$thepms->readstate;
 		
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -559,7 +559,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -605,7 +605,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -642,7 +642,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$toread=$thepms->opened;
 		
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -720,7 +720,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, systemflag, disablereply, archived, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, systemflag, disablereply, archived, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".
 						(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$systemflag.", ".(int)$disablereply.", ".(int)$archived.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
@@ -756,9 +756,9 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				if ($fromid==$toid) {
 					$trashoffset=((float)$config->TrashLifespan)*86400;
 					$deletetime=uddetime($config->timezone)-$trashoffset;
-					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", 1, ".$deletetime.")";
+					$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", 1, ".$deletetime.")";
 				} else {
-					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+					$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				}
 				$database->setQuery( $sql );
 				if (!$database->query()) {
@@ -808,7 +808,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -857,7 +857,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -894,7 +894,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$toread=$thepms->readstate;
 		
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -940,7 +940,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdate=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -993,7 +993,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1052,7 +1052,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1102,7 +1102,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1140,7 +1140,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$totrashdateoutbox="NULL";
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1184,7 +1184,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1204,7 +1204,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 		echo _UDDEADM_IMPORTDONE;
 	}
 	echo "</span></p><p>&nbsp;</p>";
-	echo "<p><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></p>";
+	echo "<p><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></p>";
 }
 
 function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathtouser, $uddeimversion, $config) {
@@ -1272,7 +1272,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 	$oldsetting_allowarchive = $config->allowarchive;
 	$oldsetting_longwaitingemail = $config->longwaitingemail;
 
-//	$sql = "SHOW FIELDS FROM #__jj_pm_emn;";
+//	$sql = "SHOW FIELDS FROM #__ujumbe_emn;";
 //	$database->setQuery($sql);
 //	$rows = $database->loadObjectList();
 //	foreach ($rows as $row) {
@@ -1320,17 +1320,17 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				echo "<span style='padding: 3px'>"._UDDEADM_INFORMATION."</span><br />";
 
 			if ($plugin_mcp) {
-				$sql  = "SELECT count(id) FROM #__jj_pm WHERE `delayed`!=0";
+				$sql  = "SELECT count(id) FROM #__ujumbe WHERE `delayed`!=0";
 				$database->setQuery($sql);
 				$temp = (int)$database->loadResult();
-				echo "<span style='padding: 3px'><a href='".uddeIMredirectIndex()."?option=com_uddeim&task=mcp'>"._UDDEADM_MCP_STAT." ".$temp."</a></span><br />";
+				echo "<span style='padding: 3px'><a href='".uddeIMredirectIndex()."?option=com_ujumbe&task=mcp'>"._UDDEADM_MCP_STAT." ".$temp."</a></span><br />";
 			}
 
 			if ($plugin_spamcontrol) {
-				$sql  = "SELECT count(a.id) FROM #__jj_pm_spam AS a LEFT JOIN #__jj_pm AS b ON a.mid = b.id";
+				$sql  = "SELECT count(a.id) FROM #__ujumbe_spam AS a LEFT JOIN #__ujumbe AS b ON a.mid = b.id";
 				$database->setQuery($sql);
 				$temp = (int)$database->loadResult();
-				echo "<span style='padding: 3px'><a href='".uddeIMredirectIndex()."?option=com_uddeim&task=spamcontrol'>"._UDDEADM_SPAMCONTROL_STAT." ".$temp."</a></span><br />";
+				echo "<span style='padding: 3px'><a href='".uddeIMredirectIndex()."?option=com_ujumbe&task=spamcontrol'>"._UDDEADM_SPAMCONTROL_STAT." ".$temp."</a></span><br />";
 			}
 
 			if (!$config->emailtrafficenabled) {
@@ -1354,14 +1354,14 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 		?>
     </td>
     <td align="right" width="10%">
-      <img align="middle" style="display: inline; border:1px solid lightgray;" src="<?php echo uddeIMgetPath('live_site')."/components/com_uddeim/templates/images/uddeim_logo.png"; ?>" width="150" height="75" />
+      <img align="middle" style="display: inline; border:1px solid lightgray;" src="<?php echo uddeIMgetPath('live_site')."/components/com_ujumbe/templates/images/uddeim_logo.png"; ?>" width="150" height="75" />
     </td>
   </tr>
   <tr>
     <td width="100%" colspan="3">
       <?php
 		// when the ftp layer is enabled it does not make any sense to ask if the file is writeable since this cannot be checked
-		$configdatei = "/administrator/components/com_uddeim/config.class.php";
+		$configdatei = "/administrator/components/com_ujumbe/config.class.php";
 		if (!uddeIMisFtpLayer()) {
 			if (!uddeIMisWritable($configdatei)) {
 				echo "<p><b><span style='color: red;'>"._UDDEADM_CONFIGNOTWRITEABLE." $configdatei</span></b></p>";
@@ -1936,7 +1936,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 		<table width="100%" border="0" cellpadding="4" cellspacing="2" class="adminForm" id="adminForm">
 			<?php 
 				$temp  = _UDDEADM_ADMINIGNITIONONLY_EXP."<br />";
-				$temp .= "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=maintenanceprune>"._UDDEADM_MAINTENANCE_PRUNE."</a>";
+				$temp .= "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=maintenanceprune>"._UDDEADM_MAINTENANCE_PRUNE."</a>";
 				uddeIMadmSelect($config->adminignitiononly, 'config_adminignitiononly', Array('1'=>_UDDEADM_ADMINIGNITIONONLY_YES, '0'=>_UDDEADM_ADMINIGNITIONONLY_NO, '2'=>_UDDEADM_ADMINIGNITIONONLY_MANUALLY), false, _UDDEADM_ADMINIGNITIONONLY_HEAD, $temp);
 			?>
 
@@ -1968,9 +1968,9 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 
 			<?php 
 				$temp  = _UDDEADM_OVERWRITEITEMID_EXP." ";
-				$found = uddeIMgetItemidComponent("com_uddeim", $config);
+				$found = uddeIMgetItemidComponent("com_ujumbe", $config);
 //				$gid = uddeIMgetGroupID2($config);
-//				$sql="SELECT id FROM #__menu WHERE link LIKE '%com_uddeim%' AND published=1 AND access".($gid==0 ? "=" : "<=").$gid;
+//				$sql="SELECT id FROM #__menu WHERE link LIKE '%com_ujumbe%' AND published=1 AND access".($gid==0 ? "=" : "<=").$gid;
 //				if (uddeIMcheckJversion()>=2) {		// J1.6
 //					$lang = JFactory::getLanguage();
 //					$sql.=" AND language IN (" . $database->Quote($lang->get('tag')) . ",'*')";
@@ -1979,7 +1979,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 //				$database->setQuery($sql);
 //				$found = (int)$database->loadResult();
 //				if (!$found) {
-//					$sql="SELECT id FROM #__menu WHERE link LIKE '%com_uddeim%' AND published=0 AND access".($gid==0 ? "=" : "<=").$gid;
+//					$sql="SELECT id FROM #__menu WHERE link LIKE '%com_ujumbe%' AND published=0 AND access".($gid==0 ? "=" : "<=").$gid;
 //					if (uddeIMcheckJversion()>=2) {		// J1.6
 //						$lang = JFactory::getLanguage();
 //						$sql.=" AND language IN (" . $database->Quote($lang->get('tag')) . ",'*')";
@@ -2065,7 +2065,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 			?>
 			<?php 
 				$temp  = _UDDEADM_FILEADMINIGNITIONONLY_EXP."<br />";
-				$temp .= "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=filemaintenanceprune>"._UDDEADM_FILEMAINTENANCE_PRUNE."</a>";
+				$temp .= "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=filemaintenanceprune>"._UDDEADM_FILEMAINTENANCE_PRUNE."</a>";
 				uddeIMadmSelect($config->fileadminignitiononly, 'config_fileadminignitiononly', Array('1'=>_UDDEADM_FILEADMINIGNITIONONLY_YES, '0'=>_UDDEADM_FILEADMINIGNITIONONLY_NO, '2'=>_UDDEADM_FILEADMINIGNITIONONLY_MANUALLY), !$config->enableattachment, _UDDEADM_FILEADMINIGNITIONONLY_HEAD, $temp);
 			?>
 
@@ -2100,7 +2100,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 					echo "<p>"._UDDEADM_PMSFOUND."</p>";
 					echo "<p>";
 					foreach ($pmsfounds as $pmsfound) {
-						$importlink = "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=importpms&act=".(int)$pmsfound.">"._UDDEADM_IMPORT_CAPS."</a>";
+						$importlink = "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=importpms&act=".(int)$pmsfound.">"._UDDEADM_IMPORT_CAPS."</a>";
 						echo $importlink.": ".uddeIMnamePMS($pmsfound)." (";
 						switch($pmsfound) {
 							case  1: $sql = "SELECT count(id) FROM #__pms"; break;
@@ -2128,7 +2128,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 							$cnt = 1;
 							echo _UDDEADM_IMPORT_PARTIAL." ";
 							for ($start = 0; $start < $allpms; $start+=$count) {
-								$importlink = "<a href='".uddeIMredirectIndex()."?option=com_uddeim&task=importpms&act=".(int)$pmsfound."&importstart=".(int)$start."&importcount=".(int)$count."'>[".$cnt++."]</a> ";
+								$importlink = "<a href='".uddeIMredirectIndex()."?option=com_ujumbe&task=importpms&act=".(int)$pmsfound."&importstart=".(int)$start."&importcount=".(int)$count."'>[".$cnt++."]</a> ";
 								echo $importlink;
 							}
 						}
@@ -2180,8 +2180,8 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				</td>
 				<td align="left" valign="top">
 					<?php
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=maintenance&act=check>"._UDDEADM_MAINTENANCE_CHECK."</a>&nbsp;";
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=maintenance&act=trash>"._UDDEADM_MAINTENANCE_TRASH."</a>&nbsp;";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=maintenance&act=check>"._UDDEADM_MAINTENANCE_CHECK."</a>&nbsp;";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=maintenance&act=trash>"._UDDEADM_MAINTENANCE_TRASH."</a>&nbsp;";
 					?>
 				</td>
 				<td align="left" valign="top" width="50%">
@@ -2194,7 +2194,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				</td>
 				<td align="left" valign="top">
 					<?php
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=maintenanceprune>"._UDDEADM_MAINTENANCEDEL_ERASE."</a>";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=maintenanceprune>"._UDDEADM_MAINTENANCEDEL_ERASE."</a>";
 					?>
 				</td>
 				<td align="left" valign="top" width="50%">
@@ -2207,7 +2207,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				</td>
 				<td align="left" valign="top">
 					<?php
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=filemaintenanceprune>"._UDDEADM_FILEMAINTENANCEDEL_ERASE."</a>";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=filemaintenanceprune>"._UDDEADM_FILEMAINTENANCEDEL_ERASE."</a>";
 					?>
 				</td>
 				<td align="left" valign="top" width="50%">
@@ -2223,8 +2223,8 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				</td>
 				<td align="left" valign="top">
 					<?php
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=maintenancefix&act=check>"._UDDEADM_MAINTENANCE_CHECK."</a>&nbsp;";
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=maintenancefix&act=fix>"._UDDEADM_MAINTENANCE_FIX."</a>&nbsp;";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=maintenancefix&act=check>"._UDDEADM_MAINTENANCE_CHECK."</a>&nbsp;";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=maintenancefix&act=fix>"._UDDEADM_MAINTENANCE_FIX."</a>&nbsp;";
 					?>
 				</td>
 				<td align="left" valign="top" width="50%">
@@ -2235,7 +2235,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 		}
 ?>
 <?php
-				$query = "SELECT value FROM #__jj_pm_config WHERE varname='_backupdate'";
+				$query = "SELECT value FROM #__ujumbe_config WHERE varname='_backupdate'";
 				$database->setQuery($query);
 				$backupdate = $database->loadResult();
 ?>
@@ -2245,9 +2245,9 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				</td>
 				<td align="left" valign="top">
 					<?php
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=backuprestore&act=backup>"._UDDEADM_BACKUPRESTORE_BACKUP."</a>&nbsp;";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=backuprestore&act=backup>"._UDDEADM_BACKUPRESTORE_BACKUP."</a>&nbsp;";
 						if ($backupdate)
-							echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=backuprestore&act=restore>"._UDDEADM_BACKUPRESTORE_RESTORE."</a>&nbsp;";
+							echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=backuprestore&act=restore>"._UDDEADM_BACKUPRESTORE_RESTORE."</a>&nbsp;";
 					?>
 				</td>
 				<td align="left" valign="top" width="50%">
@@ -2261,7 +2261,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				</td>
 				<td align="left" valign="top">
 					<?php
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=versioncheck>"._UDDEADM_VERSIONCHECK_CHECK."</a>";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=versioncheck>"._UDDEADM_VERSIONCHECK_CHECK."</a>";
 					?>
 				</td>
 				<td align="left" valign="top" width="50%">
@@ -2274,7 +2274,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				</td>
 				<td align="left" valign="top">
 					<?php
-						echo "<a href=".uddeIMredirectIndex()."?option=com_uddeim&task=showstatistics>"._UDDEADM_STATISTICS_CHECK."</a>";
+						echo "<a href=".uddeIMredirectIndex()."?option=com_ujumbe&task=showstatistics>"._UDDEADM_STATISTICS_CHECK."</a>";
 					?>
 				</td>
 				<td align="left" valign="top" width="50%">
@@ -2407,13 +2407,13 @@ function uddeIMarchivetoTrash($option, $task, $act, $config) {
 
 	if($act=="inbox") {
 		$rightnow=uddetime($config->timezone);
-		$sql="UPDATE #__jj_pm SET archived=0 WHERE archived=1";
+		$sql="UPDATE #__ujumbe SET archived=0 WHERE archived=1";
 		$database->setQuery($sql);
 		if (!$database->query()) {
 			die("SQL error when attempting to unarchive messages" . $database->stderr(true));
 		}	
 		$mosmsg = _UDDEADM_ARCHIVETOTRASH_INBOX_DONE;
-		$redirecturl = uddeIMredirectIndex()."?option=com_uddeim";
+		$redirecturl = uddeIMredirectIndex()."?option=com_ujumbe";
 		uddeIMmosRedirect($redirecturl, $mosmsg);
 	} else {
 
@@ -2434,10 +2434,10 @@ function uddeIMarchivetoTrash($option, $task, $act, $config) {
 						<?php
 						echo "<p><b>"._UDDEADM_ARCHIVETOTRASH_INTRO."</b></p>";
 						echo "<p>";
-						echo "<a href='".uddeIMredirectIndex()."?option=com_uddeim&task=archivetotrash&act=inbox'>"._UDDEADM_ARCHIVETOTRASH_INBOX_LINK."</a><br />"._UDDEADM_ARCHIVETOTRASH_INBOX_EXP;
+						echo "<a href='".uddeIMredirectIndex()."?option=com_ujumbe&task=archivetotrash&act=inbox'>"._UDDEADM_ARCHIVETOTRASH_INBOX_LINK."</a><br />"._UDDEADM_ARCHIVETOTRASH_INBOX_EXP;
 						echo "</p>";
 						echo "<p>";
-						echo "<a href='".uddeIMredirectIndex()."?option=com_uddeim'>"._UDDEADM_ARCHIVETOTRASH_LEAVE_LINK."</a><br />"._UDDEADM_ARCHIVETOTRASH_LEAVE_EXP;
+						echo "<a href='".uddeIMredirectIndex()."?option=com_ujumbe'>"._UDDEADM_ARCHIVETOTRASH_LEAVE_LINK."</a><br />"._UDDEADM_ARCHIVETOTRASH_LEAVE_EXP;
 						echo "</p>";
 						?>
 				</td>
@@ -2482,20 +2482,20 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 	$query = "SELECT min(id) FROM #__users WHERE id>0";
 	$database->setQuery($query);
 	$mmin = (int)$database->loadResult();
-	$query = "SELECT min(fromid) FROM #__jj_pm WHERE fromid>0";	// don't select public users
+	$query = "SELECT min(fromid) FROM #__ujumbe WHERE fromid>0";	// don't select public users
 	$database->setQuery($query);
 	$mmin1 = (int)$database->loadResult();
-	$query = "SELECT min(toid) FROM #__jj_pm WHERE toid>0";		// don't select public users
+	$query = "SELECT min(toid) FROM #__ujumbe WHERE toid>0";		// don't select public users
 	$database->setQuery($query);
 	$mmin2 = (int)$database->loadResult();
 
 	$query = "SELECT max(id) FROM #__users WHERE id>0";
 	$database->setQuery($query);
 	$mmax = (int)$database->loadResult();
-	$query = "SELECT max(fromid) FROM #__jj_pm WHERE fromid>0";
+	$query = "SELECT max(fromid) FROM #__ujumbe WHERE fromid>0";
 	$database->setQuery($query);
 	$mmax1 = (int)$database->loadResult();
-	$query = "SELECT max(toid) FROM #__jj_pm WHERE toid>0";
+	$query = "SELECT max(toid) FROM #__ujumbe WHERE toid>0";
 	$database->setQuery($query);
 	$mmax2 = (int)$database->loadResult();
 
@@ -2516,23 +2516,23 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 
 		if ($value==0) {
 			// the user does not exist, so count if there are still messages from or to him in the database
-			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE fromid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE fromid='.(int)$i;
 			$database->setQuery($query);
 			$mvon = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE toid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE toid='.(int)$i;
 			$database->setQuery($query);
 			$man = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__jj_pm_emn WHERE userid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe_emn WHERE userid='.(int)$i;
 			$database->setQuery($query);
 			$memn = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__jj_pm_blocks WHERE blocker='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe_blocks WHERE blocker='.(int)$i;
 			$database->setQuery($query);
 			$mbl1 = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__jj_pm_blocks WHERE blocked='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe_blocks WHERE blocked='.(int)$i;
 			$database->setQuery($query);
 			$mbl2 = (int)$database->loadResult();
 
@@ -2544,12 +2544,12 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 			}
 			if ($act=="trash" && ($mvon>0 || $man>0 || $memn>0 || $mbl1>0 || $mbl2>0)) {
 				echo _UDDEADM_MAINTENANCE_MT2." #$i<br />";
-				$query = "DELETE FROM #__jj_pm_emn WHERE userid=".(int)$i;
+				$query = "DELETE FROM #__ujumbe_emn WHERE userid=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 
 				echo _UDDEADM_MAINTENANCE_MT3." #$i<br />";
-				$query = "DELETE FROM #__jj_pm_blocks WHERE blocker=".(int)$i." OR blocked=".(int)$i;
+				$query = "DELETE FROM #__ujumbe_blocks WHERE blocker=".(int)$i." OR blocked=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 
@@ -2559,33 +2559,33 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 // when this is removed, deleted users are shown as "User deleted" in the outbox
 				echo _UDDEADM_MAINTENANCE_MT4." #$i<br />";		// Recdipient does not longer exist, so delete from all outboxes and from non-existing users inbox
 				// This following statement is ok, when also messages from purged users are listed in the Outbox, unfortunately they are not, so these messages are also purged.
-				//              $query = "UPDATE #__jj_pm SET totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
-				$query = "UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
+				//              $query = "UPDATE #__ujumbe SET totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
+				$query = "UPDATE #__ujumbe SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 
 // when this is removed, deleted users are shown as "User deleted" in the inbox
 				echo _UDDEADM_MAINTENANCE_MT5." #$i<br />";
 				// This following statement is ok, when also messages from purged users are listed in the Inbox, unfortunately they are not, so these messages are also purged.
-				//              $query = "UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$deletetime." WHERE fromid=".(int)$i;
-				$query = "UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE fromid=".(int)$i;
+				//              $query = "UPDATE #__ujumbe SET totrashoutbox=1, totrashdateoutbox=".$deletetime." WHERE fromid=".(int)$i;
+				$query = "UPDATE #__ujumbe SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE fromid=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 			}
 		} else {		// user exists, so display some stats only
-			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrashoutbox=0 AND fromid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE totrashoutbox=0 AND fromid='.(int)$i;
 			$database->setQuery($query);
 			$mvonoutbox = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrashoutbox=1 AND fromid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE totrashoutbox=1 AND fromid='.(int)$i;
 			$database->setQuery($query);
 			$mvonoutboxtrashed = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrash=0 AND toid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE totrash=0 AND toid='.(int)$i;
 			$database->setQuery($query);
 			$maninbox = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrash=1 AND toid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE totrash=1 AND toid='.(int)$i;
 			$database->setQuery($query);
 			$maninboxtrashed = (int)$database->loadResult();
 
@@ -2600,11 +2600,11 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 	}
 	
 	// step 2: search other problems
-	$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrash=0 AND totrashdate IS NOT NULL';
+	$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE totrash=0 AND totrashdate IS NOT NULL';
 	$database->setQuery($query);
 	$datein = (int)$database->loadResult();
 
-	$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
+	$query = 'SELECT COUNT(id) FROM #__ujumbe WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
 	$database->setQuery($query);
 	$dateout = (int)$database->loadResult();
 
@@ -2615,10 +2615,10 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 			$jobtodo=1;
 	}
 	if ($act=="trash" && ($datein>0 || $dateout>0)) {
-		$query = 'UPDATE #__jj_pm SET totrashdate=NULL WHERE totrash=0 AND totrashdate IS NOT NULL';
+		$query = 'UPDATE #__ujumbe SET totrashdate=NULL WHERE totrash=0 AND totrashdate IS NOT NULL';
 		$database->setQuery($query);
 		$ret=$database->query();
-		$query = 'UPDATE #__jj_pm SET totrashdateoutbox=NULL WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
+		$query = 'UPDATE #__ujumbe SET totrashdateoutbox=NULL WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
 		$database->setQuery($query);
 		$ret=$database->query();
 		echo "<br />";
@@ -2626,7 +2626,7 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 	}
 
 	// step 3: search orphaned files
-	$query = "SELECT count(id) FROM #__jj_pm_attachments WHERE mid=-1";
+	$query = "SELECT count(id) FROM #__ujumbe_attachments WHERE mid=-1";
 	$database->setQuery($query);
 	$count = (int)$database->loadResult();
 	if ($act=="check") {
@@ -2653,19 +2653,19 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 	// not really a database fix but helpful for existing Joomla 1.0 installations
 	if ($act=="trash" && uddeIMcheckJversion()<=1) {
 		//$database = uddeIMgetDatabase();
-		//$query = "SELECT COUNT(id) FROM #__components WHERE admin_menu_img <> '../components/com_uddeim/templates/images/uddeim-favicon.png' WHERE admin_menu_link = 'option=com_uddeim'";
+		//$query = "SELECT COUNT(id) FROM #__components WHERE admin_menu_img <> '../components/com_ujumbe/templates/images/uddeim-favicon.png' WHERE admin_menu_link = 'option=com_ujumbe'";
 		//$database->setQuery($query);
 		//$ret = (int)$database->loadResult();
 		//if ($ret) {
 			// ok this is not really an XML fix but its ok
 			$database = uddeIMgetDatabase();
-			$database->setQuery( "UPDATE #__components SET admin_menu_img = '../components/com_uddeim/templates/images/uddeim-favicon.png' WHERE admin_menu_link = 'option=com_uddeim'" );
+			$database->setQuery( "UPDATE #__components SET admin_menu_img = '../components/com_ujumbe/templates/images/uddeim-favicon.png' WHERE admin_menu_link = 'option=com_ujumbe'" );
 			$database->query();
 		//}
 	}
 	if ($act=="trash" && uddeIMcheckJversion()>=2) {
 		$database = uddeIMgetDatabase();
-		$database->setQuery( "UPDATE #__menu SET img = '../components/com_uddeim/templates/images/uddeim-favicon.png' WHERE link = 'index.php?option=com_uddeim'" );
+		$database->setQuery( "UPDATE #__menu SET img = '../components/com_ujumbe/templates/images/uddeim-favicon.png' WHERE link = 'index.php?option=com_ujumbe'" );
 		$database->query();
 	}
 
@@ -2677,7 +2677,7 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 			echo _UDDEADM_MAINTENANCE_NOTHINGTODO;
 		}
 	}
-	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p>";
+	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p>";
 }
 
 function uddeIMmaintenanceCheckFix($option, $task, $act, $config) {
@@ -2808,21 +2808,21 @@ function uddeIMmaintenanceCheckFix($option, $task, $act, $config) {
 			echo _UDDEADM_MAINTENANCE_NOTHINGTODO;
 		}
 	}
-	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p>";
+	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p>";
 }
 
 function uddeIMmaintenancePrune($option, $task, $config) {
 	uddeIMdoPrune($config);
 	echo "<div style='text-align:left'>";
 	echo "<p><b>"._UDDEADM_PRUNE_DONE."</b></p>";
-	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p></div>";
+	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p></div>";
 }
 
 function uddeIMfileMaintenancePrune($option, $task, $config) {
 	uddeIMdoFilePrune($config);
 	echo "<div style='text-align:left'>";
 	echo "<p><b>"._UDDEADM_FILEPRUNE_DONE."</b></p>";
-	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p></div>";
+	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p></div>";
 }
 
 function uddeIMconvertConfiguration($option, $task, $pathtoadmin, $expectedversion, $config) {
@@ -2962,7 +2962,7 @@ function uddeIMconvertConfiguration($option, $task, $pathtoadmin, $expectedversi
 	// do the converting here
 	if (uddeIMsaveConfig($pathtoadmin, $config))
 		echo "<p>"._UDDEADM_CFGFILE_DONE."</p>";
-	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p>";
+	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p>";
 }
 
 function uddeIMbackupRestoreConfig($option, $task, $act, $pathtoadmin, $config) {
@@ -3129,22 +3129,22 @@ function uddeIMbackupRestoreConfig($option, $task, $act, $pathtoadmin, $config) 
 		$backup['postboxavatars']				= $config->postboxavatars;
 		$backup['replytext']					= $config->replytext;
 
-		$query = 'TRUNCATE TABLE #__jj_pm_config';
+		$query = 'TRUNCATE TABLE #__ujumbe_config';
 		$database->setQuery($query);
 		if (!$database->query())
 			echo("SQL error: ".$database->stderr(true));
 		foreach ($backup as $key => $value) {
-			$query = 'INSERT INTO #__jj_pm_config ( varname, value ) VALUES ( '.$database->Quote($key).', '.$database->Quote($value).' )';
+			$query = 'INSERT INTO #__ujumbe_config ( varname, value ) VALUES ( '.$database->Quote($key).', '.$database->Quote($value).' )';
 			$database->setQuery($query);
 			if (!$database->query())
 				echo("SQL error: ".$database->stderr(true));
 		}
 		echo "<div style='text-align:left'>";
 		echo "<p><b>"._UDDEADM_BACKUP_DONE."</b></p>";
-		echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p></div>";
+		echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p></div>";
 	}
 	elseif ($act=="restore") {
-		$query = "SELECT varname, value FROM #__jj_pm_config";
+		$query = "SELECT varname, value FROM #__ujumbe_config";
         $database->setQuery($query);
         $results = $database->loadObjectList();
 		if (!$database->query())
@@ -3156,7 +3156,7 @@ function uddeIMbackupRestoreConfig($option, $task, $act, $pathtoadmin, $config) 
 		uddeIMsaveConfig($pathtoadmin, $config);
 		echo "<div style='text-align:left'>";
 		echo "<p><b>"._UDDEADM_RESTORE_DONE."</b></p>";
-		echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p></div>";
+		echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p></div>";
 	}
 }
 
@@ -3266,7 +3266,7 @@ function uddeIMversioncheck($option, $task, $checkversion, $checkhotfix) {
 	} else {
    		echo "<b><span style='color: red;'>"._UDDEADM_VERSIONCHECK_ERROR." $configdatei</span></b>";
     }
-	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p>";
+	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p>";
 	echo "</div>";
 }
 
@@ -3276,27 +3276,27 @@ function uddeIMshowstatistics($option, $task, $config) {
 	echo "<p><b>"._UDDEADM_STATISTICS."</b></p>";
 
 	echo "<table border='0'>";
-	$query="SELECT count(id) FROM #__jj_pm";
+	$query="SELECT count(id) FROM #__ujumbe";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT."</td><td>".$result."</td></tr>";
 
-	$query="SELECT count(id) FROM #__jj_pm WHERE totrash=1";
+	$query="SELECT count(id) FROM #__ujumbe WHERE totrash=1";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT_RECIPIENT."</td><td>".$result."</td></tr>";
 
-	$query="SELECT count(id) FROM #__jj_pm WHERE totrashoutbox=1";
+	$query="SELECT count(id) FROM #__ujumbe WHERE totrashoutbox=1";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT_SENDER."</td><td>".$result."</td></tr>";
 	
-	$query="SELECT count(id) FROM #__jj_pm WHERE totrash=1 AND totrashoutbox=1";
+	$query="SELECT count(id) FROM #__ujumbe WHERE totrash=1 AND totrashoutbox=1";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT_TRASH."</td><td>".$result."</td></tr>";
 
-	$query="SELECT max(id) FROM #__jj_pm";
+	$query="SELECT max(id) FROM #__ujumbe";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	$max = $result;
@@ -3304,13 +3304,13 @@ function uddeIMshowstatistics($option, $task, $config) {
 	
 	$rightnow=uddetime((int)$config->timezone);
 	$timeframe=$rightnow-(86400*7);
-	$query="SELECT min(datum) FROM #__jj_pm WHERE datum>=".(int)$timeframe;
+	$query="SELECT min(datum) FROM #__ujumbe WHERE datum>=".(int)$timeframe;
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	if (!$result) {
 		$result = 0;
 	} else {
-		$query="SELECT min(id) FROM #__jj_pm WHERE datum=".(int)$result." LIMIT 1";
+		$query="SELECT min(id) FROM #__ujumbe WHERE datum=".(int)$result." LIMIT 1";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		$result = $max - $result + 1;
@@ -3319,13 +3319,13 @@ function uddeIMshowstatistics($option, $task, $config) {
 
 	$rightnow=uddetime((int)$config->timezone);
 	$timeframe=$rightnow-(86400*30);
-	$query="SELECT min(datum) FROM #__jj_pm WHERE datum>=".(int)$timeframe;
+	$query="SELECT min(datum) FROM #__ujumbe WHERE datum>=".(int)$timeframe;
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	if (!$result) {
 		$result = 0;
 	} else {
-		$query="SELECT min(id) FROM #__jj_pm WHERE datum=".(int)$result." LIMIT 1";
+		$query="SELECT min(id) FROM #__ujumbe WHERE datum=".(int)$result." LIMIT 1";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		$result = $max - $result + 1;
@@ -3334,13 +3334,13 @@ function uddeIMshowstatistics($option, $task, $config) {
 
 	$rightnow=uddetime((int)$config->timezone);
 	$timeframe=$rightnow-(86400*365);
-	$query="SELECT min(datum) FROM #__jj_pm WHERE datum>=".(int)$timeframe;
+	$query="SELECT min(datum) FROM #__ujumbe WHERE datum>=".(int)$timeframe;
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	if (!$result) {
 		$result = 0;
 	} else {
-		$query="SELECT min(id) FROM #__jj_pm WHERE datum=".(int)$result." LIMIT 1";
+		$query="SELECT min(id) FROM #__ujumbe WHERE datum=".(int)$result." LIMIT 1";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		$result = $max - $result + 1;
@@ -3348,12 +3348,12 @@ function uddeIMshowstatistics($option, $task, $config) {
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_365DAYS."</td><td>".$result."</td></tr>";
 
 	if ($config->enableattachment) {
-		$query="SELECT COUNT(id) FROM #__jj_pm_attachments";
+		$query="SELECT COUNT(id) FROM #__ujumbe_attachments";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNTFILES."</td><td>".$result."</td></tr>";
 
-		$query="SELECT COUNT(DISTINCT fileid) FROM #__jj_pm_attachments";
+		$query="SELECT COUNT(DISTINCT fileid) FROM #__ujumbe_attachments";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNTFILESDISTINCT."</td><td>".$result."</td></tr>";
@@ -3365,7 +3365,7 @@ function uddeIMshowstatistics($option, $task, $config) {
 	$rightnow=uddetime($config->timezone);
 	$sincewhen=$rightnow-($config->longwaitingdays*86400);
 	$next = (int)$config->longwaitingdays*86400;
-	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__jj_pm AS a, #__users AS b, #__jj_pm_emn AS c "
+	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__ujumbe AS a, #__users AS b, #__ujumbe_emn AS c "
 		 . "WHERE a.toid=b.id AND a.toid=c.userid AND "
 		 . "a.toread=0 AND a.totrash=0 AND b.block=0 AND "
 		 . "a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart." AND "
@@ -3388,7 +3388,7 @@ function uddeIMshowstatistics($option, $task, $config) {
 	$rightnow=uddetime($config->timezone)+7*86400;
 	$sincewhen=$rightnow-($config->longwaitingdays*86400);
 	$next = (int)$config->longwaitingdays*86400;
-	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__jj_pm AS a, #__users AS b, #__jj_pm_emn AS c "
+	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__ujumbe AS a, #__users AS b, #__ujumbe_emn AS c "
 		 . "WHERE a.toid=b.id AND a.toid=c.userid AND "
 		 . "a.toread=0 AND a.totrash=0 AND b.block=0 AND "
 		 . "a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart." AND "
@@ -3408,14 +3408,14 @@ function uddeIMshowstatistics($option, $task, $config) {
 	}
 	echo "</table>";
 
-	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p>";
+	echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_ujumbe>"._UDDEADM_CONTINUE."</a></b></p>";
 	echo "</div>";
 }
 
 function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	$database = uddeIMgetDatabase();
 
-	$sql = "SHOW FIELDS FROM #__jj_pm_userlists LIKE 'global';";
+	$sql = "SHOW FIELDS FROM #__ujumbe_userlists LIKE 'global';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3426,7 +3426,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("global" , $fields) )
 		return 0;	// it is 1.5 or below, since 1.6 has "global"
 
-	$sql = "SHOW FIELDS FROM #__jj_pm_spam LIKE 'mid';";
+	$sql = "SHOW FIELDS FROM #__ujumbe_spam LIKE 'mid';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3437,7 +3437,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("mid" , $fields) )
 		return 0;	// it is 1.6 or below, since 1.7 has "mid"
 
-	$sql = "SHOW FIELDS FROM #__jj_pm_emn LIKE 'locked';";
+	$sql = "SHOW FIELDS FROM #__ujumbe_emn LIKE 'locked';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3448,7 +3448,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("locked" , $fields) )
 		return 0;	// it is 1.6 or below, since 1.7 has "locked"
 
-	$sql = "SHOW FIELDS FROM #__jj_pm_attachments LIKE 'filename';";
+	$sql = "SHOW FIELDS FROM #__ujumbe_attachments LIKE 'filename';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3459,7 +3459,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("filename" , $fields) )
 		return 0;	// it is 1.7 or 1.8, since 1.9 has "attachments"
 
-	$sql = "SHOW FIELDS FROM #__jj_pm LIKE 'systemflag';";
+	$sql = "SHOW FIELDS FROM #__ujumbe LIKE 'systemflag';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3470,7 +3470,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("systemflag" , $fields) )
 		return 0;	// it is 1.9 or 2.0, since 2.1 has "systemflag"
 
-	$sql = "SHOW FIELDS FROM #__jj_pm LIKE 'delayed';";
+	$sql = "SHOW FIELDS FROM #__ujumbe LIKE 'delayed';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)

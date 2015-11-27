@@ -13,7 +13,7 @@
 //                This code uses portions of the bbcode script from phpBB (C) 2001 The phpBB Group
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMbbcode_replace($string, $config) {
 
@@ -158,28 +158,28 @@ function uddeIMsmile_replace($string, $config) {
 		$iconfolder="animated"; }
 
 	$message_emoticons=array(
-      ":))"        => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',		
-	  ":D"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',		
-      ":*"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_heart.gif"     alt="" border="0" align="middle" />',
-      ":?"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_wondering.gif" alt="" border="0" align="middle" />',
-      ":x"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_crossed.gif"   alt="" border="0" align="middle" />',
-      "B)"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_cool.gif"      alt="" border="0" align="middle" />',
-      ":("         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_sad.gif"       alt="" border="0" align="middle" />',
-      ":)"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_smile.gif"     alt="" border="0" align="middle" />',
-      ":-("        => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_sad.gif"       alt="" border="0" align="middle" />',
-      ":-)"        => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_smile.gif"     alt="" border="0" align="middle" />',
-      ":laugh:"    => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',
-      ":grin:"     => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',
-      ";)"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_wink.gif"      alt="" border="0" align="middle" />',
-      ";-)"        => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_wink.gif"      alt="" border="0" align="middle" />',
-      ":P"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_tongue.gif"    alt="" border="0" align="middle" />',
-      ":mad:"      => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_angry.gif"     alt="" border="0" align="middle" />',
-      ":angry:"    => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_angry.gif"     alt="" border="0" align="middle" />',
-      ":ohmy:"     => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_shocked.gif"   alt="" border="0" align="middle" />',
-	  ":o"         => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_shocked.gif"   alt="" border="0" align="middle" />',
-      ":shock:"    => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_shocked.gif"   alt="" border="0" align="middle" />',
-      ":blush:"    => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_blush.gif"     alt="" border="0" align="middle" />',
-      ":kiss:"     => '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_kiss.gif"      alt="" border="0" align="middle" />',
+      ":))"        => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',		
+	  ":D"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',		
+      ":*"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_heart.gif"     alt="" border="0" align="middle" />',
+      ":?"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_wondering.gif" alt="" border="0" align="middle" />',
+      ":x"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_crossed.gif"   alt="" border="0" align="middle" />',
+      "B)"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_cool.gif"      alt="" border="0" align="middle" />',
+      ":("         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_sad.gif"       alt="" border="0" align="middle" />',
+      ":)"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_smile.gif"     alt="" border="0" align="middle" />',
+      ":-("        => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_sad.gif"       alt="" border="0" align="middle" />',
+      ":-)"        => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_smile.gif"     alt="" border="0" align="middle" />',
+      ":laugh:"    => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',
+      ":grin:"     => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_laughing.gif"  alt="" border="0" align="middle" />',
+      ";)"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_wink.gif"      alt="" border="0" align="middle" />',
+      ";-)"        => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_wink.gif"      alt="" border="0" align="middle" />',
+      ":P"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_tongue.gif"    alt="" border="0" align="middle" />',
+      ":mad:"      => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_angry.gif"     alt="" border="0" align="middle" />',
+      ":angry:"    => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_angry.gif"     alt="" border="0" align="middle" />',
+      ":ohmy:"     => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_shocked.gif"   alt="" border="0" align="middle" />',
+	  ":o"         => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_shocked.gif"   alt="" border="0" align="middle" />',
+      ":shock:"    => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_shocked.gif"   alt="" border="0" align="middle" />',
+      ":blush:"    => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_blush.gif"     alt="" border="0" align="middle" />',
+      ":kiss:"     => '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/emoticon_kiss.gif"      alt="" border="0" align="middle" />',
       );
 
 	if ($config->animatedex) { 
@@ -196,7 +196,7 @@ function uddeIMsmile_replace($string, $config) {
 						$noextname = $file;
 					}
 					$name = ":".$noextname.":";
-					$message_emoticons[$name] = '<img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/'.$iconfolder.'/'.$noextname.'.gif" alt="" border="0" align="middle" />';
+					$message_emoticons[$name] = '<img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/'.$iconfolder.'/'.$noextname.'.gif" alt="" border="0" align="middle" />';
 				}
 			}
 			closedir($folder);

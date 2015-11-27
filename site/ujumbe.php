@@ -11,14 +11,14 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 $uddeim_isadmin = 0;
 if ( defined( 'JPATH_ADMINISTRATOR' ) ) {
-	require_once(JPATH_SITE.'/components/com_uddeim/uddeimlib.php');
+	require_once(JPATH_SITE.'/components/com_ujumbe/ujumbelib.php');
 } else {
 	global $mainframe;
-	require_once($mainframe->getCfg('absolute_path').'/components/com_uddeim/uddeimlib.php');
+	require_once($mainframe->getCfg('absolute_path').'/components/com_ujumbe/ujumbelib.php');
 }
 
 $pathtoadmin = uddeIMgetPath('admin');
@@ -132,7 +132,7 @@ if (uddeIMgetEMNlocked($userid)) {
 }
 
 // if no Itemid is passed on, try to find one somewhere
-// $option = uddeIMmosGetParam( $_REQUEST, 'option', 'com_uddeim' );
+// $option = uddeIMmosGetParam( $_REQUEST, 'option', 'com_ujumbe' );
 $Itemid 	= uddeIMmosGetParam( $_REQUEST, 'Itemid');
 if (!$Itemid || !isset($Itemid) || empty( $Itemid )) {
 	$Itemid = uddeIMgetItemid($config);
@@ -231,13 +231,13 @@ if(!$config->templatedir) {
 }
 
 // change image config values to image links
-$uddeicons_flagged    = "<img alt='"._UDDEIM_STATUS_FLAGGED  ."' title='"._UDDEIM_STATUS_FLAGGED  ."' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/staron.gif' />";
-$uddeicons_unflagged  = "<img alt='"._UDDEIM_STATUS_UNFLAGGED."' title='"._UDDEIM_STATUS_UNFLAGGED."' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/staroff.gif' />";
-$uddeicons_onlinepic  = "<img alt='"._UDDEIM_STATUS_ONLINE   ."' title='"._UDDEIM_STATUS_ONLINE   ."' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_online.gif' />";
-$uddeicons_offlinepic = "<img alt='"._UDDEIM_STATUS_OFFLINE  ."' title='"._UDDEIM_STATUS_OFFLINE  ."' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_offline.gif' />";
-$uddeicons_readpic    = "<img alt='"._UDDEIM_STATUS_READ     ."' title='"._UDDEIM_STATUS_READ     ."' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/nonew_im.gif' border='0' />";
-$uddeicons_unreadpic  = "<img alt='"._UDDEIM_STATUS_UNREAD   ."' title='"._UDDEIM_STATUS_UNREAD   ."' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/new_im.gif' border='0' />";
-$uddeicons_delayedpic = "<img alt='"._UDDEIM_STATUS_DELAYED  ."' title='"._UDDEIM_STATUS_DELAYED  ."' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/delayed_im.gif' border='0' />";
+$uddeicons_flagged    = "<img alt='"._UDDEIM_STATUS_FLAGGED  ."' title='"._UDDEIM_STATUS_FLAGGED  ."' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/staron.gif' />";
+$uddeicons_unflagged  = "<img alt='"._UDDEIM_STATUS_UNFLAGGED."' title='"._UDDEIM_STATUS_UNFLAGGED."' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/staroff.gif' />";
+$uddeicons_onlinepic  = "<img alt='"._UDDEIM_STATUS_ONLINE   ."' title='"._UDDEIM_STATUS_ONLINE   ."' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_online.gif' />";
+$uddeicons_offlinepic = "<img alt='"._UDDEIM_STATUS_OFFLINE  ."' title='"._UDDEIM_STATUS_OFFLINE  ."' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_offline.gif' />";
+$uddeicons_readpic    = "<img alt='"._UDDEIM_STATUS_READ     ."' title='"._UDDEIM_STATUS_READ     ."' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/nonew_im.gif' border='0' />";
+$uddeicons_unreadpic  = "<img alt='"._UDDEIM_STATUS_UNREAD   ."' title='"._UDDEIM_STATUS_UNREAD   ."' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/new_im.gif' border='0' />";
+$uddeicons_delayedpic = "<img alt='"._UDDEIM_STATUS_DELAYED  ."' title='"._UDDEIM_STATUS_DELAYED  ."' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/delayed_im.gif' border='0' />";
 $GLOBALS['uddeicons_flagged']    = $uddeicons_flagged;
 $GLOBALS['uddeicons_unflagged']  = $uddeicons_unflagged;
 $GLOBALS['uddeicons_onlinepic']  = $uddeicons_onlinepic;
@@ -301,15 +301,15 @@ if (!$omitDefaultOutput){
 	// load the css file
 	$css = "";
 	if(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/uddeim'.$css_appendix.'.css')) {
-		$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/uddeim".$css_appendix.".css";
+		$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/uddeim".$css_appendix.".css";
 	} elseif(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/uddeim'.$css_alternative.'.css')) {
-		$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/uddeim".$css_alternative.".css";
+		$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/uddeim".$css_alternative.".css";
 	} elseif(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/uddeim.css')) {
-		$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/uddeim.css";
+		$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/uddeim.css";
 	} else {
 		// template css doesn't exist, now we try to load the default css file
 		if(file_exists($pathtouser.'/templates/default/css/uddeim.css'))
-			$css = $pathtosite."/components/com_uddeim/templates/default/css/uddeim.css";
+			$css = $pathtosite."/components/com_ujumbe/templates/default/css/uddeim.css";
 	}
 	uddeIMaddCSS($css);
 
@@ -326,15 +326,15 @@ if (!$omitDefaultOutput){
 			 $config->mootools==5) {
 			$css = "";
 			if(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/autocompleter'.$css_appendix.'.css')) {
-				$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/autocompleter".$css_appendix.".css";
+				$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/autocompleter".$css_appendix.".css";
 			} elseif(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/autocompleter'.$css_alternative.'.css')) {
-				$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/autocompleter".$css_alternative.".css";
+				$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/autocompleter".$css_alternative.".css";
 			} elseif(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/autocompleter.css')) {
-				$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/autocompleter.css";
+				$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/autocompleter.css";
 			} else {
 				// template css doesn't exist, now we try to load the default css file
 				if(file_exists($pathtouser.'/templates/default/css/autocompleter.css'))
-					$css = $pathtosite."/components/com_uddeim/templates/default/css/autocompleter.css";
+					$css = $pathtosite."/components/com_ujumbe/templates/default/css/autocompleter.css";
 			}
 			uddeIMaddCSS($css);
 		}
@@ -348,15 +348,15 @@ if (!$omitDefaultOutput){
 			 $config->mootools==7) {
 			$css = "";
 			if(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/meio.aucomplete'.$css_appendix.'.css')) {
-				$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/meio.aucomplete".$css_appendix.".css";
+				$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/meio.aucomplete".$css_appendix.".css";
 			} elseif(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/meio.aucomplete'.$css_alternative.'.css')) {
-				$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/meio.aucomplete".$css_alternative.".css";
+				$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/meio.aucomplete".$css_alternative.".css";
 			} elseif(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/meio.aucomplete.css')) {
-				$css = $pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/meio.aucomplete.css";
+				$css = $pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/meio.aucomplete.css";
 			} else {
 				// template css doesn't exist, now we try to load the default css file
 				if(file_exists($pathtouser.'/templates/default/css/meio.aucomplete.css'))
-					$css = $pathtosite."/components/com_uddeim/templates/default/css/meio.aucomplete.css";
+					$css = $pathtosite."/components/com_ujumbe/templates/default/css/meio.aucomplete.css";
 			}
 			uddeIMaddCSS($css);
 		}
@@ -710,7 +710,7 @@ function uddeIMpruneMessages($myself, $item_id, $my_gid, $task, $config) {
 		if (!uddeIMisAdmin($my_gid) && !uddeIMisAdmin2($my_gid, $config)) {
 			echo _UDDEIM_VIOLATION;
 			return;
-//			_osRedirect(uddeIMsefRelToAbs("index.php?option=com_uddeim"), _UDDEIM_VIOLATION);
+//			_osRedirect(uddeIMsefRelToAbs("index.php?option=com_ujumbe"), _UDDEIM_VIOLATION);
 		}
 	}
 	uddeIMdoPrune($config);
@@ -718,7 +718,7 @@ function uddeIMpruneMessages($myself, $item_id, $my_gid, $task, $config) {
 
 	if ($task=="prune") {
 		$mosmsg="uddeIM Prune";
-		uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 	}
 }
 
@@ -735,7 +735,7 @@ function uddeIMpruneFiles($myself, $item_id, $my_gid, $task, $config) {
 
 	if ($task=="fileprune") {
 		$mosmsg="uddeIM File prune";
-		uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 	}
 }
 
@@ -766,7 +766,7 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 		}
 		if($total>$config->maxarchive && !uddeIMisAdmin($my_gid) && !uddeIMisAdmin2($my_gid, $config)) {
 			$mosmsg=_UDDEIM_MSGLIMITREACHED;
-			uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+			uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 		}
 	}
 	
@@ -979,7 +979,7 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 
 	if(!$to_id) {					// this should never be reached
 		$mosmsg = _UDDEIM_NOID;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=new&Itemid=".$item_id, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=new&Itemid=".$item_id, $mosmsg);
 	}
 
 	// CAPTCHA (first check for all other errors and then the CAPTCHA)
@@ -1010,7 +1010,7 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 		}
 		if (!$to_id) {	// that should never happen, but you never know...
 			$mosmsg=_UDDEIM_NOID;
-			uddeJSEFredirect("index.php?option=com_uddeim&task=new&Itemid=".$item_id, $mosmsg);
+			uddeJSEFredirect("index.php?option=com_ujumbe&task=new&Itemid=".$item_id, $mosmsg);
 		}
 
 		// now check blocking
@@ -1143,7 +1143,7 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 			$themode=0;
 			if ($config->cryptmode==1) {
 				$cm = uddeIMencrypt($savemessagecopy,$config->cryptkey,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
 			} elseif ($config->cryptmode==2) {
 				$themode=2;
 				$thepass=$cryptpass;
@@ -1152,10 +1152,10 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 					$thepass=$config->cryptkey;
 				}
 				$cm = uddeIMencrypt($savemessagecopy,$thepass,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 			} elseif ($config->cryptmode==3) {
 				$cm = uddeIMencrypt($savemessagecopy,"",CRYPT_MODE_STOREBASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",3)";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",3)";
 			} elseif ($config->cryptmode==4) {
 				$themode=4;
 				$thepass=$cryptpass;
@@ -1166,9 +1166,9 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 					$cipher = CRYPT_MODE_BASE64;
 				}
 				$cm = uddeIMencrypt($savemessagecopy,$thepass,$cipher);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 			} else {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.")";
 			}
 			$database->setQuery($sql);
 			if (!$database->query()) {
@@ -1194,32 +1194,32 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 				// This is not a bug since in my opinion it does not make sense to store autoresponder messages AND the received message.
 				$autorespondertext = uddeIMgetEMNautorespondertext($savetoid);
 				$savemessage2=addslashes(strip_tags($autorespondertext));
-				// $sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $savemessage ."', ".$savedatum.", 1,".$savedatum.")";
+				// $sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $savemessage ."', ".$savedatum.", 1,".$savedatum.")";
 
 				$themode=0;
 				if ($config->cryptmode==1) {
 					$themode=1;
 					$thepass=$config->cryptkey;
 					$cm = uddeIMencrypt($savemessage2,$config->cryptkey,CRYPT_MODE_BASE64);
-					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+					$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 				} elseif ($config->cryptmode==2) {
 					// no password entered, then fallback to obfuscating
 					$themode=1;
 					$thepass=$config->cryptkey;
 					$cm = uddeIMencrypt($savemessage2,$thepass,CRYPT_MODE_BASE64);
-					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+					$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 				} elseif ($config->cryptmode==3) {
 					$cm = uddeIMencrypt($savemessage2,"",CRYPT_MODE_STOREBASE64);
-					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.", 3)";
+					$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.", 3)";
 				} elseif ($config->cryptmode==4) {
 					// no password entered, then fallback to obfuscating
 					$themode=1;
 					$thepass=$config->cryptkey;
 					$cm = uddeIMencrypt($savemessage2,$thepass,CRYPT_MODE_BASE64);
-					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+					$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 				} else {
 					$cm = $savemessage2;
-					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.")";
+					$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.")";
 				}
 				$database->setQuery($sql);
 				if (!$database->query()) {
@@ -1291,7 +1291,7 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 	if($backto) {
 		uddeIMmosRedirect($backto, $mosmsg);
 	}
-	uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 }
 
 
@@ -1315,7 +1315,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 		}
 		if($total>$config->maxarchive && !uddeIMisAdmin($my_gid) && !uddeIMisAdmin2($my_gid, $config)) {
 			$mosmsg=_UDDEIM_MSGLIMITREACHED;
-			uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+			uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 		}
 	}
 
@@ -1343,7 +1343,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 	// select the message I write a reply to
 	// I need the email address and the sender name of the public user (the message id is $messageid and I am $myself)
 	// das war vorher... a.toid=b.id??? richtig sollte a.fromid=b.id sein, also selectInboxMessage nehmen
-	// $sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.toid=".(int)$myself." AND a.id=".(int)$messageid;
+	// $sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__ujumbe AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.toid=".(int)$myself." AND a.id=".(int)$messageid;
 	$displaymessages = 	uddeIMselectInboxMessage($myself, $messageid, $config);
 	if (count($displaymessages)<1) {
 		echo _UDDEIM_MESSAGENOACCESS;
@@ -1414,7 +1414,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 	$fromemail=addslashes(strip_tags($var_tomail));
 	if ($config->cryptmode==1) {
 		$cm = uddeIMencrypt($savemessage,$config->cryptkey,CRYPT_MODE_BASE64);
-		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,1,'".md5($config->cryptkey)."')";
+		$sql="INSERT INTO #__ujumbe (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,1,'".md5($config->cryptkey)."')";
 	} elseif ($config->cryptmode==2) {
 		$themode=2;
 		$thepass=$cryptpass;
@@ -1423,10 +1423,10 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 			$thepass=$config->cryptkey;
 		}
 		$cm = uddeIMencrypt($savemessage,$thepass,CRYPT_MODE_BASE64);
-		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
+		$sql="INSERT INTO #__ujumbe (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
 	} elseif ($config->cryptmode==3) {
 		$cm = uddeIMencrypt($savemessage,"",CRYPT_MODE_STOREBASE64);
-		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,3)";
+		$sql="INSERT INTO #__ujumbe (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,3)";
 	} elseif ($config->cryptmode==4) {
 		$themode=4;
 		$thepass=$cryptpass;
@@ -1437,9 +1437,9 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 			$cipher = CRYPT_MODE_BASE64;
 		}
 		$cm = uddeIMencrypt($savemessage,$thepass,$cipher);
-		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
+		$sql="INSERT INTO #__ujumbe (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
 	} else {
-		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$savemessage."', ".$savedatum.",1,".$savedatum.",1)";
+		$sql="INSERT INTO #__ujumbe (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$savemessage."', ".$savedatum.",1,".$savedatum.",1)";
 	}
 	$database->setQuery($sql);
 	if (!$database->query()) {
@@ -1470,7 +1470,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 		// CRYPT
 		if ($config->cryptmode==1) {
 			$cm = uddeIMencrypt($savemessagecopy,$config->cryptkey,CRYPT_MODE_BASE64);
-			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
+			$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
 		} elseif ($config->cryptmode==2) {
 			$themode=2;
 			$thepass=$cryptpass;
@@ -1479,10 +1479,10 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 				$thepass=$config->cryptkey;
 			}
 			$cm = uddeIMencrypt($savemessagecopy,$thepass,CRYPT_MODE_BASE64);
-			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+			$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 		} elseif ($config->cryptmode==3) {
 			$cm = uddeIMencrypt($savemessagecopy,"",CRYPT_MODE_STOREBASE64);
-			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",3)";
+			$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",3)";
 		} elseif ($config->cryptmode==4) {
 			$themode=4;
 			$thepass=$cryptpass;
@@ -1493,9 +1493,9 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 				$cipher = CRYPT_MODE_BASE64;
 			}
 			$cm = uddeIMencrypt($savemessagecopy,$thepass,$cipher);
-			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+			$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 		} else {
-			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.")";
+			$sql="INSERT INTO #__ujumbe (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.")";
 		}
 		$database->setQuery($sql);
 		if (!$database->query()) {
@@ -1557,7 +1557,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 	if($backto) {
 		uddeIMmosRedirect($backto, $mosmsg);
 	}
-	uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 }
 
 // *****************************************************************************************
@@ -1573,7 +1573,7 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 	   ($config->allowsysgm==1 && !uddeIMisAdmin($my_gid) && !uddeIMisAdmin2($my_gid, $config)) ||
 	   ($config->allowsysgm==2 && !uddeIMisManager($my_gid)) ) {
 		$mosmsg=_UDDEIM_NOTALLOWED_SYSM_GM;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 	}
 
 	// what is username of sender?
@@ -1666,7 +1666,7 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 		}
 		if (!$universe) {
 			$mosmsg=_UDDEIM_UNEXPECTEDERROR_QUIT." No recipients selected";
-			uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+			uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 		}
 
 		if ($usql) {
@@ -1769,7 +1769,7 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 		echo "</table></div>\n";
 
 		echo "<div id='uddeim-writeform'>\n";
-		echo "<form method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=savesysgm&Itemid=".$item_id)."'><input type='hidden' name='sysgm_sys' value='".$sysgm_sys."' />\n";
+		echo "<form method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=savesysgm&Itemid=".$item_id)."'><input type='hidden' name='sysgm_sys' value='".$sysgm_sys."' />\n";
 		echo "<span style='display: none'>\n";
 
 		if ($sysgm_universe=="sysgm_toall") {
@@ -1886,7 +1886,7 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 			// when there are temporary files, remove them and the markers
 			uddeIMpreSaveAttachmentsRemove($config);
 			$mosmsg = _UDDEIM_SYSGM_ERRORNORECIPS;
-			uddeJSEFredirect("index.php?option=com_uddeim&task=sysgm&Itemid=".$item_id, $mosmsg);
+			uddeJSEFredirect("index.php?option=com_ujumbe&task=sysgm&Itemid=".$item_id, $mosmsg);
 		}
 		// we have all we need, now save it
 
@@ -1906,7 +1906,7 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 			if ($config->cryptmode==1) {
 				$themode = 1;
 				$cm = uddeIMencrypt($savemessage,$config->cryptkey,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($config->cryptkey)."')";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($config->cryptkey)."')";
 			} elseif ($config->cryptmode==2) {
 				$themode = 2;
 				$thepass=$cryptpass;
@@ -1915,11 +1915,11 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 					$thepass=$config->cryptkey;
 				}
 				$cm = uddeIMencrypt($savemessage,$thepass,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
 			} elseif ($config->cryptmode==3) {
 				$themode = 3;
 				$cm = uddeIMencrypt($savemessage,"",CRYPT_MODE_STOREBASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
 			} elseif ($config->cryptmode==4) {
 				$themode = 4;
 				$thepass=$cryptpass;
@@ -1930,9 +1930,9 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 					$cipher = CRYPT_MODE_BASE64;
 				}
 				$cm = uddeIMencrypt($savemessage,$thepass,$cipher);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
 			} else {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
 			}
 			$database->setQuery($sql);
 			if (!$database->query()) {
@@ -2000,7 +2000,7 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 			}
 		}
 		$mosmsg=_UDDEIM_MESSAGE_SENT;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 	}
 }
 
@@ -2078,7 +2078,7 @@ function uddeIMnewMessage($myself, $item_id, $to_id, $recip, $runame, $pmessage,
 		if (($config->allowsysgm==1 && (uddeIMisAdmin($my_gid) || uddeIMisAdmin2($my_gid, $config))) ||
 		    ($config->allowsysgm==2 && uddeIMisManager($my_gid)) ) {
 			echo "<div id='uddeim-bottomlines'><p>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=sysgm&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=sysgm&Itemid=".$item_id)."'>";
 			echo _UDDEIM_WRITE_SYSM_GM;
 			echo "</a></p></div>\n";
 		}
@@ -2095,7 +2095,7 @@ function uddeIMnewSysgm($myself, $item_id, $to_id, $pmessage, $config) {
 	   ($config->allowsysgm==1 && !uddeIMisAdmin($my_gid) && !uddeIMisAdmin2($my_gid, $config)) ||
 	   ($config->allowsysgm==2 && !uddeIMisManager($my_gid)) ) {
 		$mosmsg=_UDDEIM_NOTALLOWED_SYSM_GM;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id, $mosmsg);
 	}
 
 	// write the uddeim menu
@@ -2133,7 +2133,7 @@ function uddeIMshowSettings($myself, $item_id, $config) {
 				else
 					echo _UDDEADM_NONEORUNKNOWN;
 				echo "&nbsp;&nbsp;";
-				echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=unblockuser&Itemid=".$item_id."&recip=".$blockeduser->blocked)."'>"._UDDEIM_UNBLOCKNOW."</a><br />";
+				echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=unblockuser&Itemid=".$item_id."&recip=".$blockeduser->blocked)."'>"._UDDEIM_UNBLOCKNOW."</a><br />";
 			}
 			echo "</div>\n";
 			if ($config->blockalert) {
@@ -2170,7 +2170,7 @@ function uddeIMshowSettings($myself, $item_id, $config) {
 		echo "<div class='uddeim-set-block'>";  // was uddeim-set-emn
 		echo "<h4>"._UDDEIM_EMN."</h4>";
 		echo "<p>"._UDDEIM_EMN_EXP."</p>";
-		echo "<form name='emnform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=saveemn&Itemid=".$item_id)."'>";
+		echo "<form name='emnform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=saveemn&Itemid=".$item_id)."'>";
 		echo '<input type="radio" '.$emn_always_checkstatus.		' name="emailradio" value="1" onclick="document.emnform.emailreplycheck.disabled=false;" />'._UDDEIM_EMN_ALWAYS.'<br />';
 		echo '<input type="radio" '.$emn_whenoffline_checkstatus.	' name="emailradio" value="2" onclick="document.emnform.emailreplycheck.disabled=false;" />'._UDDEIM_EMN_WHENOFFLINE.'<br />';
 		echo '<input type="radio" '.$emn_none_checkstatus.			' name="emailradio" value="0" onclick="document.emnform.emailreplycheck.disabled=true; document.emnform.emailreplycheck.checked=false;" />'._UDDEIM_EMN_NONE.'<br />';
@@ -2202,7 +2202,7 @@ function uddeIMshowSettings($myself, $item_id, $config) {
 		echo "<div class='uddeim-set-block'>";  // was uddeim-set-emn
 		echo "<h4>"._UDDEIM_AUTORESPONDER."</h4>";
 		echo "<p>"._UDDEIM_AUTORESPONDER_EXP."</p>";
-		echo "<form name='emnrespform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=saveresponderemn&Itemid=".$item_id)."'>";
+		echo "<form name='emnrespform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=saveresponderemn&Itemid=".$item_id)."'>";
 		echo '<input onclick="document.emnrespform.autorespondercheck.checked ? document.emnrespform.autorespondertext.disabled=false : document.emnrespform.autorespondertext.disabled=true;" type="checkbox" '.$emn_responder_checkstatus.' value="1" name="autorespondercheck" />'._UDDEIM_EMN_AUTORESPONDER.'<br />';
 		echo "<textarea name='autorespondertext' class='inputbox' rows='4' cols='60'".($ison==1 ? '' : 'disabled="disabled"').">".htmlentities($autorespondertext,ENT_QUOTES, $config->charset)."</textarea><br />";
 		echo '<input type="submit" name="reply" class="button" value="'._UDDEIM_SAVECHANGE.'" />';
@@ -2225,7 +2225,7 @@ function uddeIMshowSettings($myself, $item_id, $config) {
 		echo "<div class='uddeim-set-block'>";  // was uddeim-set-emn
 		echo "<h4>"._UDDEIM_AUTOFORWARD."</h4>";
 		echo "<p>"._UDDEIM_AUTOFORWARD_EXP."</p>";
-		echo "<form name='emnfwdform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=saveforwardemn&Itemid=".$item_id)."'>";
+		echo "<form name='emnfwdform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=saveforwardemn&Itemid=".$item_id)."'>";
 		echo '<input onclick="document.emnfwdform.autoforwardcheck.checked ? document.emnfwdform.autoforwardid.disabled=false : document.emnfwdform.autoforwardid.disabled=true;" type="checkbox" '.$emn_forward_checkstatus.' value="1" name="autoforwardcheck" />'._UDDEIM_EMN_AUTOFORWARD.'<br />';
 		uddeIMdoShowAllUsers($myself, $my_gid, $config, 2, $ison, $autoforwardid);
 //		echo "<textarea name='autoforwardid' class='inputbox' rows='1' cols='10'".($ison==1 ? '' : 'disabled="disabled"').">".htmlentities($autoforwardid,ENT_QUOTES, $config->charset)."</textarea><br />";
@@ -2241,7 +2241,7 @@ function uddeIMshowSettings($myself, $item_id, $config) {
 		echo "<div class='uddeim-set-block'>";
 		echo "<h4>"._UDDEIM_OPTIONS."</h4>";
 		echo "<p>"._UDDEIM_OPTIONS_EXP."</p>";
-		echo "<form name='uddeim-popupform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=saveuseremn&Itemid=".$item_id)."'>";
+		echo "<form name='uddeim-popupform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=saveuseremn&Itemid=".$item_id)."'>";
 
 		$ison = uddeIMgetEMNpopup($myself);
 		$p0checked='';
@@ -2295,7 +2295,7 @@ function uddeIMshowSettings($myself, $item_id, $config) {
 			}
 			list($hash, $salt) = explode(':', $row->password);
 			$hash_db = sha1($hash);
-			$pms_show = uddeIMgetPath('live_site')."/index.php?option=com_uddeim&amp;task=rss&amp;no_html=1&amp;format=raw&amp;user=".$row->username."&amp;pass=".$hash_db;
+			$pms_show = uddeIMgetPath('live_site')."/index.php?option=com_ujumbe&amp;task=rss&amp;no_html=1&amp;format=raw&amp;user=".$row->username."&amp;pass=".$hash_db;
 			$link = '<a href="'.$pms_show.'" target="_blank">'.$pms_show.'</a>';
 			echo '<div class="uddeim-set-block">';
 			echo '<h4>'._UDDEIM_RSS_FEED.'</h4>';
@@ -2304,8 +2304,8 @@ function uddeIMshowSettings($myself, $item_id, $config) {
 			echo '<p>'._UDDEIM_RSS_INTRO2.'</p>';
 			
 			if ($config->showigoogle) {
-				echo '<p><a href="http://fusion.google.com/ig/add?synd=open&amp;source=ggyp&amp;moduleurl='.uddeIMgetPath('live_site').'/components/com_uddeim/uddeim_igoogle.xml">';
-				echo '<img src="'.uddeIMgetPath('live_site').'/components/com_uddeim/templates/images/igoogle.gif" border="0" alt="Add to Google" width="62" height="17" />';
+				echo '<p><a href="http://fusion.google.com/ig/add?synd=open&amp;source=ggyp&amp;moduleurl='.uddeIMgetPath('live_site').'/components/com_ujumbe/uddeim_igoogle.xml">';
+				echo '<img src="'.uddeIMgetPath('live_site').'/components/com_ujumbe/templates/images/igoogle.gif" border="0" alt="Add to Google" width="62" height="17" />';
 				echo '</a></p>';
 				echo '</div>';
 			}
@@ -2331,7 +2331,7 @@ function uddeIMsaveEMN($myself, $item_id, $emailradio, $emailreplycheck, $config
 			uddeIMinsertEMNdefaults($myself, $config);
 		uddeIMupdateEMNstatus($myself, $emn_setstatus);
 	}
-	uddeJSEFredirect("index.php?option=com_uddeim&task=settings&Itemid=".$item_id);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id);
 }
 
 function uddeIMsaveAutoresponderEMN($myself, $item_id, $autorespondertext, $autorespondercheck, $config) {
@@ -2346,7 +2346,7 @@ function uddeIMsaveAutoresponderEMN($myself, $item_id, $autorespondertext, $auto
 	uddeIMupdateEMNautoresponder($myself, $valueautoresponder);
 	if ($valueautoresponder)
 		uddeIMupdateEMNautorespondertext($myself, $autorespondertext);
-	uddeJSEFredirect("index.php?option=com_uddeim&task=settings&Itemid=".$item_id);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id);
 }
 
 function uddeIMsaveAutoforwardEMN($myself, $item_id, $autoforwardid, $autoforwardcheck, $config) {
@@ -2360,7 +2360,7 @@ function uddeIMsaveAutoforwardEMN($myself, $item_id, $autoforwardid, $autoforwar
 	uddeIMupdateEMNautoforward($myself, $valueautoforward);
 	if ($valueautoforward)
 		uddeIMupdateEMNautoforwardid($myself, $autoforwardid);
-	uddeJSEFredirect("index.php?option=com_uddeim&task=settings&Itemid=".$item_id);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id);
 }
 
 function uddeIMsaveUserEMN ($myself, $item_id, $popupcheck, $publiccheck, $config) {
@@ -2377,7 +2377,7 @@ function uddeIMsaveUserEMN ($myself, $item_id, $popupcheck, $publiccheck, $confi
 	uddeIMupdateEMNpopup($myself, $valuepopup);
 	uddeIMupdateEMNpublic($myself, $valuepublic);
 
-	uddeJSEFredirect("index.php?option=com_uddeim&task=settings&Itemid=".$item_id);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id);
 }
 
 // *****************************************************************************************
@@ -2418,7 +2418,7 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 
 	if ($config->enablepostbox) {
 		echo "<p><b>";
-		if ($config->showmenuicons) echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_POST."' />";
+		if ($config->showmenuicons) echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_POST."' />";
 		echo " "._UDDEIM_POSTBOX."</b></p>";
 		echo "<p>"._UDDEIM_HELP_POSTBOX."</p>";
 
@@ -2434,32 +2434,32 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 			echo "<li>".$uddeicons_offlinepic." "._UDDEIM_HELP_OFFLINE."</li>";
 		}
 		if ($config->enableattachment && $config->showlistattachment) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
 			echo " "._UDDEIM_HELP_ATTACHMENT;
 			echo "</li>";
 		}
 		if ($config->actionicons) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
 			echo " "._UDDEIM_HELP_DELETE;
 			echo "</li>";
 			if ($config->allowforwards) {
-				echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
+				echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
 				echo " "._UDDEIM_HELP_FORWARD;
 				echo "</li>";
 			}
 			if ($config->allowarchive) {
-				echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/archive.gif' alt='"._UDDEIM_STORE."' title='"._UDDEIM_STORE."' />";
+				echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/archive.gif' alt='"._UDDEIM_STORE."' title='"._UDDEIM_STORE."' />";
 				echo " "._UDDEIM_HELP_ARCHIVEMSG;
 				echo "</li>";
 			}
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/restore.gif' alt='"._UDDEIM_RECALL."' title='"._UDDEIM_RECALL."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/restore.gif' alt='"._UDDEIM_RECALL."' title='"._UDDEIM_RECALL."' />";
 			echo " "._UDDEIM_HELP_RECALL;
 			echo "</li>";
 		}
 		echo "</ul>";
 	} else {
 		echo "<p><b>";
-		if ($config->showmenuicons) echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_INBOX."' />";
+		if ($config->showmenuicons) echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_INBOX."' />";
 		echo " "._UDDEIM_INBOX."</b></p>";
 		echo "<p>"._UDDEIM_HELP_INBOX."</p>";
 
@@ -2475,21 +2475,21 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 			echo "<li>".$uddeicons_offlinepic." "._UDDEIM_HELP_OFFLINE."</li>";
 		}
 		if ($config->enableattachment && $config->showlistattachment) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
 			echo " "._UDDEIM_HELP_ATTACHMENT;
 			echo "</li>";
 		}
 		if ($config->actionicons) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
 			echo " "._UDDEIM_HELP_DELETE;
 			echo "</li>";
 			if ($config->allowforwards) {
-				echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
+				echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
 				echo " "._UDDEIM_HELP_FORWARD;
 				echo "</li>";
 			}
 			if ($config->allowarchive) {
-				echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/archive.gif' alt='"._UDDEIM_STORE."' title='"._UDDEIM_STORE."' />";
+				echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/archive.gif' alt='"._UDDEIM_STORE."' title='"._UDDEIM_STORE."' />";
 				echo " "._UDDEIM_HELP_ARCHIVEMSG;
 				echo "</li>";
 			}
@@ -2497,7 +2497,7 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 		echo "</ul>";
 
 		echo "<p><b>";
-		if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_outbox.gif' alt='"._UDDEIM_OUTBOX."' />";
+		if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_outbox.gif' alt='"._UDDEIM_OUTBOX."' />";
 		echo " "._UDDEIM_OUTBOX."</b></p>";
 		echo "<p>"._UDDEIM_HELP_OUTBOX."</p>";
 
@@ -2509,20 +2509,20 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 			echo "<li>".$uddeicons_offlinepic." "._UDDEIM_HELP_OFFLINE."</li>";
 		}
 		if ($config->enableattachment && $config->showlistattachment) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
 			echo " "._UDDEIM_HELP_ATTACHMENT;
 			echo "</li>";
 		}
 		if ($config->actionicons) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
 			echo " "._UDDEIM_HELP_DELETE;
 			echo "</li>";
 			if ($config->allowforwards) {
-				echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
+				echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
 				echo " "._UDDEIM_HELP_FORWARD;
 				echo "</li>";
 			}
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/restore.gif' alt='"._UDDEIM_RECALL."' title='"._UDDEIM_RECALL."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/restore.gif' alt='"._UDDEIM_RECALL."' title='"._UDDEIM_RECALL."' />";
 			echo " "._UDDEIM_HELP_RECALL;
 			echo "</li>";
 		}
@@ -2533,7 +2533,7 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 	   ($config->trashrestriction==1 && (uddeIMisSpecial($my_gid) || uddeIMisSpecial2($my_gid, $config))) || 
 	   ($config->trashrestriction==2 && (uddeIMisAdmin($my_gid)   || uddeIMisAdmin2($my_gid, $config)))) {
 		echo "<p><b>";
-		if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_trashcan.gif' alt='"._UDDEIM_TRASHCAN."' />";
+		if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_trashcan.gif' alt='"._UDDEIM_TRASHCAN."' />";
 		echo " "._UDDEIM_TRASHCAN."</b></p>";
 		echo "<p>"._UDDEIM_HELP_TRASHCAN."</p>";
 
@@ -2545,7 +2545,7 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 		echo "<li>".$uddeicons_offlinepic." "._UDDEIM_HELP_OFFLINE."</li>";
 		}
 		if ($config->actionicons) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/recycle.gif' alt='"._UDDEIM_RESTORE."' title='"._UDDEIM_RESTORE."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/recycle.gif' alt='"._UDDEIM_RESTORE."' title='"._UDDEIM_RESTORE."' />";
 			echo " "._UDDEIM_HELP_RECYCLE;
 			echo "</li>";
 		}
@@ -2554,7 +2554,7 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 
 	if ($config->allowarchive) {
 		echo "<p><b>";
-		if ($config->showmenuicons) echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_archive.gif' alt='"._UDDEIM_ARCHIVE."' />";
+		if ($config->showmenuicons) echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_archive.gif' alt='"._UDDEIM_ARCHIVE."' />";
 		echo " "._UDDEIM_ARCHIVE."</b></p>";
 		echo "<p>"._UDDEIM_HELP_ARCHIVE."</p>";
 
@@ -2570,21 +2570,21 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 			echo "<li>".$uddeicons_offlinepic." "._UDDEIM_HELP_OFFLINE."</li>";
 		}
 		if ($config->enableattachment && $config->showlistattachment) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' />";
 			echo " "._UDDEIM_HELP_ATTACHMENT;
 			echo "</li>";
 		}
 		if ($config->actionicons) {
-			echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
+			echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' />";
 			echo " "._UDDEIM_HELP_DELETE;
 			echo "</li>";
 			if ($config->allowforwards) {
-				echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
+				echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' />";
 				echo " "._UDDEIM_HELP_FORWARD;
 				echo "</li>";
 			}
 			if ($config->allowarchive) {
-				echo "<li><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/unarchive.gif' alt='"._UDDEIM_UNARCHIVE."' title='"._UDDEIM_UNARCHIVE."' />";
+				echo "<li><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/unarchive.gif' alt='"._UDDEIM_UNARCHIVE."' title='"._UDDEIM_UNARCHIVE."' />";
 				echo " "._UDDEIM_HELP_UNARCHIVEMSG;
 				echo "</li>";
 			}
@@ -2596,13 +2596,13 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 	   ($config->enablelists==2 && (uddeIMisSpecial($my_gid) || uddeIMisSpecial2($my_gid, $config))) || 
 	   ($config->enablelists==3 && (uddeIMisAdmin($my_gid)   || uddeIMisAdmin2($my_gid, $config)))) {
 		echo "<p><b>";
-		if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_book.gif' alt='"._UDDEIM_LISTS."' />";
+		if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_book.gif' alt='"._UDDEIM_LISTS."' />";
 		echo " "._UDDEIM_LISTS."</b></p>";
 		echo "<p>"._UDDEIM_HELP_USERLISTS."</p>";
 	}
 
 	echo "<p><b>";
-	if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_settings.gif' alt='"._UDDEIM_SETTINGS."' />";
+	if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_settings.gif' alt='"._UDDEIM_SETTINGS."' />";
 	echo " "._UDDEIM_SETTINGS."</b></p>";
 	echo "<p>"._UDDEIM_HELP_SETTINGS."</p>";
 
@@ -2633,7 +2633,7 @@ function uddeIMshowHelp($myself, $item_id, $versionstring, $config) {
 	echo "</ul>";
 	
 	echo "<p><b>";
-	if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_new.gif' alt='"._UDDEIM_COMPOSE."' />";
+	if ($config->showmenuicons)	echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_new.gif' alt='"._UDDEIM_COMPOSE."' />";
 	echo " "._UDDEIM_COMPOSE."</b></p>";
 	echo "<p>"._UDDEIM_HELP_COMPOSE."</p>";
 
@@ -2651,7 +2651,7 @@ function uddeIMcompleteUserName($myself, $config){
 	// look for json encoding abilities, first native php, then global pear package, then local pear copy (switched by joomla version again)
 	if (!function_exists('json_encode') && !class_exists('Services_JSON')) {
 		if ( !@include_once('JSON.php') ) {
-			require_once( uddeIMgetPath('absolute_path').'/components/com_uddeim/json.php' );
+			require_once( uddeIMgetPath('absolute_path').'/components/com_ujumbe/json.php' );
 		}
 	}
 
@@ -2729,7 +2729,7 @@ function uddeIMcompleteUserName($myself, $config){
 
 				$query = sprintf( 'SELECT DISTINCT u.id,u.%1$s AS displayname FROM ((#__users AS u INNER JOIN #__user_usergroup_map AS um ON u.id=um.user_id) 
 								INNER JOIN #__usergroups AS g ON um.group_id=g.id)
-								INNER JOIN #__jj_pm_emn AS b ON u.id=b.userid
+								INNER JOIN #__ujumbe_emn AS b ON u.id=b.userid
 								WHERE b.public=1 AND u.block=0 AND u.%1$s LIKE %2$s '.$hide.$hide2.'ORDER BY u.%1$s LIMIT 50'
 									, $db->nameQuote( $fieldToUse ) // ok
 									, $db->Quote( ($config->searchinstring ? '%' : '').$input.'%' )
@@ -2758,7 +2758,7 @@ function uddeIMcompleteUserName($myself, $config){
 				$hide2 = "";
 				if ($config->pubblockgroups)
 					$hide2 = "AND a.gid NOT IN (".uddeIMquoteSmart($config->pubblockgroups).") ";
-				$query = sprintf( 'SELECT a.%1$s AS displayname FROM `#__users` AS a, `#__jj_pm_emn` AS b WHERE a.id=b.userid AND b.public=1 AND a.block=0 AND a.%1$s LIKE %2$s '.$hide.$hide2.'ORDER BY a.%1$s LIMIT 50'
+				$query = sprintf( 'SELECT a.%1$s AS displayname FROM `#__users` AS a, `#__ujumbe_emn` AS b WHERE a.id=b.userid AND b.public=1 AND a.block=0 AND a.%1$s LIKE %2$s '.$hide.$hide2.'ORDER BY a.%1$s LIMIT 50'
 									, $db->nameQuote( $fieldToUse ) // ok
 									, $db->Quote( ($config->pubsearchinstring ? '%' : '').$input.'%' )
 								);
@@ -2833,13 +2833,13 @@ function uddeIMajaxGetNewMessages($myself, $config){
 	if (function_exists('iconv'))
 		$input = iconv('UTF-8',$config->charset,$input);
 
-	$sql="SELECT count(a.id) FROM #__jj_pm AS a WHERE a.totrash=0 AND a.toread=0 AND a.toid=".(int)$myself;
+	$sql="SELECT count(a.id) FROM #__ujumbe AS a WHERE a.totrash=0 AND a.toread=0 AND a.toid=".(int)$myself;
 	$db->setQuery($sql);
 	$result=(int)$db->loadResult();
 	echo $result;
 }
 
-// CREATE TABLE IF NOT EXISTS `#__jj_pm_spam` (
+// CREATE TABLE IF NOT EXISTS `#__ujumbe_spam` (
    // `id` int(10) unsigned NOT NULL auto_increment,
    // `mid` int(11) NOT NULL default '0',
    // `datum` int(11) default NULL,
@@ -2860,7 +2860,7 @@ function uddeIMreportSpam($myself, $item_id, $messageid, $recip, $ret, $limit, $
 	}
 	if (!uddeIMgetSpamStatus($messageid)) {
 
-		// and append to #__jj_pm_spam
+		// and append to #__ujumbe_spam
 		foreach($displaymessages as $displaymessage) {
 			if ($displaymessage->cryptmode==2 || $displaymessage->cryptmode==4)
 				$cm = "Cannot display - Message is encrypted.";
@@ -2872,7 +2872,7 @@ function uddeIMreportSpam($myself, $item_id, $messageid, $recip, $ret, $limit, $
 
 			$dm = uddeIMencrypt($dm,"",CRYPT_MODE_STOREBASE64);
 
-			$sql  = "INSERT INTO #__jj_pm_spam (mid, datum, reported, fromid, toid, message) VALUES (".
+			$sql  = "INSERT INTO #__ujumbe_spam (mid, datum, reported, fromid, toid, message) VALUES (".
 					(int)$displaymessage->id.", ".
 					(int)$displaymessage->datum.", ".
 					(int)uddetime($config->timezone).", ".
@@ -2895,9 +2895,9 @@ function uddeIMreportSpam($myself, $item_id, $messageid, $recip, $ret, $limit, $
 		$task = "postboxuser";
 		
 	if(!$limit && !$limitstart) {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink;
 	} else {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
 	}
 	uddeJSEFredirect($redirecturl);
 }
@@ -2914,9 +2914,9 @@ function uddeIMunreportSpam($myself, $item_id, $messageid, $recip, $ret, $limit,
 		$task = "postboxuser";
 
 	if(!$limit && !$limitstart) {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink;
 	} else {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart.$addlink;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart.$addlink;
 	}
 	uddeJSEFredirect($redirecturl);
 }

@@ -11,7 +11,7 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMshowTrashCan($myself, $item_id, $limit, $limitstart, $cryptpass, $config) {
 	global $uddeicons_onlinepic, $uddeicons_offlinepic, $uddeicons_readpic, $uddeicons_unreadpic;
@@ -84,7 +84,7 @@ function uddeIMshowTrashCan($myself, $item_id, $limit, $limitstart, $cryptpass, 
 		if ($config->showlistattachment) {
 			$cnt = uddeIMgetAttachmentCount($themessage->id);
 			if ($cnt)
-				$readcell .= "<br /><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' border='0' />";
+				$readcell .= "<br /><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' border='0' />";
 		}
 
 		$themarker = "";
@@ -160,9 +160,9 @@ function uddeIMshowTrashCan($myself, $item_id, $limit, $limitstart, $cryptpass, 
 		$messagecell=$teasermessage;
 
 		if($config->actionicons) {
-			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=restore&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/recycle.gif' alt='"._UDDEIM_RESTORE."' title='"._UDDEIM_RESTORE."' /></a>";
+			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=restore&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/recycle.gif' alt='"._UDDEIM_RESTORE."' title='"._UDDEIM_RESTORE."' /></a>";
 		} else {
-			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=restore&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'>"._UDDEIM_RESTORE."</a>";
+			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=restore&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'>"._UDDEIM_RESTORE."</a>";
 		}
 
 		echo "\n\t<tr class='sectiontableentry".$i."'>";
@@ -190,12 +190,12 @@ function uddeIMshowTrashCan($myself, $item_id, $limit, $limitstart, $cryptpass, 
 
 	// write the inbox navigation links
 	$pageNav = new uddeIMmosPageNav($total, $limitstart, $limit);
-	$referlink = "index.php?option=com_uddeim&task=trashcan&Itemid=".$item_id;
+	$referlink = "index.php?option=com_ujumbe&task=trashcan&Itemid=".$item_id;
 	if($total>$limit) {
 		$shownav = $pageNav->writePagesLinks($referlink);
 		$shownav = uddeIMarrowReplace($shownav, $config->templatedir, $pathtouser);
 		echo "<div id='uddeim-pagenav'>".$shownav."<br />";
-		echo "[<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=trashcan&Itemid=".$item_id."&limitstart=0&limit=".$total)."'>"._UDDEIM_SHOWALL."</a>]";
+		echo "[<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=trashcan&Itemid=".$item_id."&limitstart=0&limit=".$total)."'>"._UDDEIM_SHOWALL."</a>]";
 		echo "</div>\n";
 	}
 
@@ -225,7 +225,7 @@ function uddeIMrestoreMessage($myself, $messageid, $limit, $limitstart, $item_id
 	$exists = uddeIMexistsMessage($messageid);
 	if (!$exists) {
 		$mosmsg = _UDDEIM_CANTRESTORE;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=trashcan&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=trashcan&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart, $mosmsg);
 		return;
 	}
 
@@ -237,7 +237,7 @@ function uddeIMrestoreMessage($myself, $messageid, $limit, $limitstart, $item_id
 //		echo "<p>"._UDDEIM_ARC_SAVED_1.$total._UDDEIM_ARC_SAVED_2."</p>\n";
 //		echo "<p>"._UDDEIM_ARC_SAVED_3."</p>\n";
 		$mosmsg = _UDDEIM_LIMITREACHED;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=trashcan&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=trashcan&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart, $mosmsg);
 	}
 
 	// WAS: check if the deleted message was in the archive,  but the archive in not longer enabled, so deny access to the message
@@ -248,5 +248,5 @@ function uddeIMrestoreMessage($myself, $messageid, $limit, $limitstart, $item_id
 	}
 
 	uddeIMrestoreMessageToInboxOutboxArchive($myself, $messageid);
-	uddeJSEFredirect("index.php?option=com_uddeim&task=trashcan&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=trashcan&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
 }

@@ -11,22 +11,23 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 global $uddeim_isadmin;
 
-DEFINE ('_UDDEIM_GID_SADMIN',		25);
-DEFINE ('_UDDEIM_GID_ADMIN',		24);
-DEFINE ('_UDDEIM_GID_MAMAGER',		23);
-DEFINE ('_UDDEIM_GID_PUBLISHER',	21);
-DEFINE ('_UDDEIM_GID_EDITOR',		20);
-DEFINE ('_UDDEIM_GID_AUTHOR',		19);
-DEFINE ('_UDDEIM_GID_REGISTERED',	18);
+DEFINE ('_UDDEIM_GID_SADMIN',		 8);
+DEFINE ('_UDDEIM_GID_ADMIN',		 7);
+DEFINE ('_UDDEIM_GID_MAMAGER',		 6);
+DEFINE ('_UDDEIM_GID_PUBLISHER',	 5);
+DEFINE ('_UDDEIM_GID_EDITOR',		 4);
+DEFINE ('_UDDEIM_GID_AUTHOR',		 3);
+DEFINE ('_UDDEIM_GID_REGISTERED',	 2);
 DEFINE ('_UDDEIM_GID_PUBLIC',		 0);
 // $groupsadmin
 // $groupsspecial
 
 jimport('joomla.utilities.date');
+jimport('joomla.utilities.utility');
 
 function uddeIMgetUserTZ() {
 	$JUser = JFactory::getUser();
@@ -42,31 +43,31 @@ function uddetime($timezone = 0) {
 }
 
 function uddeIMisAdmin($my_gid) {
-	$new = array_intersect($my_gid, array(24,25));
+	$new = array_intersect($my_gid, array(7,8));
 	return !empty($new);
 }
 
 function uddeIMisManager($my_gid) {
-	$new = array_intersect($my_gid, array(23,24,25));
+	$new = array_intersect($my_gid, array(6,7,8));
 	return !empty($new);
 }
 
 function uddeIMisSpecial($my_gid) {
-	$new = array_intersect($my_gid, array(19,20,21,23,24,25));
+	$new = array_intersect($my_gid, array(3,4,5,6,7,8));
 	return !empty($new);
 }
 
 function uddeIMisAllNotAdmin($my_gid) {
-	$new = array_intersect($my_gid, array(0,18,19,20,21,23));
-	return !empty($new);
+	// $new = array_intersect($my_gid, array(0,2,3,4,5,6));
+	// return !empty($new);
+	return !uddeIMisAdmin($my_gid);
 }
 
 function uddeIMisReggedOnly($my_gid) {
-	$new = array_intersect($my_gid, array(18));
+	$new = array_intersect($my_gid, array(2));
 	return !empty($new);
 }
 
-// JHTML::script('Autocompleter.js', 'components/com_uddeim/js/', false);
 function uddeIMaddScript($value) {
 	if ($value) {
 		$document = JFactory::getDocument();
@@ -85,7 +86,7 @@ function uddeIMsefRelToAbs($value) {
 	// Replace all &amp; with & as the router doesn't understand &amp;
 	$url = str_replace('&amp;', '&', $value);
 	if(substr(strtolower($url),0,9) != "index.php") return $url;
-	$uri    = JURI::getInstance();
+	$uri    = JUri::getInstance();
 	$prefix = $uri->toString(array('scheme', 'host', 'port'));
 	return $prefix.JRoute::_($url);
 }
@@ -121,62 +122,210 @@ function uddeIMmosGetParam( &$arr, $name, $def=null, $mask=0 ) {
 }
 
 function uddeIMmosRedirect( $url, $msg='' ) {
-	global $mainframe;
-	$mainframe->redirect( $url, JText::_($msg) );
+	$app = JFactory::getApplication();
+	$app->redirect(JRoute::_($url, false), JText::_($msg));
 }
 
 function uddeJSEFredirect($url, $msg='', $avoid='') {			// REMOVE FROM includes.php
-	global $mainframe;
 	$redirecturl = $url;
 	if ($redirecturl=="HTTP_REFERER") {
 		$redirecturl=uddeIMmosGetParam( $_SERVER, 'HTTP_REFERER', null );
 		if (is_null($redirecturl))
-			$redirecturl="index.php?option=com_uddeim&task=inbox&Itemid=".$item_id;
+			$redirecturl="index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id;
 		if ($avoid && stristr($redirecturl, $avoid))
-			$redirecturl="index.php?option=com_uddeim&task=inbox&Itemid=".$item_id;
+			$redirecturl="index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id;
 	}
 	$redirecturl = JRoute::_($redirecturl, false);
-	$mainframe->redirect( $redirecturl, JText::_($msg) );
+	$app = JFactory::getApplication();
+	$app->redirect( $redirecturl, JText::_($msg) );
 }
 
 function uddeIMmosMail($from, $fromname, $recipient, $subject, $body, $mode=0, $cc=NULL, $bcc=NULL, $attachment=NULL, $replyto=NULL, $replytoname=NULL ) {
-	return JUTility::sendMail($from, $fromname, $recipient, $subject, $body, $mode, $cc, $bcc, $attachment, $replyto, $replytoname );
+	$mailer = JFactory::getMailer();
+
+	if (!empty($replyto) && !empty($replytoname))
+		$mailer-> addReplyTo($replyto, $replytoname);
+	else if (!empty($replyto))
+		$mailer-> addReplyTo($replyto);
+
+	$sender = array( $from, $fromname );
+	$mailer->setSender($sender);
+	$mailer->addRecipient($recipient);
+	$mailer->setSubject($subject);
+	$mailer->setBody($body);
+	//$mailer->addAttachment(JPATH_COMPONENT.DS.'assets'.DS.'document.pdf');
+	if ($mode==1) {
+		$mailer->isHTML(true);
+		$mailer->Encoding = 'base64';
+	}
+	if (!empty($bcc))
+		$mailer->addBCC($bcc);
+
+	if (!empty($cc))
+		$mailer->addCC($cc);
+
+	$send = $mailer->Send();
+	return $send;
+	// return JMail::sendMail($from, $fromname, $recipient, $subject, $body, $mode, $cc, $bcc, $attachment, $replyto, $replytoname );
 }
 
+// The timezone support is completely messed up in Joomla because of several API changes.
+// The code below does not longer work (returns e.g. CET instead of an number).
 function uddeIMgetOffset() {
 	$config = JFactory::getConfig();
-	return $config->getValue('config.offset');  
+	return $config->get('offset');  
 }
 
 function uddeIMgetLocale() {
-	$config = JFactory::getConfig();
-	return $config->getValue('config.locale');  
+	$lang = JFactory::getLanguage();
+	return $lang->getTag();
+	//$config = JFactory::getConfig();
+	//return $config->get('locale');  
 }
 
 function uddeIMgetSitename() {
 	$config = JFactory::getConfig();
-	return $config->getValue('config.sitename');  
+	return $config->get('sitename');  
 }
 
 function uddeIMgetMailFrom() {
 	$config = JFactory::getConfig();
-	return $config->getValue('config.mailfrom');
+	return $config->get('mailfrom');
 }
 
 function uddeIMgetMetaDesc() {
 	$config = JFactory::getConfig();
-	return $config->getValue('config.MetaDesc');  
+	return $config->get('MetaDesc');  
 }
 
 function uddeIMgetMetaKeys() {
 	$config = JFactory::getConfig();
-	return $config->getValue('config.MetaKeys');  
+	return $config->get('MetaKeys');  
 }
 
 function uddeIMgetLang() {
 	$lang = JFactory::getLanguage();
-	return $lang->getBackwardLang();
+	$tag = $lang->getTag();
+	$tag1 = strtolower(substr($tag,0,2));
+	$tag2 = strtolower(substr($tag,3,2));
+	switch($tag1) {
+		case "af":		$temp = "afrikaansi";		break;
+		case "sq":		$temp = "albanian";			break;
+		case "ar":		$temp = "arabic";			break;
+		case "az":		$temp = "azeri";			break;
+		case "bg":		$temp = "bulgarian";		break;
+		case "bn":		$temp = "bengali";			break;
+		case "bs":		$temp = "bosanski";			break;
+		case "ca":		$temp = "catalan";			break;
+		case "cs":		$temp = "czech";			break;
+		case "da":		$temp = "danish";			break;
+		case "de":		$temp = "german";			break;
+		case "el":		$temp = "greek";			break;
+		case "en":		$temp = "english";			break;
+		case "eo":		$temp = "esperanto";		break;
+		case "es":		$temp = "spanish";			break;
+		case "eu":		$temp = "basque";			break;
+		case "fa":		$temp = "farsi";			break;
+		case "fi":		$temp = "finnish";			break;
+		case "fr":		$temp = "french";			break;
+		case "gl":		$temp = "galician";			break;
+		case "he":		$temp = "hebrew";			break;
+		case "hi":		$temp = "hindi";			break;
+		case "hr":		$temp = "hrvatski";			break;
+		case "hu":		$temp = "hungarian";		break;
+		case "hy":		$temp = "armenian";			break;
+		case "id":		$temp = "indonesian";		break;
+		case "it":		$temp = "italian";			break;
+		case "ja":		$temp = "japanese";			break;
+		case "ko":		$temp = "korean";			break;
+		case "lo":		$temp = "lao";				break;
+		case "lt":		$temp = "lithuanian";		break;
+		case "lv":		$temp = "latvian";			break;
+		case "nb":		$temp = "norwegian";		break;
+		case "nl":		$temp = "dutch";			break;
+		case "pl":		$temp = "polish";			break;
+		case "pt":		if ($tag2=="br")
+							$temp = "brazilian_portuguese";
+						else
+							$temp = "portuguese";	
+						break;
+		case "ro":		$temp = "romanian";			break;
+		case "ru":		$temp = "russian";			break;
+		case "sk":		$temp = "slovak";			break;
+		case "sr":		if ($tag2=="me")
+							$temp = "montenegrin";
+						else
+							$temp = "serbian";
+						break;
+		case "sv":		$temp = "swedish";			break;
+		case "th":		$temp = "thai";				break;
+		case "tr":		$temp = "turkish";			break;
+		case "uk":		$temp = "ukrainian";		break;
+		case "vi":		$temp = "vietnamese";		break;
+		case "zh":		if ($tag2=="cn")
+							$temp = "simplified_chinese";
+						else
+							$temp = "traditional_chinese";
+						break;
+		case "en":		$temp = "english";			break;
+		default: 		$temp = "english";			break;
+	}
+	return $temp;
 }
+
+		// case "af-ZA":	$temp = "afrikaansi";		break;
+		// case "sq-AL":	$temp = "albanian";			break;
+		// case "ar-DZ":	$temp = "arabic";			break;
+		// case "az-AZ":	$temp = "azeri";			break;
+		// case "bg-BG":	$temp = "bulgarian";		break;
+		// case "bn-IN":	$temp = "bengali";			break;
+		// case "bs-BA":	$temp = "bosanski";			break;
+		// case "ca-CA":	$temp = "catalan";			break;
+		// case "cs-CZ":	$temp = "czech";			break;
+		// case "da-DK":	$temp = "danish";			break;
+		// case "de-AT":	$temp = "german";			break;
+		// case "de-CH":	$temp = "german";			break;
+		// case "de-DE":	$temp = "german";			break;
+		// case "el-GR":	$temp = "greek";			break;
+		// case "en-GB":	$temp = "english";			break;
+		// case "en-US":	$temp = "english";			break;
+		// case "eo-XX":	$temp = "esperanto";		break;
+		// case "es-ES":	$temp = "spanish";			break;
+		// case "eu-ES":	$temp = "basque";			break;
+		// case "fa-IR":	$temp = "farsi";			break;
+		// case "fi-FI":	$temp = "finnish";			break;
+		// case "fr-FR":	$temp = "french";			break;
+		// case "he-IL":	$temp = "hebrew";			break;
+		// case "hi-IN":	$temp = "hindi";			break;
+		// case "hr-HR":	$temp = "hrvatski";			break;
+		// case "hu-HU":	$temp = "hungarian";		break;
+		// case "hy-AM":	$temp = "armenian";			break;
+		// case "it-IT":	$temp = "italian";			break;
+		// case "ja-JU":	$temp = "japanese";			break;
+		// case "ja-JP":	$temp = "japanese";			break;
+		// case "ko-KR":	$temp = "korean";			break;
+		// case "lo-LA":	$temp = "lao";				break;
+		// case "lt-LT":	$temp = "english";			break;
+		// case "lv-LV":	$temp = "english";			break;
+		// case "nb-NO":	$temp = "norwegian";		break;
+		// case "nl-NL":	$temp = "dutch";			break;
+		// case "pl-PL":	$temp = "polish";			break;
+		// case "pt-BR":	$temp = "brazilian_portuguese";	break;
+		// case "pt-PT":	$temp = "portuguese";		break;
+		// case "ro-RO":	$temp = "romanian";			break;
+		// case "ru-RU":	$temp = "russian";			break;
+		// case "sk-SK":	$temp = "slovak";			break;
+		// case "sr-ME":	$temp = "montenegrin";		break;
+		// case "sr-RS":	$temp = "serbian";			break;
+		// case "sv-SE":	$temp = "swedish";			break;
+		// case "th-TH":	$temp = "thai";				break;
+		// case "tr-TR":	$temp = "turkish";			break;
+		// case "uk-UA":	$temp = "ukrainian";		break;
+		// case "vi-VN":	$temp = "vietnamese";		break;
+		// case "zh-CN":	$temp = "simplified_chinese";	break;
+		// case "zh-TW":	$temp = "traditional_chinese";	break;
+		// case "en-GB":	$temp = "english";			break;
+		// default: 		$temp = "english";			break;
 
 function uddeIMgetVersion() {
 	$ver = new JVersion();
@@ -190,7 +339,7 @@ function uddeIMgetDatabase() {
 
 function uddeIMgetDBprefix() {
 	$config = JFactory::getConfig();
-	return $config->getValue('config.dbprefix');  
+	return $config->get('dbprefix');  
 }
 
 function uddeIMgetUserID() {
@@ -198,24 +347,62 @@ function uddeIMgetUserID() {
 	return $user->id;
 }
 
-function uddeIMgetGroupID() {
+function uddeIMgetGroupID() {	// 0=public, 1=registered, 2=special
+	$database = uddeIMgetDatabase();
 	$user = JFactory::getUser();
-	return $user->get('aid', 0);
+	$userid = $user->id;
+
+	$sql="SELECT g.id AS gid 
+		FROM (#__users AS u INNER JOIN #__user_usergroup_map AS um ON u.id=um.user_id) 
+		INNER JOIN #__usergroups AS g ON um.group_id=g.id WHERE u.id=".(int)$userid;
+	$database->setQuery($sql);
+	$rows = $database->loadObjectList();
+	$my_gid = Array();					// 1 = Public, 2 = Registered, ...
+	foreach($rows as $key => $value) {
+		if ($value->gid<=1)
+			$my_gid[] = (int)0;
+		else
+			$my_gid[] = (int)$value->gid;
+	}
+	if (uddeIMisSpecial($my_gid))
+		return 2;
+	if (uddeIMisReggedOnly($my_gid))
+		return 1;
+	return 0;
 }
 
-function uddeIMgetGroupID2($config) {
+function uddeIMgetGroupID2($config) {	// 0=public, 1=registered, 2=special
+	$database = uddeIMgetDatabase();
 	$user = JFactory::getUser();
-	return $user->get('aid', 0);
+	$userid = $user->id;
+
+	$sql="SELECT g.id AS gid 
+		FROM (#__users AS u INNER JOIN #__user_usergroup_map AS um ON u.id=um.user_id) 
+		INNER JOIN #__usergroups AS g ON um.group_id=g.id WHERE u.id=".(int)$userid;
+	$database->setQuery($sql);
+	$rows = $database->loadObjectList();
+	$my_gid = Array();					// 1 = Public, 2 = Registered, ...
+	foreach($rows as $key => $value) {
+		if ($value->gid<=1)
+			$my_gid[] = (int)0;
+		else
+			$my_gid[] = (int)$value->gid;
+	}
+	if (uddeIMisSpecial($my_gid) || uddeIMisSpecial2($my_gid, $config))
+		return 2;
+	if (uddeIMisReggedOnly($my_gid))
+		return 1;
+	return 0;
 }
 
 function uddeIMgetMy() {
 	$user = JFactory::getUser();
 	$my = (object)$user->getProperties();
-	$my->gid = $user->get('aid', 0);
+	$my->gid = uddeIMgetGroupID();
 	return $my;
 }
 		
-function uddeIMgetPath($path, $component="com_uddeim") {
+function uddeIMgetPath($path, $component="com_ujumbe") {
 	switch($path) {
 		case "absolute_path":	return JPATH_SITE;
 		case "live_site":		return substr_replace(JURI::root(), '', -1, 1);
@@ -257,7 +444,7 @@ function uddeIMmosMakePassword($length=8) {
 function uddeIMmosFormatDate($date='now', $format=null, $offset=null) {
 	if (!$format)
 		$format = JText::_('DATE_FORMAT_LC1');
-	return JHTML::_('date', $date, $format, $offset);
+	return JHtml::_('date', $date, $format, $offset);
 }
 
 function uddeIMisWritable($file, $forcenoftp=false) {
@@ -266,12 +453,12 @@ function uddeIMisWritable($file, $forcenoftp=false) {
 	if (class_exists('JFactory')) {		// Joomla 1.5?
 		$config = JFactory::getConfig();
 		$options = array(
-			'enabled'	=> $config->getValue('config.ftp_enable'),
-			'host'		=> $config->getValue('config.ftp_host'),
-			'port'		=> $config->getValue('config.ftp_port'),
-			'user'		=> $config->getValue('config.ftp_user'),
-			'pass'		=> $config->getValue('config.ftp_pass'),
-			'root'		=> $config->getValue('config.ftp_root'),
+			'enabled'	=> $config->get('ftp_enable'),
+			'host'		=> $config->get('ftp_host'),
+			'port'		=> $config->get('ftp_port'),
+			'user'		=> $config->get('ftp_user'),
+			'pass'		=> $config->get('ftp_pass'),
+			'root'		=> $config->get('ftp_root'),
 		);
 	}
 	if ($forcenoftp)
@@ -280,7 +467,7 @@ function uddeIMisWritable($file, $forcenoftp=false) {
 	if ($options['enabled']) {
 		//jimport('joomla.client.ftp');
 		//$configdatei = $options['root'].$file;
-		//$ftp = JFTP::getInstance($options['host'], $options['port']);
+		//$ftp = JClientFtp::getInstance($options['host'], $options['port']);
 		//if ($ftp->isConnected()) {
 		//	if ($ftp->login($options['user'], $options['pass'])) {
 				// there is no check available, so assume it is writeable
@@ -301,12 +488,12 @@ function uddeIMwriteFile($file, $string, $forcenoftp=false) {
 	if (class_exists('JFactory')) {		// Joomla 1.5?
 		$config = JFactory::getConfig();
 		$options = array(
-			'enabled'	=> $config->getValue('config.ftp_enable'),
-			'host'		=> $config->getValue('config.ftp_host'),
-			'port'		=> $config->getValue('config.ftp_port'),
-			'user'		=> $config->getValue('config.ftp_user'),
-			'pass'		=> $config->getValue('config.ftp_pass'),
-			'root'		=> $config->getValue('config.ftp_root'),
+			'enabled'	=> $config->get('ftp_enable'),
+			'host'		=> $config->get('ftp_host'),
+			'port'		=> $config->get('ftp_port'),
+			'user'		=> $config->get('ftp_user'),
+			'pass'		=> $config->get('ftp_pass'),
+			'root'		=> $config->get('ftp_root'),
 		);
 	}
 	if ($forcenoftp)
@@ -316,7 +503,7 @@ function uddeIMwriteFile($file, $string, $forcenoftp=false) {
 		jimport('joomla.client.ftp');
 		$configdatei = $options['root'].$file;
 		//$configdatei = JPath::clean(str_replace( JPATH_ROOT, $options['root'], $configdatei), '/' );
-		$ftp = JFTP::getInstance($options['host'], $options['port'], null, $options['user'], $options['pass']);
+		$ftp = JClientFtp::getInstance($options['host'], $options['port'], array(), $options['user'], $options['pass']);
 		//if ($ftp->isConnected()) {
 		//	if ($ftp->login($options['user'], $options['pass'])) {
 				$ret = $ftp->write($configdatei, $string);
@@ -340,12 +527,12 @@ function uddeIMchmod($file, $mode, $forcenoftp=false) {
 	if (class_exists('JFactory')) {		// Joomla 1.5?
 		$config = JFactory::getConfig();
 		$options = array(
-			'enabled'	=> $config->getValue('config.ftp_enable'),
-			'host'		=> $config->getValue('config.ftp_host'),
-			'port'		=> $config->getValue('config.ftp_port'),
-			'user'		=> $config->getValue('config.ftp_user'),
-			'pass'		=> $config->getValue('config.ftp_pass'),
-			'root'		=> $config->getValue('config.ftp_root'),
+			'enabled'	=> $config->get('ftp_enable'),
+			'host'		=> $config->get('ftp_host'),
+			'port'		=> $config->get('ftp_port'),
+			'user'		=> $config->get('ftp_user'),
+			'pass'		=> $config->get('ftp_pass'),
+			'root'		=> $config->get('ftp_root'),
 		);
 	}
 	if ($forcenoftp)
@@ -354,8 +541,8 @@ function uddeIMchmod($file, $mode, $forcenoftp=false) {
 	if ($options['enabled']) {
 		jimport('joomla.client.ftp');
 		$configdatei = $options['root'].$file;
-		//$ftp = JFTP::getInstance($options['host'], $options['port']);
-		$ftp = JFTP::getInstance($options['host'], $options['port'], null, $options['user'], $options['pass']);
+		//$ftp = JClientFtp::getInstance($options['host'], $options['port']);
+		$ftp = JClientFtp::getInstance($options['host'], $options['port'], array(), $options['user'], $options['pass']);
 		//if ($ftp->isConnected()) {
 		//	if ($ftp->login($options['user'], $options['pass'])) {
 				$ret = $ftp->chmod($configdatei, $mode);
@@ -373,7 +560,7 @@ function uddeIMchmod($file, $mode, $forcenoftp=false) {
 function uddeIMisFtpLayer() {
 	if (class_exists('JFactory')) {
 		$config = JFactory::getConfig();
-		if ($config->getValue('config.ftp_enable'))
+		if ($config->get('ftp_enable'))
 			return true;
 	}
 	return false;
@@ -385,12 +572,12 @@ function uddeIMmkdir($folder, $forcenoftp=false) {
 	if (class_exists('JFactory')) {		// Joomla 1.5?
 		$config = JFactory::getConfig();
 		$options = array(
-			'enabled'	=> $config->getValue('config.ftp_enable'),
-			'host'		=> $config->getValue('config.ftp_host'),
-			'port'		=> $config->getValue('config.ftp_port'),
-			'user'		=> $config->getValue('config.ftp_user'),
-			'pass'		=> $config->getValue('config.ftp_pass'),
-			'root'		=> $config->getValue('config.ftp_root'),
+			'enabled'	=> $config->get('ftp_enable'),
+			'host'		=> $config->get('ftp_host'),
+			'port'		=> $config->get('ftp_port'),
+			'user'		=> $config->get('ftp_user'),
+			'pass'		=> $config->get('ftp_pass'),
+			'root'		=> $config->get('ftp_root'),
 		);
 	}
 	if ($forcenoftp)
@@ -399,7 +586,7 @@ function uddeIMmkdir($folder, $forcenoftp=false) {
 	if ($options['enabled']) {
 		jimport('joomla.client.ftp');
 		$configdatei = $options['root'].$folder;
-		$ftp = JFTP::getInstance($options['host'], $options['port'], null, $options['user'], $options['pass']);
+		$ftp = JClientFtp::getInstance($options['host'], $options['port'], array(), $options['user'], $options['pass']);
 		//if ($ftp->isConnected()) {
 		//	if ($ftp->login($options['user'], $options['pass'])) {
 				$ret = $ftp->mkdir($configdatei);
@@ -494,6 +681,8 @@ function uddeIMquoteSmart($source) {
 	if (get_magic_quotes_gpc()) { 
 		$source = stripslashes($source);
 	}
-	$source = $database->getEscaped( $source );
+	$source = $database->escape( $source );
+	// $source = JDatabase::escape( $source );
 	return $source; 
 } 
+

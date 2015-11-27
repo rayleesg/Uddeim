@@ -26,7 +26,7 @@
 // /administrator/images/tick.png
 // /administrator/images/publish_x.png
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMshowUsersettings($option, $task, $act, $config) {
 	// $mosConfig_offset = uddeIMgetOffset();
@@ -80,7 +80,7 @@ function uddeIMshowUsersettings($option, $task, $act, $config) {
 	$limitstart = intval( uddeIMmosGetParam( $_POST, 'limitstart', 0 ) );
 	$where = count($f_where) ? " WHERE " . implode(' AND ', $f_where) : "";
 
-	$sql="SELECT count(b.id) FROM #__jj_pm_emn AS a RIGHT JOIN #__users AS b ON a.userid=b.id".$where;
+	$sql="SELECT count(b.id) FROM #__ujumbe_emn AS a RIGHT JOIN #__users AS b ON a.userid=b.id".$where;
 	$database->setQuery($sql);
 	$total = (int)$database->loadResult();
 	if ($limit==0) {
@@ -93,7 +93,7 @@ function uddeIMshowUsersettings($option, $task, $act, $config) {
 // echo($sql." ==> ".$total."<br />");
 
 	$sql  = "SELECT a.*,b.id AS uid,b.name,b.username,b.block ";
-	$sql .= "FROM #__jj_pm_emn AS a RIGHT JOIN #__users AS b ON a.userid=b.id";
+	$sql .= "FROM #__ujumbe_emn AS a RIGHT JOIN #__users AS b ON a.userid=b.id";
 	$sql .= $where;
 	$sql .= " ORDER BY name LIMIT $limitstart,$limit";
 	$database->setQuery($sql);
@@ -141,7 +141,7 @@ function uddeIMshowUsersettings($option, $task, $act, $config) {
 			<h4><?php echo _UDDEADM_USERSET_EDITSETTINGS; ?></h4>
 		</td>
 		<td class="sectionname" align="right">
-			<img align="middle" style="display: inline; border:1px solid lightgray;" src="<?php echo uddeIMgetPath('live_site')."/components/com_uddeim/templates/images/uddeim_logo.png"; ?>" />
+			<img align="middle" style="display: inline; border:1px solid lightgray;" src="<?php echo uddeIMgetPath('live_site')."/components/com_ujumbe/templates/images/uddeim_logo.png"; ?>" />
 		</td>
 	</tr>
 	</table>
@@ -401,23 +401,23 @@ function uddeIMusermessagesremove($option, $task, $uddeid, $config) {
 		foreach($uddeid AS $id) {
 			echo _UDDEADM_DELETEM_FROMUSER.(int)$id.":<br />";
 
-			$sql="SELECT count(id) FROM #__jj_pm WHERE totrashoutbox=0 AND fromid=".(int)$id;
+			$sql="SELECT count(id) FROM #__ujumbe WHERE totrashoutbox=0 AND fromid=".(int)$id;
 			$database->setQuery($sql);
 			$entryexists=$database->loadResult();
 			echo _UDDEADM_DELETEM_MSGSSENT.(int)$entryexists."<br />";
 			if ($entryexists) {
-				$sql="UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".(int)$rightnow." WHERE totrashoutbox=0 AND fromid=".(int)$id;
+				$sql="UPDATE #__ujumbe SET totrashoutbox=1, totrashdateoutbox=".(int)$rightnow." WHERE totrashoutbox=0 AND fromid=".(int)$id;
 				$database->setQuery($sql);
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
 				}
 			}
-			$sql="SELECT count(id) FROM #__jj_pm WHERE totrash=0 AND toid=".(int)$id;
+			$sql="SELECT count(id) FROM #__ujumbe WHERE totrash=0 AND toid=".(int)$id;
 			$database->setQuery($sql);
 			$entryexists=$database->loadResult();
 			echo _UDDEADM_DELETEM_MSGSRECV.(int)$entryexists."<br />";
 			if ($entryexists) {
-				$sql="UPDATE #__jj_pm SET totrash=1, toread=1, totrashdate=".(int)$rightnow." WHERE totrash=0 AND toid=".(int)$id;
+				$sql="UPDATE #__ujumbe SET totrash=1, toread=1, totrashdate=".(int)$rightnow." WHERE totrash=0 AND toid=".(int)$id;
 				$database->setQuery($sql);
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -433,11 +433,11 @@ function uddeIMdolistEMN($option, $task, $uddeid, $config) {
 	$database = uddeIMgetDatabase();
 	if ($task=="usersettingsremove" && count($uddeid)) {
 		foreach($uddeid AS $id) {
-			$sql="SELECT count(id) FROM #__jj_pm_emn WHERE userid=".(int)$id;
+			$sql="SELECT count(id) FROM #__ujumbe_emn WHERE userid=".(int)$id;
 			$database->setQuery($sql);
 			$entryexists=$database->loadResult();
 			if ($entryexists) {
-				$sql="DELETE FROM #__jj_pm_emn WHERE userid=".(int)$id;
+				$sql="DELETE FROM #__ujumbe_emn WHERE userid=".(int)$id;
 				$database->setQuery($sql);
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -446,11 +446,11 @@ function uddeIMdolistEMN($option, $task, $uddeid, $config) {
 		}
 	} elseif ($task=="usersettingsnew" && count($uddeid)) {
 		foreach($uddeid AS $id) {
-			$sql="SELECT count(id) FROM #__jj_pm_emn WHERE userid=".(int)$id;
+			$sql="SELECT count(id) FROM #__ujumbe_emn WHERE userid=".(int)$id;
 			$database->setQuery($sql);
 			$entryexists=$database->loadResult();
 			if (!$entryexists) {
-				$sql="INSERT INTO #__jj_pm_emn (status, popup, public, userid) VALUES (".$config->notifydefault.", ".$config->popupdefault.", ".$config->pubfrontenddefault.", ".$id.")";
+				$sql="INSERT INTO #__ujumbe_emn (status, popup, public, userid) VALUES (".$config->notifydefault.", ".$config->popupdefault.", ".$config->pubfrontenddefault.", ".$id.")";
 				$database->setQuery($sql);
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -476,14 +476,14 @@ function uddeIMsaveAutoresponder($option, $task, $act, $config) {
 	if ($config->maxlength>0)		// because if 0 do not use any maxlength
 		$autorespondertext = uddeIM_utf8_substr($config->languagecharset, $autorespondertext, 0, $config->maxlength);
 	
-	$sql="UPDATE #__jj_pm_emn SET autoresponder=".(int)$autoresponder." WHERE id=".(int)$emnid;
+	$sql="UPDATE #__ujumbe_emn SET autoresponder=".(int)$autoresponder." WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
 	}
 
 	if ($autoresponder>0) {
-		$sql="UPDATE #__jj_pm_emn SET autorespondertext='".addslashes(strip_tags($autorespondertext))."' WHERE id=".(int)$emnid;
+		$sql="UPDATE #__ujumbe_emn SET autorespondertext='".addslashes(strip_tags($autorespondertext))."' WHERE id=".(int)$emnid;
 		$database->setQuery($sql);
 		if (!$database->query()) {
 			die("SQL error" . $database->stderr(true));
@@ -497,7 +497,7 @@ function uddeIMeditAutoresponder($option, $task, $act, $config) {
 	$database = uddeIMgetDatabase();
 	$emnid = intval( uddeIMmosGetParam( $_POST, 'id', '' ) );
 
-	$sql="SELECT userid FROM #__jj_pm_emn WHERE id=".(int)$emnid;
+	$sql="SELECT userid FROM #__ujumbe_emn WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	$userid = (int)$database->loadResult();
 
@@ -519,7 +519,7 @@ function uddeIMeditAutoresponder($option, $task, $act, $config) {
 	$emptysettings='';
 	$emn_responder_checkstatus='';
 
-	$sql="SELECT autoresponder FROM #__jj_pm_emn WHERE id=".(int)$emnid;
+	$sql="SELECT autoresponder FROM #__ujumbe_emn WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	$ison = (int)$database->loadResult();
 
@@ -527,7 +527,7 @@ function uddeIMeditAutoresponder($option, $task, $act, $config) {
 		$emn_responder_checkstatus='checked="checked"';
 	}
 
-	$sql="SELECT autorespondertext FROM #__jj_pm_emn WHERE id=".(int)$emnid;
+	$sql="SELECT autorespondertext FROM #__ujumbe_emn WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	$autorespondertext = $database->loadResult();
 	$autorespondertext = stripslashes($autorespondertext);
@@ -563,14 +563,14 @@ function uddeIMsaveAutoforward($option, $task, $act, $config) {
 	if ($autoforwardcheck)
 		$autoforward=1;
 	
-	$sql="UPDATE #__jj_pm_emn SET autoforward=".(int)$autoforward." WHERE id=".(int)$emnid;
+	$sql="UPDATE #__ujumbe_emn SET autoforward=".(int)$autoforward." WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
 	}
 
 	if ($autoforward>0) {
-		$sql="UPDATE #__jj_pm_emn SET autoforwardid=".(int)$autoforwardid." WHERE id=".(int)$emnid;
+		$sql="UPDATE #__ujumbe_emn SET autoforwardid=".(int)$autoforwardid." WHERE id=".(int)$emnid;
 		$database->setQuery($sql);
 		if (!$database->query()) {
 			die("SQL error" . $database->stderr(true));
@@ -584,7 +584,7 @@ function uddeIMeditAutoforward($option, $task, $act, $config) {
 	$database = uddeIMgetDatabase();
 	$emnid = intval( uddeIMmosGetParam( $_POST, 'id', '' ) );
 
-	$sql="SELECT userid FROM #__jj_pm_emn WHERE id=".(int)$emnid;
+	$sql="SELECT userid FROM #__ujumbe_emn WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	$userid = (int)$database->loadResult();
 
@@ -601,7 +601,7 @@ function uddeIMeditAutoforward($option, $task, $act, $config) {
 	$emptysettings='';
 	$emn_forward_checkstatus='';
 
-	$sql="SELECT autoforward FROM #__jj_pm_emn WHERE id=".(int)$emnid;
+	$sql="SELECT autoforward FROM #__ujumbe_emn WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	$ison = (int)$database->loadResult();
 
@@ -609,7 +609,7 @@ function uddeIMeditAutoforward($option, $task, $act, $config) {
 		$emn_forward_checkstatus='checked="checked"';
 	}
 
-	$sql="SELECT autoforwardid FROM #__jj_pm_emn WHERE id=".(int)$emnid;
+	$sql="SELECT autoforwardid FROM #__ujumbe_emn WHERE id=".(int)$emnid;
 	$database->setQuery($sql);
 	$autoforwardid = (int)$database->loadResult();
 
@@ -632,7 +632,7 @@ function uddeIMeditAutoforward($option, $task, $act, $config) {
 
 function uddeIMchangeStatus($option, $task, $emnid, $config) {
 	$database = uddeIMgetDatabase();
-	$database->setQuery("SELECT status FROM #__jj_pm_emn WHERE id=".(int)$emnid);
+	$database->setQuery("SELECT status FROM #__ujumbe_emn WHERE id=".(int)$emnid);
 	$value = (int)$database->loadResult();
 	switch($value) {
 		case 0: $value=1; break;
@@ -642,7 +642,7 @@ function uddeIMchangeStatus($option, $task, $emnid, $config) {
 		case 20: $value=0; break;
 		default: $value=0; break;
 	}
-	$database->setQuery("UPDATE #__jj_pm_emn SET status=".(int)$value." WHERE id=".(int)$emnid);
+	$database->setQuery("UPDATE #__ujumbe_emn SET status=".(int)$value." WHERE id=".(int)$emnid);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
 	}
@@ -652,10 +652,10 @@ function uddeIMchangeStatus($option, $task, $emnid, $config) {
 
 function uddeIMchangePopup($option, $task, $emnid, $config) {
 	$database = uddeIMgetDatabase();
-	$database->setQuery("SELECT popup FROM #__jj_pm_emn WHERE id=".(int)$emnid);
+	$database->setQuery("SELECT popup FROM #__ujumbe_emn WHERE id=".(int)$emnid);
 	$value = (int)$database->loadResult();
 	$value = 1 - $value;
-	$database->setQuery("UPDATE #__jj_pm_emn SET popup=".(int)$value." WHERE id=".(int)$emnid);
+	$database->setQuery("UPDATE #__ujumbe_emn SET popup=".(int)$value." WHERE id=".(int)$emnid);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
 	}
@@ -665,10 +665,10 @@ function uddeIMchangePopup($option, $task, $emnid, $config) {
 
 function uddeIMchangePublic($option, $task, $emnid, $config) {
 	$database = uddeIMgetDatabase();
-	$database->setQuery("SELECT public FROM #__jj_pm_emn WHERE id=".(int)$emnid);
+	$database->setQuery("SELECT public FROM #__ujumbe_emn WHERE id=".(int)$emnid);
 	$value = (int)$database->loadResult();
 	$value = 1 - $value;
-	$database->setQuery("UPDATE #__jj_pm_emn SET public=".(int)$value." WHERE id=".(int)$emnid);
+	$database->setQuery("UPDATE #__ujumbe_emn SET public=".(int)$value." WHERE id=".(int)$emnid);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
 	}
@@ -678,10 +678,10 @@ function uddeIMchangePublic($option, $task, $emnid, $config) {
 
 function uddeIMchangeLocked($option, $task, $emnid, $config) {
 	$database = uddeIMgetDatabase();
-	$database->setQuery("SELECT locked FROM #__jj_pm_emn WHERE id=".(int)$emnid);
+	$database->setQuery("SELECT locked FROM #__ujumbe_emn WHERE id=".(int)$emnid);
 	$value = (int)$database->loadResult();
 	$value = 1 - $value;
-	$database->setQuery("UPDATE #__jj_pm_emn SET locked=".(int)$value." WHERE id=".(int)$emnid);
+	$database->setQuery("UPDATE #__ujumbe_emn SET locked=".(int)$value." WHERE id=".(int)$emnid);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
 	}
@@ -689,10 +689,10 @@ function uddeIMchangeLocked($option, $task, $emnid, $config) {
 
 function uddeIMchangeModerated($option, $task, $emnid, $config) {
 	$database = uddeIMgetDatabase();
-	$database->setQuery("SELECT moderated FROM #__jj_pm_emn WHERE id=".(int)$emnid);
+	$database->setQuery("SELECT moderated FROM #__ujumbe_emn WHERE id=".(int)$emnid);
 	$value = (int)$database->loadResult();
 	$value = 1 - $value;
-	$database->setQuery("UPDATE #__jj_pm_emn SET moderated=".(int)$value." WHERE id=".(int)$emnid);
+	$database->setQuery("UPDATE #__ujumbe_emn SET moderated=".(int)$value." WHERE id=".(int)$emnid);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
 	}
@@ -700,10 +700,10 @@ function uddeIMchangeModerated($option, $task, $emnid, $config) {
 
 // function uddeIMchangeAutor($option, $task, $emnid, $config) {
 //	$database = uddeIMgetDatabase();
-//	$database->setQuery("SELECT autoresponder FROM #__jj_pm_emn WHERE id=".(int)$emnid);
+//	$database->setQuery("SELECT autoresponder FROM #__ujumbe_emn WHERE id=".(int)$emnid);
 //	$value = (int)$database->loadResult();
 //	$value = 1 - $value;
-//	$database->setQuery("UPDATE #__jj_pm_emn SET autoresponder=".(int)$value." WHERE id=".(int)$emnid);
+//	$database->setQuery("UPDATE #__ujumbe_emn SET autoresponder=".(int)$value." WHERE id=".(int)$emnid);
 //	if (!$database->query()) {
 //		die("SQL error" . $database->stderr(true));
 //	}

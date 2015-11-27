@@ -11,7 +11,7 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMprintNoPlugin($cond) {
 	if (!$cond) {
@@ -343,7 +343,7 @@ function uddeIMcheckPMStype() {
 
 function uddeIMcreateCFGstring($config) {
 	$cf="<?php\n";
-	$cf.="if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }\n";
+	$cf.="if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }\n";
 	$cf.="if (defined('_uddeConfig')) {\n";
 	$cf.=" return true;\n";
 	$cf.="} else {\n";
@@ -520,7 +520,7 @@ function uddeIMcreateCFGstring($config) {
 function uddeIMsaveConfig($pathtoadmin, $config) {
 	$cf = uddeIMcreateCFGstring($config);
 
-	$configdatei = "/administrator/components/com_uddeim/config.class.php";
+	$configdatei = "/administrator/components/com_ujumbe/config.class.php";
 
 	// uddeIMchmod($configdatei, "766");		// BUGBUG: Joomla send CHMOD instead of SITE CHMOD
 	if (!uddeIMwriteFile($configdatei, $cf)) {

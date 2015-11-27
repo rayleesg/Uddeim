@@ -11,8 +11,9 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 $uddeim_isadmin = 1;
-require_once(JPATH_SITE.'/administrator/components/com_uddeim/admin.uddeim.php');
-require_once(JPATH_SITE.'/administrator/components/com_uddeim/toolbar.uddeim.php');
+
+require_once(JPATH_SITE.'/administrator/components/com_ujumbe/admin.uddeim.php');
+require_once(JPATH_SITE.'/administrator/components/com_ujumbe/toolbar.uddeim.php');

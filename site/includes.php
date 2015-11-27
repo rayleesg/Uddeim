@@ -11,7 +11,7 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMcheckCAPTCHA($my_gid, $config) {
 	// CAPTCHA (first check for all other errors and then the CAPTCHA)
@@ -264,22 +264,22 @@ function uddeIMblockUserUdde($myself, $item_id, $recip, $ret, $config) {
 
 	if (!$config->blocksystem) {
 		$mosmsg = _UDDEIM_BLOCKSDISABLED;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink, $mosmsg);
 	}
 
 	// is this user already blocked?
 	$isblocked = uddeIMcheckBlockerBlocked($myself, $recip);
 	if ($isblocked)
-		uddeJSEFredirect("index.php?option=com_uddeim&task=settings&Itemid=".$item_id);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id);
 
 	$recip_gid = uddeIMgetGID($recip);
 	if (uddeIMisAdmin($recip_gid) || uddeIMisAdmin2($recip_gid, $config)) {	
 		$mosmsg = _UDDEIM_CANTBLOCKADMINS;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink, $mosmsg);	
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink, $mosmsg);	
 	}
 
 	uddeIMinsertBlockerBlocked($myself, $recip);
-	uddeJSEFredirect("index.php?option=com_uddeim&task=settings&Itemid=".$item_id);	
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id);	
 }
 
 function uddeIMunblockUserUdde($myself, $item_id, $recip, $ret, $config) {
@@ -293,10 +293,10 @@ function uddeIMunblockUserUdde($myself, $item_id, $recip, $ret, $config) {
 
 	if (!$config->blocksystem) {
 		$mosmsg = _UDDEIM_BLOCKSDISABLED;
-		uddeJSEFredirect("index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink, $mosmsg);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink, $mosmsg);
 	}
 	uddeIMpurgeBlockerBlocked($myself, $recip);
-	uddeJSEFredirect("index.php?option=com_uddeim&task=settings&Itemid=".$item_id);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id);
 }
 
 function uddeIMmarkUnread($myself, $messageid, $limit, $limitstart, $item_id, $recip, $ret, $config) {
@@ -310,9 +310,9 @@ function uddeIMmarkUnread($myself, $messageid, $limit, $limitstart, $item_id, $r
 
 	uddeIMupdateToread($myself, $messageid, 0);		// previously it set also "totrash=0" which is not required
 	if(!$limit && !$limitstart) {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink;
 	} else {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
 	}
 	uddeJSEFredirect($redirecturl);
 }
@@ -328,9 +328,9 @@ function uddeIMmarkRead($myself, $messageid, $limit, $limitstart, $item_id, $rec
 
 	uddeIMupdateToread($myself, $messageid, 1);
 	if(!$limit && !$limitstart) {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink;
 	} else {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
 	}
 	uddeJSEFredirect($redirecturl);
 }
@@ -348,9 +348,9 @@ function uddeIMmarkUnflagged($myself, $messageid, $limit, $limitstart, $item_id,
 
 	uddeIMupdateFlagged($myself, $messageid, 0);
 	if(!$limit && !$limitstart) {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink;
 	} else {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
 	}
 	uddeJSEFredirect($redirecturl);
 }
@@ -368,9 +368,9 @@ function uddeIMmarkFlagged($myself, $messageid, $limit, $limitstart, $item_id, $
 
 	uddeIMupdateFlagged($myself, $messageid, 1);
 	if(!$limit && !$limitstart) {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink;
 	} else {
-		$redirecturl="index.php?option=com_uddeim&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
+		$redirecturl="index.php?option=com_ujumbe&task=".$task."&Itemid=".$item_id.$addlink."&limit=".$limit."&limitstart=".$limitstart;
 	}
 	uddeJSEFredirect($redirecturl);
 }
@@ -453,7 +453,7 @@ function uddeIMprintFilter($myself, $uddeaction, $count, $item_id, $config, $fil
 	}
 	echo "</td>";
 	echo "<td align='right'>";
-	echo "<form name='filterform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=".$uddeaction."&Itemid=".$item_id)."'>";
+	echo "<form name='filterform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=".$uddeaction."&Itemid=".$item_id)."'>";
 	echo "<span title='".$title."'>"._UDDEIM_FILTER."</span> ";
 	echo "<select name='filter_user'>\n";
 	echo "<option value='0'>"._UDDEIM_FILTER_ALL."</option>\n";
@@ -499,16 +499,16 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 		if ($uddeaction=="postbox") {
 			echo "<li class='uddeim-activemenu'><span>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_POSTBOX."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_POSTBOX."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_POSTBOX;
 			echo $cnt;
 			echo "</span></li>\n";
 		} else {
 			echo "<li>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=postbox&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=postbox&Itemid=".$item_id)."'>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_inbox.gif' border='0' alt='"._UDDEIM_POSTBOX."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_inbox.gif' border='0' alt='"._UDDEIM_POSTBOX."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_POSTBOX;
 			echo $cnt;
@@ -522,16 +522,16 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 		if ($uddeaction=="inbox") {
 			echo "<li class='uddeim-activemenu'><span>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_INBOX."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_inbox.gif' alt='"._UDDEIM_INBOX."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_INBOX;
 			echo $cnt;
 			echo "</span></li>\n";
 		} else {
 			echo "<li>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id)."'>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_inbox.gif' border='0' alt='"._UDDEIM_INBOX."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_inbox.gif' border='0' alt='"._UDDEIM_INBOX."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_INBOX;
 			echo $cnt;
@@ -545,16 +545,16 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 		if ($uddeaction=="outbox") {
 			echo "<li class='uddeim-activemenu'><span>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_outbox.gif' alt='"._UDDEIM_OUTBOX."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_outbox.gif' alt='"._UDDEIM_OUTBOX."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_OUTBOX;
 			echo $cnt;
 			echo "</span></li>\n";
 		} else {
 			echo "<li>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=outbox&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=outbox&Itemid=".$item_id)."'>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_outbox.gif' border='0' alt='"._UDDEIM_OUTBOX."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_outbox.gif' border='0' alt='"._UDDEIM_OUTBOX."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_OUTBOX;
 			echo $cnt;
@@ -573,7 +573,7 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 	if ($uddeaction=="trashcan") {
 		echo "<li class='uddeim-activemenu'><span>";
 		if ($config->showmenuicons==1 || $config->showmenuicons==2)
-			echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_trashcan.gif' alt='"._UDDEIM_TRASHCAN."' />";
+			echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_trashcan.gif' alt='"._UDDEIM_TRASHCAN."' />";
 		if ($config->showmenuicons==0 || $config->showmenuicons==1)
 			echo _UDDEIM_TRASHCAN;
 		echo $cnt;
@@ -583,9 +583,9 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 			($config->trashrestriction==1 && (uddeIMisSpecial($my_gid) || uddeIMisSpecial2($my_gid, $config))) || 
 			($config->trashrestriction==2 && (uddeIMisAdmin($my_gid)   || uddeIMisAdmin2($my_gid, $config))) ) {
 			echo "<li>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=trashcan&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=trashcan&Itemid=".$item_id)."'>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_trashcan.gif' border='0' alt='"._UDDEIM_TRASHCAN."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_trashcan.gif' border='0' alt='"._UDDEIM_TRASHCAN."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_TRASHCAN;
 			echo $cnt;
@@ -600,7 +600,7 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 	if ($uddeaction=="archive") {
 		echo "<li class='uddeim-activemenu'><span>";
 		if ($config->showmenuicons==1 || $config->showmenuicons==2)
-			echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_archive.gif' alt='"._UDDEIM_ARCHIVE."' />";
+			echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_archive.gif' alt='"._UDDEIM_ARCHIVE."' />";
 		if ($config->showmenuicons==0 || $config->showmenuicons==1)
 			echo _UDDEIM_ARCHIVE;
 		echo $cnt;
@@ -608,9 +608,9 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 	} else {
 		if ($config->allowarchive) {
 			echo "<li>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=archive&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=archive&Itemid=".$item_id)."'>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_archive.gif' border='0' alt='"._UDDEIM_ARCHIVE."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_archive.gif' border='0' alt='"._UDDEIM_ARCHIVE."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_ARCHIVE;
 			echo $cnt;
@@ -622,7 +622,7 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 	if ($uddeaction=="lists") {
 		echo "<li class='uddeim-activemenu'><span>";
 		if ($config->showmenuicons==1 || $config->showmenuicons==2)
-			echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_book.gif' alt='"._UDDEIM_LISTS."' />";
+			echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_book.gif' alt='"._UDDEIM_LISTS."' />";
 		if ($config->showmenuicons==0 || $config->showmenuicons==1)
 			echo _UDDEIM_LISTS;
 		echo "</span></li>\n";
@@ -633,9 +633,9 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 			($config->enablelists==3 && (uddeIMisAdmin($my_gid)   || uddeIMisAdmin2($my_gid, $config))) )
 		  ) {
 			echo "<li>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=showlists&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=showlists&Itemid=".$item_id)."'>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_book.gif' border='0' alt='"._UDDEIM_LISTS."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_book.gif' border='0' alt='"._UDDEIM_LISTS."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_LISTS;
 			echo "</a>";
@@ -647,7 +647,7 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 		if ($config->showsettingslink==1) {
 			echo "<li class='uddeim-activemenu'><span>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_settings.gif' alt='"._UDDEIM_SETTINGS."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_settings.gif' alt='"._UDDEIM_SETTINGS."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_SETTINGS;
 			echo "</span></li>\n";
@@ -669,9 +669,9 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 		}
 		if ($showsettings) {
 			echo "<li>";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=settings&Itemid=".$item_id)."'>";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id)."'>";
 			if ($config->showmenuicons==1 || $config->showmenuicons==2)
-				echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_settings.gif' border='0' alt='"._UDDEIM_SETTINGS."' />";
+				echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_settings.gif' border='0' alt='"._UDDEIM_SETTINGS."' />";
 			if ($config->showmenuicons==0 || $config->showmenuicons==1)
 				echo _UDDEIM_SETTINGS;
 			echo "</a>";
@@ -682,15 +682,15 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 	if ($uddeaction=="new") {
 		echo "<li class='uddeim-activemenu'><span>";
 		if ($config->showmenuicons==1 || $config->showmenuicons==2)
-			echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_new.gif' alt='"._UDDEIM_COMPOSE."' />";
+			echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_new.gif' alt='"._UDDEIM_COMPOSE."' />";
 		if ($config->showmenuicons==0 || $config->showmenuicons==1)
 			echo _UDDEIM_COMPOSE;
 		echo "</span></li>\n";
 	} else {
 		echo "<li>";
-		echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=new&Itemid=".$item_id)."'>";
+		echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=new&Itemid=".$item_id)."'>";
 		if ($config->showmenuicons==1 || $config->showmenuicons==2)
-			echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/menu_new.gif' border='0' alt='"._UDDEIM_COMPOSE."' />";
+			echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/menu_new.gif' border='0' alt='"._UDDEIM_COMPOSE."' />";
 		if ($config->showmenuicons==0 || $config->showmenuicons==1)
 			echo _UDDEIM_COMPOSE;
 		echo "</a>";
@@ -704,7 +704,7 @@ function uddeIMprintMenu($myself, $uddeaction, $item_id, $config) {
 		echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_kunena")."'>";
 		// echo "<a href='/forum/recent' />"; 
 		if ($config->showmenuicons==1 || $config->showmenuicons==2)
-			echo "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_next.gif' border='0' alt='"._UDDEIM_KUNENA_LINK."' />"; 
+			echo "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_next.gif' border='0' alt='"._UDDEIM_KUNENA_LINK."' />"; 
 		if ($config->showmenuicons==0 || $config->showmenuicons==1)
 			echo _UDDEIM_KUNENA_LINK;
 		echo $cnt; 
@@ -734,15 +734,15 @@ function uddeIMcontentBottomborder($myself, $item_id, $uddemenucontent, $message
 				$showsettings = 1;
 		}
 		if ($showsettings) {
-			$zurueck="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=settings&Itemid=".$item_id)."'>"._UDDEIM_SETTINGS."</a> ";
+			$zurueck="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=settings&Itemid=".$item_id)."'>"._UDDEIM_SETTINGS."</a> ";
 		}
 	}
 
 	if($config->showabout && $uddemenucontent!="about") {
-		$zurueck.="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=about&Itemid=".$item_id)."'>"._UDDEIM_ABOUT."</a> ";
+		$zurueck.="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=about&Itemid=".$item_id)."'>"._UDDEIM_ABOUT."</a> ";
 	}
 	if($config->showhelp && $uddemenucontent!="help") {
-		$zurueck.="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=help&Itemid=".$item_id)."'>"._UDDEIM_HELP."</a> ";
+		$zurueck.="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=help&Itemid=".$item_id)."'>"._UDDEIM_HELP."</a> ";
 	}
 
 	// BUGBUG this is displayed when $config->showinboxlimit is enabled: Planned for future:
@@ -764,16 +764,16 @@ function uddeIMreminderDispatch($item_id, $config) {
 		}
 		$rightnow=uddetime($config->timezone);
 		$sincewhen=$rightnow-($config->longwaitingdays*86400);
-		// $sql="SELECT * FROM #__jj_pm WHERE toread=0 AND totrash=0 AND datum<".$sincewhen;
-		// $sql="SELECT * FROM #__jj_pm WHERE toread=0 AND totrash=0 AND datum<".$sincewhen. " AND datum>".$config->forgetmenotstart;
+		// $sql="SELECT * FROM #__ujumbe WHERE toread=0 AND totrash=0 AND datum<".$sincewhen;
+		// $sql="SELECT * FROM #__ujumbe WHERE toread=0 AND totrash=0 AND datum<".$sincewhen. " AND datum>".$config->forgetmenotstart;
 		// select only messages from users which still exist in the database (public users and deleted users have no inbox and so we do not send forgetmenot mails)
 		// only messages before "$sincewhen" can be forgetmenot messages
-		// $sql = "SELECT a.* FROM #__jj_pm AS a, #__users AS b WHERE a.fromid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
-		$sql = "SELECT a.* FROM #__jj_pm AS a, #__users AS b WHERE a.toid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
+		// $sql = "SELECT a.* FROM #__ujumbe AS a, #__users AS b WHERE a.fromid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
+		$sql = "SELECT a.* FROM #__ujumbe AS a, #__users AS b WHERE a.toid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
 
 		$next = (int)$config->longwaitingdays*86400;
 		$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.cryptmode "
-			 . "FROM #__jj_pm AS a, #__users AS b, #__jj_pm_emn AS c "
+			 . "FROM #__ujumbe AS a, #__users AS b, #__ujumbe_emn AS c "
 			 . "WHERE a.toid=b.id AND a.toid=c.userid AND "
 			 . "a.toread=0 AND a.totrash=0 AND b.block=0 AND "
 			 . "a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart." AND "
@@ -843,14 +843,14 @@ function uddeIMdispatchEMN($var_msgid, $item_id, $cryptmode, $var_fromid, $var_t
 	$msglink = "";
 	if ($cryptmode==2 || $cryptmode==4) {			// Message is encrypted, so go to enter password page
 		if ($config->dontsefmsglink)
-			$msglink = $pathtosite."/index.php?option=com_uddeim&task=showpass&Itemid=".$item_id."&messageid=".$var_msgid;
+			$msglink = $pathtosite."/index.php?option=com_ujumbe&task=showpass&Itemid=".$item_id."&messageid=".$var_msgid;
 		else
-			$msglink = uddeIMsefRelToAbs("index.php?option=com_uddeim&task=showpass&Itemid=".$item_id."&messageid=".$var_msgid);
+			$msglink = uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=showpass&Itemid=".$item_id."&messageid=".$var_msgid);
 	} else {							// normal message
 		if ($config->dontsefmsglink)
-			$msglink = $pathtosite."/index.php?option=com_uddeim&task=show&Itemid=".$item_id."&messageid=".$var_msgid;
+			$msglink = $pathtosite."/index.php?option=com_ujumbe&task=show&Itemid=".$item_id."&messageid=".$var_msgid;
 		else
-			$msglink = uddeIMsefRelToAbs("index.php?option=com_uddeim&task=show&Itemid=".$item_id."&messageid=".$var_msgid);
+			$msglink = uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=show&Itemid=".$item_id."&messageid=".$var_msgid);
 	}
 
 	if($emn_option==1) {
@@ -942,19 +942,19 @@ function uddeIMteaser($ofwhat, $howlong, $quotedivider, $utf8) {
 function uddeIMarrowReplace($shownav, $templatedir) {
 	$pathtosite  = uddeIMgetPath('live_site');
 
-	if(uddeIMfileExists('/components/com_uddeim/templates/'.$templatedir.'/images/icon_end.gif')) {
-		$shownav=str_replace("&raquo;",  "<img src='".$pathtosite."/components/com_uddeim/templates/".$templatedir."/images/icon_end.gif' border='0' alt='' />", $shownav);
-		$shownav=str_replace("&gt;&gt;", "<img src='".$pathtosite."/components/com_uddeim/templates/".$templatedir."/images/icon_end.gif' border='0' alt='' />", $shownav);
+	if(uddeIMfileExists('/components/com_ujumbe/templates/'.$templatedir.'/images/icon_end.gif')) {
+		$shownav=str_replace("&raquo;",  "<img src='".$pathtosite."/components/com_ujumbe/templates/".$templatedir."/images/icon_end.gif' border='0' alt='' />", $shownav);
+		$shownav=str_replace("&gt;&gt;", "<img src='".$pathtosite."/components/com_ujumbe/templates/".$templatedir."/images/icon_end.gif' border='0' alt='' />", $shownav);
 	}
-	if(uddeIMfileExists('/components/com_uddeim/templates/'.$templatedir.'/images/icon_start.gif')) {
-		$shownav=str_replace("&laquo;",  "<img src='".$pathtosite."/components/com_uddeim/templates/".$templatedir."/images/icon_start.gif' border='0' alt='' />", $shownav);
-		$shownav=str_replace("&lt;&lt;", "<img src='".$pathtosite."/components/com_uddeim/templates/".$templatedir."/images/icon_start.gif' border='0' alt='' />", $shownav);
+	if(uddeIMfileExists('/components/com_ujumbe/templates/'.$templatedir.'/images/icon_start.gif')) {
+		$shownav=str_replace("&laquo;",  "<img src='".$pathtosite."/components/com_ujumbe/templates/".$templatedir."/images/icon_start.gif' border='0' alt='' />", $shownav);
+		$shownav=str_replace("&lt;&lt;", "<img src='".$pathtosite."/components/com_ujumbe/templates/".$templatedir."/images/icon_start.gif' border='0' alt='' />", $shownav);
 	}
-	if(uddeIMfileExists('/components/com_uddeim/templates/'.$templatedir.'/images/icon_prev.gif')) {
-		$shownav=str_replace("&lt;", "<img src='".$pathtosite."/components/com_uddeim/templates/".$templatedir."/images/icon_prev.gif' border='0' alt='' />", $shownav);
+	if(uddeIMfileExists('/components/com_ujumbe/templates/'.$templatedir.'/images/icon_prev.gif')) {
+		$shownav=str_replace("&lt;", "<img src='".$pathtosite."/components/com_ujumbe/templates/".$templatedir."/images/icon_prev.gif' border='0' alt='' />", $shownav);
 	}
-	if(uddeIMfileExists('/components/com_uddeim/templates/'.$templatedir.'/images/icon_next.gif')) {
-		$shownav=str_replace("&gt;", "<img src='".$pathtosite."/components/com_uddeim/templates/".$templatedir."/images/icon_next.gif' border='0' alt='' />", $shownav);
+	if(uddeIMfileExists('/components/com_ujumbe/templates/'.$templatedir.'/images/icon_next.gif')) {
+		$shownav=str_replace("&gt;", "<img src='".$pathtosite."/components/com_ujumbe/templates/".$templatedir."/images/icon_next.gif' border='0' alt='' />", $shownav);
 	}
 	return $shownav;
 }
@@ -986,53 +986,53 @@ function uddeIMdoAutocomplete($config) {
 		elseif (class_exists('JHTML'))
 			JHTML::_('behavior.mootools');
 		else
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/mootools.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/mootools.js");
 
 		if (!strncasecmp($version->RELEASE, "1.0", 3) || 
 			!strncasecmp($version->RELEASE, "1.5", 3)) {
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Observer.js");	// Joomla 1.0 and 1.5 uses old Observer class
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Observer.js");	// Joomla 1.0 and 1.5 uses old Observer class
 			if ($config->searchinstring)
-				uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter2.js");
+				uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter2.js");
 			else
-				uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter.js");
+				uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter.js");
 		} else if (!strncasecmp($version->RELEASE, "1.6", 3) ||						// Joomla 1.6 uses new Observer class
 				   !strncasecmp($version->RELEASE, "1.7", 3)) {						// Joomla 1.7 uses new Observer class
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Observer-1.2.js");
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter-1.2.js");
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter.Request-1.2.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Observer-1.2.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter-1.2.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter.Request-1.2.js");
 		} else {						// Joomla 2.5, 3.0 supports MooTools 1.3, so use MEIO
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Meio.Autocomplete.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Meio.Autocomplete.js");
 		}
 
 	} elseif ($config->mootools==2) { // MooTools 1.1
 
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/mootools.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Observer.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/mootools.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Observer.js");
 		if ($config->searchinstring)
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter2.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter2.js");
 		else
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter.js");
 
 	} elseif ($config->mootools==3) { // MooTools 1.2
 
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/mootools-1.2.4-core.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Observer-1.2.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter-1.2.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter.Request-1.2.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/mootools-1.2.4-core.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Observer-1.2.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter-1.2.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter.Request-1.2.js");
 
 	} elseif ($config->mootools==4) { // do not load, assume MooTools 1.1
 
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Observer.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Observer.js");
 		if ($config->searchinstring)
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter2.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter2.js");
 		else
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter.js");
 
 	} elseif ($config->mootools==5) { // do not load, assume MooTools 1.2
 
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Observer-1.2.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter-1.2.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter.Request-1.2.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Observer-1.2.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter-1.2.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter.Request-1.2.js");
 
 	} elseif ($config->mootools==6) { // do not load, use Meio.Autocomplete
 
@@ -1040,31 +1040,31 @@ function uddeIMdoAutocomplete($config) {
 			JHtml::_('behavior.framework', true);
 		elseif (class_exists('JHTML'))
 			JHTML::_('behavior.mootools');
-		// echo '<script src="'.$pathtosite."/components/com_uddeim/js/Meio.Autocomplete.js".'" type="text/javascript"></script>';
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Meio.Autocomplete.js");
+		// echo '<script src="'.$pathtosite."/components/com_ujumbe/js/Meio.Autocomplete.js".'" type="text/javascript"></script>';
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Meio.Autocomplete.js");
 
 	} elseif ($config->mootools==7) { // MooTools 1.3 + MEIO
 
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/mootools-core-1.3-full-nocompat.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/mootools-more-1.3.0.1.js");
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Meio.Autocomplete.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/mootools-core-1.3-full-nocompat.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/mootools-more-1.3.0.1.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Meio.Autocomplete.js");
 
 	} else {	// do not load MooTools, but we need the other classes (assume we have MooTools 1.11)
 
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/Observer.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Observer.js");
 		if ($config->searchinstring)
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter2.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter2.js");
 		else
-			uddeIMaddScript($pathtosite."/components/com_uddeim/js/Autocompleter.js");
+			uddeIMaddScript($pathtosite."/components/com_ujumbe/js/Autocompleter.js");
 
 	}
 
 	if (class_exists('JHtml'))		// J3.0+
-		$completeURL = "index.php?option=com_uddeim&task=completeUserName&no_html=1&format=raw";
+		$completeURL = "index.php?option=com_ujumbe&task=completeUserName&no_html=1&format=raw";
 	elseif (class_exists('JHTML'))	// J1.5+
-		$completeURL = "index.php?option=com_uddeim&task=completeUserName&no_html=1&format=raw";
+		$completeURL = "index.php?option=com_ujumbe&task=completeUserName&no_html=1&format=raw";
 	else
-		$completeURL = "index2.php?option=com_uddeim&task=completeUserName&no_html=1";
+		$completeURL = "index2.php?option=com_ujumbe&task=completeUserName&no_html=1";
 
 	// <option value="7">force loading MooTools 1.3 (use MEIO)</option>
 	// <option value="6">do not load MooTools (use MEIO)</option>
@@ -1298,7 +1298,7 @@ function uddeIMdoSmileysEx($config) {
 			echo("  uddeimWindow.document.writeln(\"<html><head><title>uddeIM<\/title>");
 
 			if(file_exists($pathtouser.'/templates/'.$config->templatedir.'/css/uddeim.css')) {
-				echo "<link rel='stylesheet' href='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/css/uddeim.css' type='text/css' />";
+				echo "<link rel='stylesheet' href='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/css/uddeim.css' type='text/css' />";
 			}
 			echo("<\/head><body>");
 			echo("<div id='uddeim-smileybox-popup'>");
@@ -1328,7 +1328,7 @@ function uddeIMdoSmileysEx($config) {
 					echo("<tr>");
 				}
 				$uc2 = ($config->showtextcounter && $config->maxlength) ? "window.opener.textCount(window.opener.document.sendeform.pmessage,window.opener.document.sendeform.characterstyped,".$config->maxlength.");" : "";
-				echo ("<td><img style='cursor: pointer;' onclick='window.opener.emo(\\\"".$name."\\\"); ".$uc2." return false;' src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/".$picfolder."/".$file."' alt='".$file."' title='".$file."' /><\/td>");
+				echo ("<td><img style='cursor: pointer;' onclick='window.opener.emo(\\\"".$name."\\\"); ".$uc2." return false;' src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/".$picfolder."/".$file."' alt='".$file."' title='".$file."' /><\/td>");
 				$num++;
 				if (!($num % $maxcols)) {
 					echo("<\/tr>");
@@ -1365,31 +1365,31 @@ function uddeIMdoBB($config) {
 		<div id='uddeim-bbemobox'>
 			<table border="0" cellspacing="4" cellpadding="0">
 				<tr>
-					<td><img alt="bold" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_bold.gif" style="cursor: pointer;" name="addbbcode0" onclick="bbstyle(0); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_BOLD; ?>" /></td>
-					<td><img alt="italic" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_italic.gif" style="cursor: pointer;" name="addbbcode2" onclick="bbstyle(2); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_ITALIC; ?>" /></td>
-					<td><img alt="underline" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_underline.gif" style="cursor: pointer;" name="addbbcode4" onclick="bbstyle(4); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_UNDERLINE; ?>" /></td>
+					<td><img alt="bold" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_bold.gif" style="cursor: pointer;" name="addbbcode0" onclick="bbstyle(0); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_BOLD; ?>" /></td>
+					<td><img alt="italic" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_italic.gif" style="cursor: pointer;" name="addbbcode2" onclick="bbstyle(2); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_ITALIC; ?>" /></td>
+					<td><img alt="underline" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_underline.gif" style="cursor: pointer;" name="addbbcode4" onclick="bbstyle(4); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_UNDERLINE; ?>" /></td>
 					<td>&nbsp;</td>
-					<td><img alt="red" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_red.gif" style="cursor: pointer;"  name="addbbcode6" onclick="bbstyle(6); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_COLORRED; ?>" /></td>
-					<td><img alt="green" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_green.gif" style="cursor: pointer;"  name="addbbcode8" onclick="bbstyle(8); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_COLORGREEN; ?>" /></td>
-					<td><img alt="blue" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_blue.gif" style="cursor: pointer;"  name="addbbcode10" onclick="bbstyle(10); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_COLORBLUE; ?>" /></td>
+					<td><img alt="red" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_red.gif" style="cursor: pointer;"  name="addbbcode6" onclick="bbstyle(6); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_COLORRED; ?>" /></td>
+					<td><img alt="green" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_green.gif" style="cursor: pointer;"  name="addbbcode8" onclick="bbstyle(8); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_COLORGREEN; ?>" /></td>
+					<td><img alt="blue" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_blue.gif" style="cursor: pointer;"  name="addbbcode10" onclick="bbstyle(10); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_COLORBLUE; ?>" /></td>
 					<td>&nbsp;</td>
-					<td><img alt="very small" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_size1.gif" style="cursor: pointer;"  name="addbbcode12" onclick="bbstyle(12); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE1; ?>" /></td>
-					<td><img alt="small" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_size2.gif" style="cursor: pointer;"  name="addbbcode14" onclick="bbstyle(14); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE2; ?>" /></td>
-					<td><img alt="large" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_size4.gif" style="cursor: pointer;"  name="addbbcode16" onclick="bbstyle(16); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE4; ?>" /></td>
-					<td><img alt="very large" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_size5.gif" style="cursor: pointer;"  name="addbbcode18" onclick="bbstyle(18); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE5; ?>" /></td>
+					<td><img alt="very small" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_size1.gif" style="cursor: pointer;"  name="addbbcode12" onclick="bbstyle(12); <?php echo $uc; ?> return false;"  title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE1; ?>" /></td>
+					<td><img alt="small" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_size2.gif" style="cursor: pointer;"  name="addbbcode14" onclick="bbstyle(14); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE2; ?>" /></td>
+					<td><img alt="large" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_size4.gif" style="cursor: pointer;"  name="addbbcode16" onclick="bbstyle(16); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE4; ?>" /></td>
+					<td><img alt="very large" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_size5.gif" style="cursor: pointer;"  name="addbbcode18" onclick="bbstyle(18); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_FONTSIZE5; ?>" /></td>
 		<?php
 	}
 	if ($config->allowbb>1) {
 	?>
 					<td>&nbsp;</td>
-					<td><img alt="image" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_image.gif" style="cursor: pointer;"  name="addbbcode24" onclick="bbstyle(24); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_IMAGE; ?>" /></td>
-					<td><img alt="web link" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_link.gif" style="cursor: pointer;"  name="addbbcode26" onclick="bbstyle(26); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_URL; ?>" /></td>
+					<td><img alt="image" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_image.gif" style="cursor: pointer;"  name="addbbcode24" onclick="bbstyle(24); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_IMAGE; ?>" /></td>
+					<td><img alt="web link" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_link.gif" style="cursor: pointer;"  name="addbbcode26" onclick="bbstyle(26); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_URL; ?>" /></td>
 	<?php
 	}
 	if ($config->allowbb) {
 	?>
 					<td>&nbsp;</td>
-					<td><img alt="close tags" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/images/format_closeall.gif" style="cursor: pointer;"  onclick="bbstyle(-1); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_CLOSEALLTAGS; ?>" /></td>
+					<td><img alt="close tags" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/images/format_closeall.gif" style="cursor: pointer;"  onclick="bbstyle(-1); <?php echo $uc; ?> return false;" title="<?php echo _UDDEIM_TOOLTIP_CLOSEALLTAGS; ?>" /></td>
 				</tr>
 			</table>
 		</div>
@@ -1415,19 +1415,19 @@ function uddeIMdoSmileys($config, $num) {
 		<div id='uddeim-smileybox'>
 			<table border='0' cellpadding='2' cellspacing='0'>
 				<tr>
-					<td><img style="cursor: pointer;" onclick="emo(':) '); <?php echo $uc; ?> return false;" src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_smile.gif" alt=":)" title=":)" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':( '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_sad.gif" alt=":(" title=":(" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':P '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_tongue.gif" alt=":P" title=":P" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':x '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_crossed.gif" alt=":x" title=":x" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':angry: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_angry.gif" alt=":angry:" title=":angry:" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':blush: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_blush.gif" alt=":blush:" title=":blush:" /></td>
-					<td><img style="cursor: pointer;" onclick="emo('B) '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_cool.gif" alt="B)" title="B)" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':* '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_heart.gif" alt=":*" title=":*" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':kiss: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_kiss.gif" alt=":kiss:" title=":kiss:" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':laugh: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_laughing.gif" alt=":laugh:" title=":laugh:" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':ohmy: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_shocked.gif" alt=":ohmy:" title=":ohmy:" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(';) '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_wink.gif" alt=";)" title=";)" /></td>
-					<td><img style="cursor: pointer;" onclick="emo(':? '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_uddeim/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_wondering.gif" alt=":?" title=":?" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':) '); <?php echo $uc; ?> return false;" src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_smile.gif" alt=":)" title=":)" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':( '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_sad.gif" alt=":(" title=":(" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':P '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_tongue.gif" alt=":P" title=":P" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':x '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_crossed.gif" alt=":x" title=":x" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':angry: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_angry.gif" alt=":angry:" title=":angry:" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':blush: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_blush.gif" alt=":blush:" title=":blush:" /></td>
+					<td><img style="cursor: pointer;" onclick="emo('B) '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_cool.gif" alt="B)" title="B)" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':* '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_heart.gif" alt=":*" title=":*" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':kiss: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_kiss.gif" alt=":kiss:" title=":kiss:" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':laugh: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_laughing.gif" alt=":laugh:" title=":laugh:" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':ohmy: '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_shocked.gif" alt=":ohmy:" title=":ohmy:" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(';) '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_wink.gif" alt=";)" title=";)" /></td>
+					<td><img style="cursor: pointer;" onclick="emo(':? '); <?php echo $uc; ?> return false;"  src="<?php echo $pathtosite; ?>/components/com_ujumbe/templates/<?php echo $config->templatedir; ?>/<?php echo $icon_folder; ?>/emoticon_wondering.gif" alt=":?" title=":?" /></td>
 					<?php 
 						if ($config->animated && $config->animatedex && is_dir($testpath2)) {
 							$height=uddeIMdoSmileysExHeight($config);
@@ -1664,7 +1664,7 @@ function uddeIMdrawWriteform($myself, $my_gid, $item_id, $backto, $recipname, $p
 	echo "<div id='uddeim-writeform'>\n";
 	if ($dwf_sysgm) {
 		echo "<br />";
-		echo "<form enctype='multipart/form-data' name='sendeform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=savesysgm&Itemid=".$item_id)."'>\n";
+		echo "<form enctype='multipart/form-data' name='sendeform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=savesysgm&Itemid=".$item_id)."'>\n";
 		uddeIMwriteCSRF($config);
 		echo "<p><input type='checkbox' checked='checked' name='sysgm_sys' value='1' />"._UDDEIM_SEND_ASSYSM."</p>\n";
 
@@ -1692,7 +1692,7 @@ function uddeIMdrawWriteform($myself, $my_gid, $item_id, $backto, $recipname, $p
 		echo "<p>"._UDDEIM_SYSGM_SHORTHELP."</p>\n";
 	} else {
 		echo "<br />";
-		echo "<form enctype='multipart/form-data' name='sendeform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=save&Itemid=".$item_id)."'>";
+		echo "<form enctype='multipart/form-data' name='sendeform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=save&Itemid=".$item_id)."'>";
 		echo "<input type='hidden' name='sendeform_showallusers' value='' />\n";
 		uddeIMwriteCSRF($config);
 		if (uddeIMgetEMNmoderated($myself) ) { //&& uddeIMisReggedOnly($my_gid)) {
@@ -1721,7 +1721,7 @@ function uddeIMdrawWriteform($myself, $my_gid, $item_id, $backto, $recipname, $p
 // START FIRST LINE IN TABLE (contains two fields: TO USER and select from ALL USER list)
 				echo "<tr><td valign='top'>";
 //				if ($dwf_errorcode==0 && $recipname) {	// does not really make sense
-//					echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=new&Itemid=".$item_id)."'>"._UDDEIM_TODP."</a>";
+//					echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=new&Itemid=".$item_id)."'>"._UDDEIM_TODP."</a>";
 //				} else {
 				echo "<span title='".($config->allowmultipleuser ? _UDDEIM_TODP_TITLE_CC : _UDDEIM_TODP_TITLE)."'>";
 				echo _UDDEIM_TODP;
@@ -1854,11 +1854,11 @@ function uddeIMdrawWriteform($myself, $my_gid, $item_id, $backto, $recipname, $p
 
 	if(($config->showtextcounter && $config->maxlength) || 
 		$config->cryptmode==2 || $config->cryptmode==4) {
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/uddeimtools.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/uddeimtools.js");
 	}
 
 	if($config->allowbb || $config->allowsmile) {
-		uddeIMaddScript($pathtosite."/components/com_uddeim/js/bbsmile.js");
+		uddeIMaddScript($pathtosite."/components/com_ujumbe/js/bbsmile.js");
 		$num = uddeIMdoSmileysEx($config);
 		uddeIMdoBB($config);
 		uddeIMdoSmileys($config, $num);
@@ -1933,10 +1933,10 @@ function uddeIMdrawWriteform($myself, $my_gid, $item_id, $backto, $recipname, $p
 
 			if (class_exists('JFactory')) {
 				// CAPTCHA15
-				echo "<img style='vertical-align:middle;' src='".$pathtosite."/components/com_uddeim/captcha15.php' alt='' /><br />";
+				echo "<img style='vertical-align:middle;' src='".$pathtosite."/components/com_ujumbe/captcha15.php' alt='' /><br />";
 			} else {
 				// CAPTCHA10
-				echo "<img style='vertical-align:middle;' src='".$pathtosite."/components/com_uddeim/captcha.php' alt='' /><br />";
+				echo "<img style='vertical-align:middle;' src='".$pathtosite."/components/com_ujumbe/captcha.php' alt='' /><br />";
 			}
 			echo "</div>";
 		} else {

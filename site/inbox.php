@@ -11,7 +11,7 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMshowInbox($myself, $item_id, $limit, $limitstart, $cryptpass, $config, $filter_user, $filter_unread, $filter_flagged, $sort_mode) {
 	global $uddeicons_flagged, $uddeicons_unflagged, $uddeicons_onlinepic, $uddeicons_offlinepic, $uddeicons_readpic, $uddeicons_unreadpic;
@@ -33,21 +33,21 @@ function uddeIMshowInbox($myself, $item_id, $limit, $limitstart, $cryptpass, $co
 	$sort_datum = "";
 	$sort_name = "";
 	if ($config->enablesort) {
-		$temppic = "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_updown.gif' alt='"._UDDEIM_UPDOWN."' title='"._UDDEIM_UPDOWN."' border='0' />";
-		$sort_datum = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&sort_mode=0&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
-		$sort_name  = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&sort_mode=2&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
+		$temppic = "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_updown.gif' alt='"._UDDEIM_UPDOWN."' title='"._UDDEIM_UPDOWN."' border='0' />";
+		$sort_datum = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&sort_mode=0&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
+		$sort_name  = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&sort_mode=2&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
 		switch($sort_mode) {
-			case 0: $temppic = "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_down.gif' alt='"._UDDEIM_UP."' title='"._UDDEIM_UP."' border='0' />";
-					$sort_datum = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&sort_mode=1&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
+			case 0: $temppic = "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_down.gif' alt='"._UDDEIM_UP."' title='"._UDDEIM_UP."' border='0' />";
+					$sort_datum = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&sort_mode=1&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
 					break;
-			case 1: $temppic = "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_up.gif' alt='"._UDDEIM_DOWN."' title='"._UDDEIM_DOWN."' border='0' />";
-					$sort_datum = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&sort_mode=0&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
+			case 1: $temppic = "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_up.gif' alt='"._UDDEIM_DOWN."' title='"._UDDEIM_DOWN."' border='0' />";
+					$sort_datum = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&sort_mode=0&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
 					break;
-			case 2: $temppic = "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_down.gif' alt='"._UDDEIM_UP."' title='"._UDDEIM_UP."' border='0' />";
-					$sort_name  = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&sort_mode=3&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
+			case 2: $temppic = "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_down.gif' alt='"._UDDEIM_UP."' title='"._UDDEIM_UP."' border='0' />";
+					$sort_name  = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&sort_mode=3&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
 					break;
-			case 3: $temppic = "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/icon_up.gif' alt='"._UDDEIM_DOWN."' title='"._UDDEIM_DOWN."' border='0' />";
-					$sort_name  = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&sort_mode=2&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
+			case 3: $temppic = "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/icon_up.gif' alt='"._UDDEIM_DOWN."' title='"._UDDEIM_DOWN."' border='0' />";
+					$sort_name  = "&nbsp;<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&sort_mode=2&Itemid=".$item_id.$addlink)."'>". $temppic ."</a>";
 					break;
 		}
 	}
@@ -138,9 +138,9 @@ function uddeIMshowInbox($myself, $item_id, $limit, $limitstart, $cryptpass, $co
 		return;
 	}
 
-	uddeIMaddScript($pathtosite."/components/com_uddeim/js/uddeimtools.js");
+	uddeIMaddScript($pathtosite."/components/com_ujumbe/js/uddeimtools.js");
 
-	echo "<form method='post' name='messages' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inboxfork&Itemid=".$item_id)."'>\n";
+	echo "<form method='post' name='messages' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inboxfork&Itemid=".$item_id)."'>\n";
 	// now open the inbox container and table; write table headings
 	echo "<div id='uddeim-overview'><table cellpadding='7' width='100%'>\n";
 	// checkcell
@@ -184,20 +184,20 @@ function uddeIMshowInbox($myself, $item_id, $limit, $limitstart, $cryptpass, $co
 		$flagcell = "";
 		if($config->allowflagged) {
 			if($themessage->flagged)
-				$flagcell="<br /><br /><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=unflag&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_flagged."</a>";
+				$flagcell="<br /><br /><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=unflag&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_flagged."</a>";
 			else
-				$flagcell="<br /><br /><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=flag&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_unflagged."</a>";
+				$flagcell="<br /><br /><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=flag&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_unflagged."</a>";
 		}
 
 		if($themessage->toread)
-			$readcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=markunread&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_readpic."</a>";
+			$readcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=markunread&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_readpic."</a>";
 		else
-			$readcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=markread&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_unreadpic."</a>";
+			$readcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=markread&Itemid=".$item_id."&messageid=".$themessage->id."&limit=".$limit."&limitstart=".$limitstart)."'>".$uddeicons_unreadpic."</a>";
 
 		if ($config->showlistattachment) {
 			$cnt = uddeIMgetAttachmentCount($themessage->id);
 			if ($cnt)
-				$readcell .= "<br /><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' border='0' />";
+				$readcell .= "<br /><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/attachment.gif' alt='"._UDDEIM_ATTACHMENT."' title='"._UDDEIM_ATTACHMENT."' border='0' />";
 		}
 
 		// CRYPT
@@ -218,36 +218,36 @@ function uddeIMshowInbox($myself, $item_id, $limit, $limitstart, $cryptpass, $co
 		$safemessage=str_replace("&amp;&lt;/br&gt;", "</br>", $safemessage);
 
 		if ($themessage->cryptmode==2 || $themessage->cryptmode==4) {	// Message is encrypted, so go to enter password page
-			$messagecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=showpass&Itemid=".$item_id."&messageid=".$themessage->id)."'>".$teasermessage."</a>";
+			$messagecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=showpass&Itemid=".$item_id."&messageid=".$themessage->id)."'>".$teasermessage."</a>";
 		} else {							// normal message
-			$messagecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=show&Itemid=".$item_id."&messageid=".$themessage->id)."'>".$teasermessage."</a>";
+			$messagecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=show&Itemid=".$item_id."&messageid=".$themessage->id)."'>".$teasermessage."</a>";
 		}
 		$datumcell=uddeDate($themessage->datum, $config, uddeIMgetUserTZ());
 
 		$archivecell="";
 		$fwdcell="";
 		if ($config->actionicons) {
-			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=delete&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' /></a>";
+			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=delete&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' /></a>";
 			if ($config->allowforwards) {
 				if ($themessage->cryptmode==2 || $themessage->cryptmode==4) {	// Message is encrypted, so go to enter password page
- 				    $fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=forwardpass&Itemid=".$item_id."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' /></a><br />";
+ 				    $fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=forwardpass&Itemid=".$item_id."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' /></a><br />";
 				} else {	// normal message
- 				    $fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=forward&Itemid=".$item_id."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' /></a><br />";
+ 				    $fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=forward&Itemid=".$item_id."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/forward.gif' alt='"._UDDEIM_FORWARDLINK."' title='"._UDDEIM_FORWARDLINK."' /></a><br />";
 				}
 			}
 			if ($config->allowarchive && $themessage->toread)
-				$archivecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=archivemessage&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/archive.gif' alt='"._UDDEIM_STORE."' title='"._UDDEIM_STORE."' /></a><br />";
+				$archivecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=archivemessage&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/archive.gif' alt='"._UDDEIM_STORE."' title='"._UDDEIM_STORE."' /></a><br />";
 		} else {
-			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=delete&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'>"._UDDEIM_DELETELINK."</a>";
+			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=delete&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'>"._UDDEIM_DELETELINK."</a>";
 			if ($config->allowforwards) {
 				if ($themessage->cryptmode==2 || $themessage->cryptmode==4) {	// Message is encrypted, so go to enter password page
-					$fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=forwardpass&Itemid=".$item_id."&messageid=".$themessage->id)."'>"._UDDEIM_FORWARDLINK."</a><br />";
+					$fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=forwardpass&Itemid=".$item_id."&messageid=".$themessage->id)."'>"._UDDEIM_FORWARDLINK."</a><br />";
 				} else {	// normal message
-					$fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=forward&Itemid=".$item_id."&messageid=".$themessage->id)."'>"._UDDEIM_FORWARDLINK."</a><br />";
+					$fwdcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=forward&Itemid=".$item_id."&messageid=".$themessage->id)."'>"._UDDEIM_FORWARDLINK."</a><br />";
 				}
 			}
 			if ($config->allowarchive && $themessage->toread)
-				$archivecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=archivemessage&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'>"._UDDEIM_STORE."</a><br />";
+				$archivecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=archivemessage&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart."&messageid=".$themessage->id)."'>"._UDDEIM_STORE."</a><br />";
 		}
 
 		// checkcell
@@ -273,10 +273,10 @@ function uddeIMshowInbox($myself, $item_id, $limit, $limitstart, $cryptpass, $co
 		}
 	}
 
-	$muldel = uddeIMsefRelToAbs("index.php?option=com_uddeim&task=muldelete&Itemid=".$item_id."&limitstart=0&limit=".$limit);
+	$muldel = uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=muldelete&Itemid=".$item_id."&limitstart=0&limit=".$limit);
 	if($config->bottomlineicons) {
 		echo "<tr><th style='text-align:center;' class='sectiontablefooter'>";
-		echo '<a href="#" onclick="inboxDelete(\''.$muldel.'\'); return false;"><img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/images/trash.gif" alt="'._UDDEIM_TRASHCHECKED.'" title="'._UDDEIM_TRASHCHECKED.'"/></a>';
+		echo '<a href="#" onclick="inboxDelete(\''.$muldel.'\'); return false;"><img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/images/trash.gif" alt="'._UDDEIM_TRASHCHECKED.'" title="'._UDDEIM_TRASHCHECKED.'"/></a>';
 		echo "</th><th class='sectiontablefooter'>&nbsp;</th><th class='sectiontablefooter'>&nbsp;</th><th class='sectiontablefooter'>&nbsp;</th><th class='sectiontablefooter'>&nbsp;</th><th class='sectiontablefooter'>&nbsp;</th></tr>\n";
 	}
 	
@@ -287,12 +287,12 @@ function uddeIMshowInbox($myself, $item_id, $limit, $limitstart, $cryptpass, $co
 
 	// write the inbox navigation links
 	$pageNav = new uddeIMmosPageNav($totalinbox, $limitstart, $limit);
-	$referlink = "index.php?option=com_uddeim&task=inbox&Itemid=".$item_id.$addlink.$addlink2;
+	$referlink = "index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id.$addlink.$addlink2;
 	if ($totalinbox>$limit) {
 		$shownav = $pageNav->writePagesLinks($referlink);
 		$shownav = uddeIMarrowReplace($shownav, $config->templatedir);
 		echo "<div id='uddeim-pagenav'>".$shownav."<br />";
-		echo "[<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id."&limitstart=0&limit=".$totalinbox.$addlink.$addlink2)."'>"._UDDEIM_SHOWALL."</a>]";
+		echo "[<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id."&limitstart=0&limit=".$totalinbox.$addlink.$addlink2)."'>"._UDDEIM_SHOWALL."</a>]";
 		echo "</div>\n";
 	} else {
 		echo "<div id='uddeim-pagenav'></div>\n";
@@ -430,27 +430,27 @@ function uddeIMshowMessage($myself, $item_id, $messageid, $isforward, $cryptpass
 		// show delete & block links
 		if ($config->allowforwards) {
 			if ($displaymessage->cryptmode==2 || $displaymessage->cryptmode==4) {	// Message is encrypted, so go to enter password page
-			   $headerstring.="<li class='uddeim-messageactionlink-forward'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=forwardpass&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_FORWARDLINK."</a></li>\n";
+			   $headerstring.="<li class='uddeim-messageactionlink-forward'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=forwardpass&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_FORWARDLINK."</a></li>\n";
 			} else {	// normal message
-			   $headerstring.="<li class='uddeim-messageactionlink-forward'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=forward&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_FORWARDLINK."</a></li>\n";
+			   $headerstring.="<li class='uddeim-messageactionlink-forward'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=forward&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_FORWARDLINK."</a></li>\n";
 			}
 		}
 		if (!$displaymessage->archived && $config->allowarchive)
-			$headerstring.="<li class='uddeim-messageactionlink-archive'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=archivemessage&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_STORE."</a></li>\n";
+			$headerstring.="<li class='uddeim-messageactionlink-archive'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=archivemessage&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_STORE."</a></li>\n";
 		if ( $displaymessage->archived && $config->allowarchive)
-			$headerstring.="<li class='uddeim-messageactionlink-archive'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=unarchive&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_UNARCHIVE."</a></li>\n";
+			$headerstring.="<li class='uddeim-messageactionlink-archive'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=unarchive&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_UNARCHIVE."</a></li>\n";
 		if (!$displaymessage->totrash) { // but only if not already moved to trash
-			$headerstring.="<li class='uddeim-messageactionlink-delete'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=delete&Itemid=".$item_id."&ret=top&messageid=".$displaymessage->id)."'>"._UDDEIM_DELETELINK."</a></li>\n";
+			$headerstring.="<li class='uddeim-messageactionlink-delete'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=delete&Itemid=".$item_id."&ret=top&messageid=".$displaymessage->id)."'>"._UDDEIM_DELETELINK."</a></li>\n";
 			if ($config->blocksystem && !$displaymessage->systemflag && $displaymessage->fromid) {
-				$headerstring.="<li class='uddeim-messageactionlink-block'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=blockuser&Itemid=".$item_id."&recip=".$displaymessage->fromid)."'>"._UDDEIM_BLOCKNOW."</a></li>\n";
+				$headerstring.="<li class='uddeim-messageactionlink-block'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=blockuser&Itemid=".$item_id."&recip=".$displaymessage->fromid)."'>"._UDDEIM_BLOCKNOW."</a></li>\n";
 			}
 		}
 
 		if ($config->reportspam) {		// uddeIMcheckPlugin('spamcontrol') &&  not required since uddeIMcheckConfig sets this 0 if plugin is missing
 			if ($is_spam)
-				$headerstring.="<br /><li class='uddeim-messageactionlink-spam'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=unreportspam&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_SPAMCONTROL_UNREPORT."</a></li>";
+				$headerstring.="<br /><li class='uddeim-messageactionlink-spam'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=unreportspam&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_SPAMCONTROL_UNREPORT."</a></li>";
 			else
-				$headerstring.="<br /><li class='uddeim-messageactionlink-spam'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=reportspam&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_SPAMCONTROL_REPORT."</a></li>";
+				$headerstring.="<br /><li class='uddeim-messageactionlink-spam'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=reportspam&Itemid=".$item_id."&messageid=".$displaymessage->id)."'>"._UDDEIM_SPAMCONTROL_REPORT."</a></li>";
 		}
 
 		$headerstring.="</ul>";
@@ -461,8 +461,8 @@ function uddeIMshowMessage($myself, $item_id, $messageid, $isforward, $cryptpass
 		if ($config->enablereply) {
 			$msgnavigation = "";
 			$pathtosite = uddeIMgetPath('live_site');
-			$pic = "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/envelope.gif' alt='"._UDDEIM_PMNAV_EXISTS."' title='"._UDDEIM_PMNAV_EXISTS."' />";
-			$picdel = "<img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/envelope_deleted.gif' alt='"._UDDEIM_PMNAV_DELETED."' title='"._UDDEIM_PMNAV_DELETED."' />";
+			$pic = "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/envelope.gif' alt='"._UDDEIM_PMNAV_EXISTS."' title='"._UDDEIM_PMNAV_EXISTS."' />";
+			$picdel = "<img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/envelope_deleted.gif' alt='"._UDDEIM_PMNAV_DELETED."' title='"._UDDEIM_PMNAV_DELETED."' />";
 
 			$replyid = $displaymessage->replyid;
 			if ($replyid) {
@@ -484,9 +484,9 @@ function uddeIMshowMessage($myself, $item_id, $messageid, $isforward, $cryptpass
 					if ($copy2me) // this is a copy2me message, so the original is also stored in inbox
 						$goto = "show";
 					if ($orig->cryptmode==2 || $orig->cryptmode==4) {	// Message is encrypted, so go to enter password page
-						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=".$goto."pass&Itemid=".$item_id."&messageid=".$replyid)."'>".$pic."</a>";
+						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=".$goto."pass&Itemid=".$item_id."&messageid=".$replyid)."'>".$pic."</a>";
 					} else {					// normal message
-						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=".$goto."&Itemid=".$item_id."&messageid=".$replyid)."'>".$pic."</a>";
+						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=".$goto."&Itemid=".$item_id."&messageid=".$replyid)."'>".$pic."</a>";
 					}
 				} else {
 					$msgnavigation .= " ".$picdel;
@@ -505,9 +505,9 @@ function uddeIMshowMessage($myself, $item_id, $messageid, $isforward, $cryptpass
 						$c2me = " "._UDDEIM_PMNAV_COPY2ME;		// BUGBUG
 					}
 					if ($repl->cryptmode==2 || $repl->cryptmode==4) {	// Message is encrypted, so go to enter password page
-						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=".$goto."pass&Itemid=".$item_id."&messageid=".$repl->id)."'>".$pic."</a>".$c2me;
+						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=".$goto."pass&Itemid=".$item_id."&messageid=".$repl->id)."'>".$pic."</a>".$c2me;
 					} else {					// normal message
-						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=".$goto."&Itemid=".$item_id."&messageid=".$repl->id)."'>".$pic."</a>".$c2me;
+						$msgnavigation .= " <a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=".$goto."&Itemid=".$item_id."&messageid=".$repl->id)."'>".$pic."</a>".$c2me;
 					}
 					$msgnavigation .= " ";
 				}
@@ -612,7 +612,7 @@ function uddeIMshowMessage($myself, $item_id, $messageid, $isforward, $cryptpass
 			// echo "<div id='uddeim-writeform'><b>"._UDDEIM_REPLY."</b><br />";
 			// which page did refer to this "show Message" page? we want to send back the user where he came from
 			$tbackto = uddeIMmosGetParam($_SERVER, 'HTTP_REFERER', null);
-			if(stristr($tbackto, "com_uddeim")) {
+			if(stristr($tbackto, "com_ujumbe")) {
 				$tbackto="";
 			}
 			if ($isforward && $config->allowforwards) {		// it is a forward, so allow selecting a recipient
@@ -624,7 +624,7 @@ function uddeIMshowMessage($myself, $item_id, $messageid, $isforward, $cryptpass
 			// offer restore link
 			echo "<div id='uddeim-bottomlines'>"._UDDEIM_YOUMOVEDTOTRASH;
 			echo "<br />";
-			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=restore&Itemid=".$item_id."&messageid=".$replytoid)."'>"._UDDEIM_RESTORE."</a></div>\n";
+			echo "<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=restore&Itemid=".$item_id."&messageid=".$replytoid)."'>"._UDDEIM_RESTORE."</a></div>\n";
 		}
 	} else {
 		// don't allow replies ($disablereply)
@@ -642,7 +642,7 @@ function uddeIMshowPass($myself, $item_id, $messageid, $config) {
 	echo "<div id='uddeim-m'>\n";
 
 	echo "<div id='uddeim-overview'><p><b>"._UDDEIM_PASSWORD."</b></p>";
-	echo "<form name='showform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=show&Itemid=".$item_id."&messageid=".$messageid)."'>";
+	echo "<form name='showform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=show&Itemid=".$item_id."&messageid=".$messageid)."'>";
 	echo _UDDEIM_PASSWORDBOX.": ";
 	echo "<input name='cryptpass' value='' />"._UDDEIM_DECRYPTIONTEXT."<br /><br />";
 	echo "<input type='submit' name='sendpass' class='button' value='"._UDDEIM_SUBMIT."' />";
@@ -658,7 +658,7 @@ function uddeIMforwardPass($myself, $item_id, $messageid, $config) {
 	echo "<div id='uddeim-m'>\n";
 
 	echo "<div id='uddeim-overview'><p><b>"._UDDEIM_PASSWORD."</b></p>";
-	echo "<form name='showform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=forward&Itemid=".$item_id."&messageid=".$messageid)."'>";
+	echo "<form name='showform' method='post' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=forward&Itemid=".$item_id."&messageid=".$messageid)."'>";
 	echo _UDDEIM_PASSWORDBOX.": ";
 	echo "<input name='cryptpass' value='' />"._UDDEIM_DECRYPTIONTEXT."<br /><br />";
 	echo "<input type='submit' name='sendpass' class='button' value='"._UDDEIM_SUBMIT."' />";
@@ -678,11 +678,11 @@ function uddeIMdeleteMessageInbox($myself, $messageid, $limit, $limitstart, $ite
 	uddeIMdeleteMessageFromInbox($myself, $messageid, $deletetime);
 	
 	if ($ret=='archive' && $config->allowarchive) {
-		uddeJSEFredirect("index.php?option=com_uddeim&task=archive&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=archive&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
 	} elseif ($ret=='top') {
-		uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id);
 	} else {
-		uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
 	}
 }
 
@@ -698,13 +698,13 @@ function uddeIMdeleteInbox($myself, $item_id, $arcmes, $limit, $limitstart, $con
 			// uddeIMupdateToread($myself, $arcmes[$i], 1);
 			uddeIMdeleteMessageFromInbox($myself, $arcmes[$i], $rightnow);
 			// when it is a message from me to me and I trash the message then also trash the message from the outbox
-//			$sql="UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE toid=fromid AND toid=".(int)$myself." AND id=".(int)$arcmes[$i];
+//			$sql="UPDATE #__ujumbe SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE toid=fromid AND toid=".(int)$myself." AND id=".(int)$arcmes[$i];
 //			$___atabase->setQuery($sql);
 //			if (!$___atabase->query()) {
 //				die("SQL error when attempting to trash a message" . $___atabase->stderr(true));
 //			}
 		}
 	}
-	uddeJSEFredirect("index.php?option=com_uddeim&task=inbox&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=inbox&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
 }
 

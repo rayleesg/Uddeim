@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.4" method="upgrade">
-	<name>JJ Private Messages</name>
+	<name>JJ Ujumbe</name>
 	<creationDate>27 Nov 2015</creationDate>
 	<author>JoomJunk</author>
 	<copyright>Copyright (C) 2011 - 2015 JoomJunk</copyright> 
 	<license>http://www.gnu.org/licenses/gpl-3.0.html</license> 
 	<authorEmail>admin@joomjunk.co.uk</authorEmail>
-	<authorUrl>http://www.slabihoud.de/software/</authorUrl>
+	<authorUrl>http://joomjunk.co.uk</authorUrl>
 	<version>1.0.0</version>
-	<description>A private messaging component for Joomla, forked from uddeIM Instant Messages by Stephan Slabihoud</description>
+	<description>JJ Ujumbe is a private messaging component for Joomla, forked from uddeIM Instant Messages by Stephan Slabihoud</description>
 	<files folder="site">
 		<folder>views</folder>
 		<folder>js</folder>
@@ -29,19 +29,10 @@
 		<filename>outbox.php</filename>
 		<filename>recaptchalib.php</filename>
 		<filename>trashcan.php</filename>
-		<filename>uddeim.api.php</filename>
-		<filename>uddeim.php</filename>
-		<filename>uddeim_igoogle.xml</filename>
-		<filename>uddeimlib.php</filename>
-		<filename>uddeimlib10.php</filename>
-		<filename>uddeimlib15.php</filename>
-		<filename>uddeimlib16.php</filename>
-		<filename>uddeimlib17.php</filename>
-		<filename>uddeimlib25.php</filename>
-		<filename>uddeimlib30.php</filename>
-		<filename>uddeimlib31.php</filename>
-		<filename>uddeimlib32.php</filename>
-		<filename>uddeimlib33.php</filename>
+		<filename>ujumbe.api.php</filename>
+		<filename>ujumbe.php</filename>
+		<filename>ujumbe_igoogle.xml</filename>
+		<filename>ujumbelib.php</filename>
 		<filename>userlists.php</filename>
 	</files>
 	
@@ -61,34 +52,25 @@
 	
 	<administration>
 		<languages folder="admin">
-			<language tag="en-GB">language/en-GB/en-GB.com_uddeim.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_uddeim.sys.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_ujumbe.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_ujumbe.sys.ini</language>
 		</languages>	
-		<menu img="../components/com_uddeim/templates/images/uddeim-favicon.png">COM_UDDEIM_MENU</menu>	
+		<menu img="../components/com_ujumbe/templates/images/ujumbe-favicon.png">COM_UDDEIM_MENU</menu>	
 		<files folder="admin">
 			<folder>sql</folder>
 			<folder>language</folder>
 			<folder>language.utf8</folder>
 			<filename>access.xml</filename>
-			<filename>uddeim.php</filename>
+			<filename>ujumbe.php</filename>
 			<filename>admin.includes.php</filename>
 			<filename>admin.shared.php</filename>
-			<filename>admin.uddeim.php</filename>
-			<filename>admin.uddeimlib.php</filename>
-			<filename>admin.uddeimlib10.php</filename>
-			<filename>admin.uddeimlib15.php</filename>
-			<filename>admin.uddeimlib16.php</filename>
-			<filename>admin.uddeimlib17.php</filename>
-			<filename>admin.uddeimlib25.php</filename>
-			<filename>admin.uddeimlib30.php</filename>
-			<filename>admin.uddeimlib31.php</filename>
-			<filename>admin.uddeimlib32.php</filename>
-			<filename>admin.uddeimlib33.php</filename>
+			<filename>admin.ujumbe.php</filename>
+			<filename>admin.ujumbelib.php</filename>
 			<filename>admin.usersettings.php</filename>
 			<filename>config.class.php</filename>
 			<filename>config.xml</filename>
 			<filename>index.html</filename>
-			<filename>toolbar.uddeim.php</filename>
+			<filename>toolbar.ujumbe.php</filename>
 		</files>		
 	</administration>
 	

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__jj_pm` (
+CREATE TABLE IF NOT EXISTS `#__ujumbe` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `replyid` int(11) NOT NULL default '0',
   `fromid` int(11) NOT NULL default '0',
@@ -35,14 +35,14 @@ CREATE TABLE IF NOT EXISTS `#__jj_pm` (
   KEY `delayed` (`delayed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__jj_pm_blocks` (
+CREATE TABLE IF NOT EXISTS `#__ujumbe_blocks` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `blocker` int(11) NOT NULL default '0',
   `blocked` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__jj_pm_emn` (
+CREATE TABLE IF NOT EXISTS `#__ujumbe_emn` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `userid` int(11) NOT NULL default '0',
   `status` int(1) NOT NULL default '0',
@@ -60,13 +60,13 @@ CREATE TABLE IF NOT EXISTS `#__jj_pm_emn` (
   KEY `userid` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__jj_pm_config` (
+CREATE TABLE IF NOT EXISTS `#__ujumbe_config` (
   `varname` tinytext NOT NULL,
   `value` tinytext NOT NULL,
   PRIMARY KEY  (`varname`(30))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__jj_pm_userlists` (
+CREATE TABLE IF NOT EXISTS `#__ujumbe_userlists` (
    `id` int(11) NOT NULL auto_increment,
    `userid` int(11) NOT NULL default '0',
    `name` varchar(40) NOT NULL default '',
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `#__jj_pm_userlists` (
    KEY `global` (`global`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__jj_pm_spam` (
+CREATE TABLE IF NOT EXISTS `#__ujumbe_spam` (
    `id` int(10) unsigned NOT NULL auto_increment,
    `mid` int(11) NOT NULL default '0',
    `datum` int(11) default NULL,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `#__jj_pm_spam` (
    KEY `toid` (`toid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__jj_pm_attachments` (
+CREATE TABLE IF NOT EXISTS `#__ujumbe_attachments` (
    `id` int(10) unsigned NOT NULL auto_increment,
    `mid` int(1) NOT NULL default '0',
    `tempname` TEXT NOT NULL,

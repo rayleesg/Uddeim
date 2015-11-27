@@ -11,14 +11,14 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 $uddeim_isadmin = 0;
 if ( defined( 'JPATH_ADMINISTRATOR' ) ) {
-	require_once(JPATH_SITE.'/components/com_uddeim/uddeimlib.php');
+	require_once(JPATH_SITE.'/components/com_ujumbe/ujumbelib.php');
 } else {
 	global $mainframe;
-	require_once($mainframe->getCfg('absolute_path').'/components/com_uddeim/uddeimlib.php');
+	require_once($mainframe->getCfg('absolute_path').'/components/com_ujumbe/ujumbelib.php');
 }
 require_once( uddeIMgetPath('admin')."/config.class.php" );
 require_once( uddeIMgetPath('admin')."/admin.shared.php" );
@@ -64,28 +64,28 @@ class uddeIMAPI {
 		$Itemid = uddeIMgetItemid($this->config);
 		switch($box) {
 			case 'inbox':
-				$link = "index.php?option=com_uddeim&task=inbox".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=inbox".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 			case 'outbox':
-				$link = "index.php?option=com_uddeim&task=outbox".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=outbox".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 			case 'archive':
-				$link = "index.php?option=com_uddeim&task=archive".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=archive".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 			case 'trashcan':
-				$link = "index.php?option=com_uddeim&task=trashcan".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=trashcan".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 			case 'settings':
-				$link = "index.php?option=com_uddeim&task=settings".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=settings".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 			case 'compose':
-				$link = "index.php?option=com_uddeim&task=new".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=new".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 			case 'contacts':
-				$link = "index.php?option=com_uddeim&task=showlists".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=showlists".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 			default:
-				$link = "index.php?option=com_uddeim&task=inbox".($Itemid ? "&Itemid=".$Itemid : "");
+				$link = "index.php?option=com_ujumbe&task=inbox".($Itemid ? "&Itemid=".$Itemid : "");
 				break;
 		}
 		if ($sef)
@@ -123,7 +123,7 @@ class uddeIMAPI {
 //		if ($this->config->overwriteitemid)
 //			return (int)$this->config->useitemid;
 
-//		$sql="SELECT id FROM #__menu WHERE link LIKE '%com_uddeim%' AND published=1 AND access".($gid==0 ? "=" : "<=").$gid;
+//		$sql="SELECT id FROM #__menu WHERE link LIKE '%com_ujumbe%' AND published=1 AND access".($gid==0 ? "=" : "<=").$gid;
 //		if (uddeIMcheckJversion()>=2) {		// J1.6
 //			$lang = JFactory::getLanguage();
 //			$sql.=" AND language IN (" . $database->Quote($lang->get('tag')) . ",'*')";
@@ -132,7 +132,7 @@ class uddeIMAPI {
 //		$database->setQuery($sql);
 //		$found = (int)$database->loadResult();
 //		if (!$found) {
-//			$sql="SELECT id FROM #__menu WHERE link LIKE '%com_uddeim%' AND published=0 AND access".($gid==0 ? "=" : "<=").$gid;
+//			$sql="SELECT id FROM #__menu WHERE link LIKE '%com_ujumbe%' AND published=0 AND access".($gid==0 ? "=" : "<=").$gid;
 //			if (uddeIMcheckJversion()>=2) {		// J1.6
 //				$lang = JFactory::getLanguage();
 //				$sql.=" AND language IN (" . $database->Quote($lang->get('tag')) . ",'*')";
@@ -344,13 +344,13 @@ class uddeIMAPI {
 			if ($this->config->cryptmode==1 || $this->config->cryptmode==2 || $this->config->cryptmode==4) {
 				$themode = 1;
 				$cm = uddeIMencrypt($savemessage,$this->config->cryptkey,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($this->config->cryptkey)."')";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($this->config->cryptkey)."')";
 			} elseif ($this->config->cryptmode==3) {
 				$themode = 3;
 				$cm = uddeIMencrypt($savemessage,"",CRYPT_MODE_STOREBASE64);
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
 			} else {
-				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
+				$sql="INSERT INTO #__ujumbe (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
 			}
 			$database->setQuery($sql);
 			if (!$database->query()) {

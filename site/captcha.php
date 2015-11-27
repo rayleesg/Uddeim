@@ -104,7 +104,7 @@ class CaptchaSecurityImages {
 //unset($_SESSION['security_code']);
 
 define("_VALID_MOS", 1 ); 
-require(dirname(__FILE__)."/../../administrator/components/com_uddeim/config.class.php");
+require(dirname(__FILE__)."/../../administrator/components/com_ujumbe/config.class.php");
 $config = new uddeimconfigclass();
 
 $captcha = new CaptchaSecurityImages($config->captchalen * 20, 32, $config->captchalen);

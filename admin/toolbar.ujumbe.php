@@ -11,22 +11,22 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 if ( defined( 'JPATH_ADMINISTRATOR' ) ) {
-	require_once(JPATH_SITE.'/components/com_uddeim/uddeimlib.php');
-	require_once(JPATH_SITE.'/administrator/components/com_uddeim/admin.uddeimlib.php');
+	require_once(JPATH_SITE.'/components/com_ujumbe/ujumbelib.php');
+	require_once(JPATH_SITE.'/administrator/components/com_ujumbe/admin.ujumbelib.php');
 } else {
 	global $mainframe;
-	require_once($mainframe->getCfg('absolute_path').'/components/com_uddeim/uddeimlib.php');
-	require_once($mainframe->getCfg('absolute_path').'/administrator/components/com_uddeim/admin.uddeimlib.php');
+	require_once($mainframe->getCfg('absolute_path').'/components/com_ujumbe/ujumbelib.php');
+	require_once($mainframe->getCfg('absolute_path').'/administrator/components/com_ujumbe/admin.ujumbelib.php');
 }
-require_once(uddeIMgetPath('absolute_path').'/administrator/components/com_uddeim/admin.shared.php');
+require_once(uddeIMgetPath('absolute_path').'/administrator/components/com_ujumbe/admin.shared.php');
 
 if (uddeIMcheckJversion()>=4) {	// Joomla >=2.5
 	// Options button. -> Action: "Configure"
-	if (JFactory::getUser()->authorise('core.admin', 'com_uddeim')) {
-		JToolBarHelper::preferences('com_uddeim');
+	if (JFactory::getUser()->authorise('core.admin', 'com_ujumbe')) {
+		JToolBarHelper::preferences('com_ujumbe');
 	}
 }
 
@@ -76,7 +76,7 @@ switch ($task) {
 		mosMenuBar::endTable();
 		break;
 //		mosMenuBar::startTable();
-//		mosMenuBar::customX( 'usersettings', '../components/com_uddeim/images/user.png', '../components/com_uddeim/images/user.png', 'User settings', false );
+//		mosMenuBar::customX( 'usersettings', '../components/com_ujumbe/images/user.png', '../components/com_ujumbe/images/user.png', 'User settings', false );
 //		mosMenuBar::customX( 'usersettings', 'user.png', 'user.png', 'User settings', false );
 //		mosMenuBar::customX( 'usersettings', 'edit.png', 'edit_f2.png', 'User settings', false );
 //		mosMenuBar::save( 'savesettings', 'Save' );
@@ -109,7 +109,7 @@ switch ($task) {
 		if (strncasecmp($ver->RELEASE, "3.0", 3)) {		// if NOT Version 3.0 which had a bug
 //		if ($xver<3) {
 			mosMenuBar::startTable();
-	//		mosMenuBar::customX( 'usersettings', '../components/com_uddeim/images/user.png', '../components/com_uddeim/images/user.png', 'User settings', false );
+	//		mosMenuBar::customX( 'usersettings', '../components/com_ujumbe/images/user.png', '../components/com_ujumbe/images/user.png', 'User settings', false );
 	//		mosMenuBar::customX( 'usersettings', 'user.png', 'user.png', 'User settings', false );
 	//		mosMenuBar::customX( 'backuprestore', 'archive.png', 'archive_f2.png', 'Backup &amp; Restore', false );
 			if (uddeIMcheckPlugin('mcp'))

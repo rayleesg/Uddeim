@@ -11,7 +11,7 @@
 //                Redistributing this file is only allowed when keeping the header unchanged.
 // ********************************************************************************************
 
-if (!(defined('_JEXEC') || defined('_VALID_MOS'))) { die( 'Direct Access to this location is not allowed.' ); }
+if (!(defined('_JEXEC')) { die( 'Direct Access to this location is not allowed.' ); }
 
 function uddeIMshowLists($myself, $item_id, $limit, $limitstart, $config) {
 	$pathtosite  = uddeIMgetPath('live_site');
@@ -56,9 +56,9 @@ function uddeIMshowLists($myself, $item_id, $limit, $limitstart, $config) {
 	uddeIMprintMenu($myself, 'lists', $item_id, $config);
 	echo "<div id='uddeim-m'>\n";
 
-	uddeIMaddScript($pathtosite."/components/com_uddeim/js/uddeimtools.js");
+	uddeIMaddScript($pathtosite."/components/com_ujumbe/js/uddeimtools.js");
 
-	echo "<form method='post' name='messages' action='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=listsfork&Itemid=".$item_id)."'>\n";
+	echo "<form method='post' name='messages' action='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=listsfork&Itemid=".$item_id)."'>\n";
 
 	echo "<div id='uddeim-overview'><table cellpadding='7' width='100%'>\n";
 	$delall="<input type='checkbox' name='arcmes[]' value='' onclick='wiglwogl(this);' title='"._UDDEIM_CHECKALL."' />";
@@ -75,7 +75,7 @@ function uddeIMshowLists($myself, $item_id, $limit, $limitstart, $config) {
 
 		echo "<tr class='sectiontableentry".$i."'>";
 		echo "<td style='width:32px; text-align:center; vertical-align:middle'>".$delcell."</td>";		// checkcell
-		echo "<td style='vertical-align:middle'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=editlists&listid=".$cl->id."&Itemid=".$item_id)."'>".$cl->name."</a></td>";
+		echo "<td style='vertical-align:middle'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=editlists&listid=".$cl->id."&Itemid=".$item_id)."'>".$cl->name."</a></td>";
 		echo "<td style='vertical-align:middle'>".$cl->description;
 		if ($cl->userid!=$myself)
 			echo "<br /><br />"._UDDEIM_LISTGLOBAL_CREATOR." ".uddeIMgetNameFromID($cl->userid, $config);
@@ -95,11 +95,11 @@ function uddeIMshowLists($myself, $item_id, $limit, $limitstart, $config) {
 		}
 
 		if ($config->actionicons) {
-			$editcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=editlists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/edit.gif' alt='"._UDDEIM_EDITLINK."' title='"._UDDEIM_EDITLINK."' /></a><br />";
-			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=deletelists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'><img src='".$pathtosite."/components/com_uddeim/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' /></a>";
+			$editcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=editlists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/edit.gif' alt='"._UDDEIM_EDITLINK."' title='"._UDDEIM_EDITLINK."' /></a><br />";
+			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=deletelists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'><img src='".$pathtosite."/components/com_ujumbe/templates/".$config->templatedir."/images/trash.gif' alt='"._UDDEIM_DELETELINK."' title='"._UDDEIM_DELETELINK."' /></a>";
 		} else {
-			$editcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=editlists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'>"._UDDEIM_EDITLINK."</a><br />";
-			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=deletelists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'>"._UDDEIM_DELETELINK."</a>";
+			$editcell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=editlists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'>"._UDDEIM_EDITLINK."</a><br />";
+			$deletecell="<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=deletelists&listid=".$cl->id."&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart)."'>"._UDDEIM_DELETELINK."</a>";
 		}
 
 		if ($config->actionicons) {
@@ -115,11 +115,11 @@ function uddeIMshowLists($myself, $item_id, $limit, $limitstart, $config) {
 		}
 	}
 
-	$muldel = uddeIMsefRelToAbs("index.php?option=com_uddeim&task=deletelistsmultiple&Itemid=".$item_id."&limitstart=0&limit=".$limit);
+	$muldel = uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=deletelistsmultiple&Itemid=".$item_id."&limitstart=0&limit=".$limit);
 	if($config->bottomlineicons) {
 		echo "<tr><th style='text-align:center;' class='sectiontablefooter'>";
-		echo '<a href="#" onclick="listsDelete(\''.$muldel.'\'); return false;"><img src="'.$pathtosite.'/components/com_uddeim/templates/'.$config->templatedir.'/images/trash.gif" alt="'._UDDEIM_TRASHCHECKED.'" title="'._UDDEIM_TRASHCHECKED.'" /></a></th>';
-		echo "<th class='sectiontablefooter'><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=createlists&Itemid=".$item_id)."'>"._UDDEIM_LISTSNEW."</a></th>";
+		echo '<a href="#" onclick="listsDelete(\''.$muldel.'\'); return false;"><img src="'.$pathtosite.'/components/com_ujumbe/templates/'.$config->templatedir.'/images/trash.gif" alt="'._UDDEIM_TRASHCHECKED.'" title="'._UDDEIM_TRASHCHECKED.'" /></a></th>';
+		echo "<th class='sectiontablefooter'><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=createlists&Itemid=".$item_id)."'>"._UDDEIM_LISTSNEW."</a></th>";
 		echo "<th class='sectiontablefooter'>&nbsp;</th><th class='sectiontablefooter'>&nbsp;</th>";
 		if (uddeIMisAdmin($my_gid) || uddeIMisAdmin2($my_gid, $config)) 		// admins can create global user lists
 			echo "<th class='sectiontablefooter'>&nbsp;</th>";
@@ -130,19 +130,19 @@ function uddeIMshowLists($myself, $item_id, $limit, $limitstart, $config) {
 
 	// write the inbox navigation links
 	$pageNav = new uddeIMmosPageNav($total, $limitstart, $limit);
-	$referlink = "index.php?option=com_uddeim&task=showlists&Itemid=".$item_id;
+	$referlink = "index.php?option=com_ujumbe&task=showlists&Itemid=".$item_id;
 	if ($total>$limit) {
 		$shownav = $pageNav->writePagesLinks($referlink);
 		$shownav = uddeIMarrowReplace($shownav, $config->templatedir);
 		echo "<div id='uddeim-pagenav'>".$shownav."<br />";
-		echo "[<a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=showlists&Itemid=".$item_id."&limitstart=0&limit=".$total)."'>"._UDDEIM_SHOWALL."</a>]";
+		echo "[<a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=showlists&Itemid=".$item_id."&limitstart=0&limit=".$total)."'>"._UDDEIM_SHOWALL."</a>]";
 		echo "</div>\n";
 	}
 
 	echo "<div id='uddeim-bottomlines'>";
 	if(!$config->bottomlineicons) {
 		echo '<p><a href="#" onclick="listsDelete(\''.$muldel.'\'); return false;">'._UDDEIM_TRASHCHECKED.'</a></p>';
-		echo "<p><a href='".uddeIMsefRelToAbs("index.php?option=com_uddeim&task=createlists&Itemid=".$item_id)."'>"._UDDEIM_LISTSNEW."</a></p>";
+		echo "<p><a href='".uddeIMsefRelToAbs("index.php?option=com_ujumbe&task=createlists&Itemid=".$item_id)."'>"._UDDEIM_LISTSNEW."</a></p>";
 	}
 	echo "</div>\n";
 
@@ -159,7 +159,7 @@ function uddeIMcreateLists($myself, $item_id, $listid, $limit, $limitstart, $con
 	echo "<div id='uddeim-m'>\n";
 	echo "<div id='uddeim-writeform'>\n";
 
-	uddeIMaddScript($pathtosite."/components/com_uddeim/js/uddeimtools.js");
+	uddeIMaddScript($pathtosite."/components/com_ujumbe/js/uddeimtools.js");
 
 	$lname = "";
 	$ldesc = "";
@@ -186,7 +186,7 @@ function uddeIMcreateLists($myself, $item_id, $listid, $limit, $limitstart, $con
 	}
 
 	echo "<br />";
-	echo "<form name='listsform' method='post' action='".uddeIMsefRelToAbs( "index.php?option=com_uddeim&listid=".$listid."&Itemid=".$item_id."&task=savelists" )."'>";
+	echo "<form name='listsform' method='post' action='".uddeIMsefRelToAbs( "index.php?option=com_ujumbe&listid=".$listid."&Itemid=".$item_id."&task=savelists" )."'>";
 	echo _UDDEIM_LISTSNAMEWO."<br />";
 	echo "<input type='text' name='listname' size='20' maxlength='40' value='".$lname."' /><br />";
 	echo _UDDEIM_LISTSDESC."<br />";
@@ -312,10 +312,10 @@ function uddeIMsaveLists($myself, $item_id, $listid, $listname, $listdesc, $list
 			uddeIMupdateUserlist($myself, $listid, $listname, $listdesc, $listids, $listglobal, true);
 		else
 			uddeIMupdateUserlist($myself, $listid, $listname, $listdesc, $listids, $listglobal);
-		uddeJSEFredirect("index.php?option=com_uddeim&task=showlists&Itemid=".$item_id, _UDDEIM_LISTSUPDATED);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=showlists&Itemid=".$item_id, _UDDEIM_LISTSUPDATED);
 	} else {
 		uddeIMinsertUserlist($myself, $listname, $listdesc, $listids, $listglobal);
-		uddeJSEFredirect("index.php?option=com_uddeim&task=showlists&Itemid=".$item_id, _UDDEIM_LISTSSAVED);
+		uddeJSEFredirect("index.php?option=com_ujumbe&task=showlists&Itemid=".$item_id, _UDDEIM_LISTSSAVED);
 	}
 }
 
@@ -448,7 +448,7 @@ function uddeIMdeleteLists($myself, $item_id, $listid, $limit, $limitstart, $con
 		$lg = true;
 
 	uddeIMpurgeUserlist($myself, $listid, $lg);
-	uddeJSEFredirect("index.php?option=com_uddeim&task=showlists&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=showlists&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
 }
 
 function uddeIMdeleteListsMultiple($myself, $item_id, $arcmes, $limit, $limitstart, $config) {
@@ -467,5 +467,5 @@ function uddeIMdeleteListsMultiple($myself, $item_id, $arcmes, $limit, $limitsta
 			uddeIMpurgeUserlist($myself, $arcmes[$i], $lg);
 		}
 	}
-	uddeJSEFredirect("index.php?option=com_uddeim&task=showlists&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
+	uddeJSEFredirect("index.php?option=com_ujumbe&task=showlists&Itemid=".$item_id."&limit=".$limit."&limitstart=".$limitstart);
 }
