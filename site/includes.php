@@ -764,16 +764,16 @@ function uddeIMreminderDispatch($item_id, $config) {
 		}
 		$rightnow=uddetime($config->timezone);
 		$sincewhen=$rightnow-($config->longwaitingdays*86400);
-		// $sql="SELECT * FROM #__uddeim WHERE toread=0 AND totrash=0 AND datum<".$sincewhen;
-		// $sql="SELECT * FROM #__uddeim WHERE toread=0 AND totrash=0 AND datum<".$sincewhen. " AND datum>".$config->forgetmenotstart;
+		// $sql="SELECT * FROM #__jj_pm WHERE toread=0 AND totrash=0 AND datum<".$sincewhen;
+		// $sql="SELECT * FROM #__jj_pm WHERE toread=0 AND totrash=0 AND datum<".$sincewhen. " AND datum>".$config->forgetmenotstart;
 		// select only messages from users which still exist in the database (public users and deleted users have no inbox and so we do not send forgetmenot mails)
 		// only messages before "$sincewhen" can be forgetmenot messages
-		// $sql = "SELECT a.* FROM #__uddeim AS a, #__users AS b WHERE a.fromid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
-		$sql = "SELECT a.* FROM #__uddeim AS a, #__users AS b WHERE a.toid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
+		// $sql = "SELECT a.* FROM #__jj_pm AS a, #__users AS b WHERE a.fromid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
+		$sql = "SELECT a.* FROM #__jj_pm AS a, #__users AS b WHERE a.toid=b.id AND a.toread=0 AND a.totrash=0 AND a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart;
 
 		$next = (int)$config->longwaitingdays*86400;
 		$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.cryptmode "
-			 . "FROM #__uddeim AS a, #__users AS b, #__uddeim_emn AS c "
+			 . "FROM #__jj_pm AS a, #__users AS b, #__jj_pm_emn AS c "
 			 . "WHERE a.toid=b.id AND a.toid=c.userid AND "
 			 . "a.toread=0 AND a.totrash=0 AND b.block=0 AND "
 			 . "a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart." AND "

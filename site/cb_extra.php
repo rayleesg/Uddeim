@@ -31,16 +31,16 @@ function user_delete_ext($userid, $pmsUserDeleteOption) {
 	$config = new uddeimconfigclass();
 	$rightnow = uddetime($config->timezone);
 
-//	$query_pms_delete = "DELETE FROM #__uddeim WHERE fromid='" . (int) $userid ."' OR toid='" . (int) $userid . "'";
+//	$query_pms_delete = "DELETE FROM #__jj_pm WHERE fromid='" . (int) $userid ."' OR toid='" . (int) $userid . "'";
 
 	// delete all messages send from this user and trashed from the outbox
-	$query_pms_delete1 = "UPDATE #__uddeim SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE fromid='" . (int) $userid . "'";
+	$query_pms_delete1 = "UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE fromid='" . (int) $userid . "'";
 	// delete all messages recived by this user and trashed from the inbox
-	$query_pms_delete2 = "UPDATE #__uddeim SET totrash=1, totrashdate=".$rightnow." WHERE toid='".(int) $userid . "'";
+	$query_pms_delete2 = "UPDATE #__jj_pm SET totrash=1, totrashdate=".$rightnow." WHERE toid='".(int) $userid . "'";
 
-	$query_pms_delete_extra1 = "DELETE FROM #__uddeim_emn WHERE userid='" . (int) $userid . "'";
-	$query_pms_delete_extra2 = "DELETE FROM #__uddeim_blocks WHERE blocker='" . (int) $userid . "' OR blocked='" . (int) $userid . "'";
-	$query_pms_delete_extra3 = "DELETE FROM #__uddeim_userlists WHERE userid='" . (int) $userid ."'";
+	$query_pms_delete_extra1 = "DELETE FROM #__jj_pm_emn WHERE userid='" . (int) $userid . "'";
+	$query_pms_delete_extra2 = "DELETE FROM #__jj_pm_blocks WHERE blocker='" . (int) $userid . "' OR blocked='" . (int) $userid . "'";
+	$query_pms_delete_extra3 = "DELETE FROM #__jj_pm_userlists WHERE userid='" . (int) $userid ."'";
 
 	print "Deleting pms data for user ".$userid;
 

@@ -698,7 +698,7 @@ function uddeIMdeleteInbox($myself, $item_id, $arcmes, $limit, $limitstart, $con
 			// uddeIMupdateToread($myself, $arcmes[$i], 1);
 			uddeIMdeleteMessageFromInbox($myself, $arcmes[$i], $rightnow);
 			// when it is a message from me to me and I trash the message then also trash the message from the outbox
-//			$sql="UPDATE #__uddeim SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE toid=fromid AND toid=".(int)$myself." AND id=".(int)$arcmes[$i];
+//			$sql="UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE toid=fromid AND toid=".(int)$myself." AND id=".(int)$arcmes[$i];
 //			$___atabase->setQuery($sql);
 //			if (!$___atabase->query()) {
 //				die("SQL error when attempting to trash a message" . $___atabase->stderr(true));

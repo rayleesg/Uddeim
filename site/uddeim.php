@@ -1143,7 +1143,7 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 			$themode=0;
 			if ($config->cryptmode==1) {
 				$cm = uddeIMencrypt($savemessagecopy,$config->cryptkey,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
 			} elseif ($config->cryptmode==2) {
 				$themode=2;
 				$thepass=$cryptpass;
@@ -1152,10 +1152,10 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 					$thepass=$config->cryptkey;
 				}
 				$cm = uddeIMencrypt($savemessagecopy,$thepass,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 			} elseif ($config->cryptmode==3) {
 				$cm = uddeIMencrypt($savemessagecopy,"",CRYPT_MODE_STOREBASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",3)";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",3)";
 			} elseif ($config->cryptmode==4) {
 				$themode=4;
 				$thepass=$cryptpass;
@@ -1166,9 +1166,9 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 					$cipher = CRYPT_MODE_BASE64;
 				}
 				$cm = uddeIMencrypt($savemessagecopy,$thepass,$cipher);
-				$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 			} else {
-				$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savefromid.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 1,".$savedatum.")";
 			}
 			$database->setQuery($sql);
 			if (!$database->query()) {
@@ -1194,32 +1194,32 @@ function uddeIMsaveMessage($myself, $to_name, $to_id, $pmessage, $tobedeleted, $
 				// This is not a bug since in my opinion it does not make sense to store autoresponder messages AND the received message.
 				$autorespondertext = uddeIMgetEMNautorespondertext($savetoid);
 				$savemessage2=addslashes(strip_tags($autorespondertext));
-				// $sql="INSERT INTO #__uddeim (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $savemessage ."', ".$savedatum.", 1,".$savedatum.")";
+				// $sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $savemessage ."', ".$savedatum.", 1,".$savedatum.")";
 
 				$themode=0;
 				if ($config->cryptmode==1) {
 					$themode=1;
 					$thepass=$config->cryptkey;
 					$cm = uddeIMencrypt($savemessage2,$config->cryptkey,CRYPT_MODE_BASE64);
-					$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 				} elseif ($config->cryptmode==2) {
 					// no password entered, then fallback to obfuscating
 					$themode=1;
 					$thepass=$config->cryptkey;
 					$cm = uddeIMencrypt($savemessage2,$thepass,CRYPT_MODE_BASE64);
-					$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 				} elseif ($config->cryptmode==3) {
 					$cm = uddeIMencrypt($savemessage2,"",CRYPT_MODE_STOREBASE64);
-					$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.", 3)";
+					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.", 3)";
 				} elseif ($config->cryptmode==4) {
 					// no password entered, then fallback to obfuscating
 					$themode=1;
 					$thepass=$config->cryptkey;
 					$cm = uddeIMencrypt($savemessage2,$thepass,CRYPT_MODE_BASE64);
-					$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 				} else {
 					$cm = $savemessage2;
-					$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.")";
+					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savetoid.", ".(int)$savefromid.", '". $cm ."', ".$savedatum.", 1,".$savedatum.")";
 				}
 				$database->setQuery($sql);
 				if (!$database->query()) {
@@ -1343,7 +1343,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 	// select the message I write a reply to
 	// I need the email address and the sender name of the public user (the message id is $messageid and I am $myself)
 	// das war vorher... a.toid=b.id??? richtig sollte a.fromid=b.id sein, also selectInboxMessage nehmen
-	// $sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.toid=".(int)$myself." AND a.id=".(int)$messageid;
+	// $sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.toid=".(int)$myself." AND a.id=".(int)$messageid;
 	$displaymessages = 	uddeIMselectInboxMessage($myself, $messageid, $config);
 	if (count($displaymessages)<1) {
 		echo _UDDEIM_MESSAGENOACCESS;
@@ -1414,7 +1414,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 	$fromemail=addslashes(strip_tags($var_tomail));
 	if ($config->cryptmode==1) {
 		$cm = uddeIMencrypt($savemessage,$config->cryptkey,CRYPT_MODE_BASE64);
-		$sql="INSERT INTO #__uddeim (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,1,'".md5($config->cryptkey)."')";
+		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,1,'".md5($config->cryptkey)."')";
 	} elseif ($config->cryptmode==2) {
 		$themode=2;
 		$thepass=$cryptpass;
@@ -1423,10 +1423,10 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 			$thepass=$config->cryptkey;
 		}
 		$cm = uddeIMencrypt($savemessage,$thepass,CRYPT_MODE_BASE64);
-		$sql="INSERT INTO #__uddeim (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
+		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
 	} elseif ($config->cryptmode==3) {
 		$cm = uddeIMencrypt($savemessage,"",CRYPT_MODE_STOREBASE64);
-		$sql="INSERT INTO #__uddeim (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,3)";
+		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,3)";
 	} elseif ($config->cryptmode==4) {
 		$themode=4;
 		$thepass=$cryptpass;
@@ -1437,9 +1437,9 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 			$cipher = CRYPT_MODE_BASE64;
 		}
 		$cm = uddeIMencrypt($savemessage,$thepass,$cipher);
-		$sql="INSERT INTO #__uddeim (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
+		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread, cryptmode, crypthash) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$cm."', ".$savedatum.",1,".$savedatum.",1,".$themode.",'".md5($thepass)."')";
 	} else {
-		$sql="INSERT INTO #__uddeim (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$savemessage."', ".$savedatum.",1,".$savedatum.",1)";
+		$sql="INSERT INTO #__jj_pm (publicname, publicemail, fromid, toid, replyid, message, datum, totrash, totrashdate, toread) VALUES ('".$fromname."', '".$fromemail."', ".(int)$myself.", ".(int)$savetoid.", ".(int)$replyid.", '".$savemessage."', ".$savedatum.",1,".$savedatum.",1)";
 	}
 	$database->setQuery($sql);
 	if (!$database->query()) {
@@ -1470,7 +1470,7 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 		// CRYPT
 		if ($config->cryptmode==1) {
 			$cm = uddeIMencrypt($savemessagecopy,$config->cryptkey,CRYPT_MODE_BASE64);
-			$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
+			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",1,'".md5($config->cryptkey)."')";
 		} elseif ($config->cryptmode==2) {
 			$themode=2;
 			$thepass=$cryptpass;
@@ -1479,10 +1479,10 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 				$thepass=$config->cryptkey;
 			}
 			$cm = uddeIMencrypt($savemessagecopy,$thepass,CRYPT_MODE_BASE64);
-			$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 		} elseif ($config->cryptmode==3) {
 			$cm = uddeIMencrypt($savemessagecopy,"",CRYPT_MODE_STOREBASE64);
-			$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",3)";
+			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",3)";
 		} elseif ($config->cryptmode==4) {
 			$themode=4;
 			$thepass=$cryptpass;
@@ -1493,9 +1493,9 @@ function uddeIMtoPublicSaveMessage($myself, $pmessage, $tobedeleted, $tobedelete
 				$cipher = CRYPT_MODE_BASE64;
 			}
 			$cm = uddeIMencrypt($savemessagecopy,$thepass,$cipher);
-			$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
+			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$cm.             "', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.",".$themode.",'".md5($thepass)."')";
 		} else {
-			$sql="INSERT INTO #__uddeim (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.")";
+			$sql="INSERT INTO #__jj_pm (fromid, toid, replyid, toread, message, datum, disablereply, systemflag, systemmessage, archived, totrashoutbox, totrashdateoutbox) VALUES (".(int)$myself.", ".(int)$myself.", ".(int)$replyid.", 1, '".$savemessagecopy."', ".$savedatum.", 1, 2, '".$copyname."', 0, 1,".$savedatum.")";
 		}
 		$database->setQuery($sql);
 		if (!$database->query()) {
@@ -1906,7 +1906,7 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 			if ($config->cryptmode==1) {
 				$themode = 1;
 				$cm = uddeIMencrypt($savemessage,$config->cryptkey,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($config->cryptkey)."')";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($config->cryptkey)."')";
 			} elseif ($config->cryptmode==2) {
 				$themode = 2;
 				$thepass=$cryptpass;
@@ -1915,11 +1915,11 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 					$thepass=$config->cryptkey;
 				}
 				$cm = uddeIMencrypt($savemessage,$thepass,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
 			} elseif ($config->cryptmode==3) {
 				$themode = 3;
 				$cm = uddeIMencrypt($savemessage,"",CRYPT_MODE_STOREBASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
 			} elseif ($config->cryptmode==4) {
 				$themode = 4;
 				$thepass=$cryptpass;
@@ -1930,9 +1930,9 @@ function uddeIMsaveSysgm($myself, $to_name, $to_id, $pmessage, $tobedeleted, $to
 					$cipher = CRYPT_MODE_BASE64;
 				}
 				$cm = uddeIMencrypt($savemessage,$thepass,$cipher);
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.", ".$themode.",'".md5($thepass)."')";
 			} else {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$savefromid.", ".(int)$savetoid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
 			}
 			$database->setQuery($sql);
 			if (!$database->query()) {
@@ -2729,7 +2729,7 @@ function uddeIMcompleteUserName($myself, $config){
 
 				$query = sprintf( 'SELECT DISTINCT u.id,u.%1$s AS displayname FROM ((#__users AS u INNER JOIN #__user_usergroup_map AS um ON u.id=um.user_id) 
 								INNER JOIN #__usergroups AS g ON um.group_id=g.id)
-								INNER JOIN #__uddeim_emn AS b ON u.id=b.userid
+								INNER JOIN #__jj_pm_emn AS b ON u.id=b.userid
 								WHERE b.public=1 AND u.block=0 AND u.%1$s LIKE %2$s '.$hide.$hide2.'ORDER BY u.%1$s LIMIT 50'
 									, $db->nameQuote( $fieldToUse ) // ok
 									, $db->Quote( ($config->searchinstring ? '%' : '').$input.'%' )
@@ -2758,7 +2758,7 @@ function uddeIMcompleteUserName($myself, $config){
 				$hide2 = "";
 				if ($config->pubblockgroups)
 					$hide2 = "AND a.gid NOT IN (".uddeIMquoteSmart($config->pubblockgroups).") ";
-				$query = sprintf( 'SELECT a.%1$s AS displayname FROM `#__users` AS a, `#__uddeim_emn` AS b WHERE a.id=b.userid AND b.public=1 AND a.block=0 AND a.%1$s LIKE %2$s '.$hide.$hide2.'ORDER BY a.%1$s LIMIT 50'
+				$query = sprintf( 'SELECT a.%1$s AS displayname FROM `#__users` AS a, `#__jj_pm_emn` AS b WHERE a.id=b.userid AND b.public=1 AND a.block=0 AND a.%1$s LIKE %2$s '.$hide.$hide2.'ORDER BY a.%1$s LIMIT 50'
 									, $db->nameQuote( $fieldToUse ) // ok
 									, $db->Quote( ($config->pubsearchinstring ? '%' : '').$input.'%' )
 								);
@@ -2833,13 +2833,13 @@ function uddeIMajaxGetNewMessages($myself, $config){
 	if (function_exists('iconv'))
 		$input = iconv('UTF-8',$config->charset,$input);
 
-	$sql="SELECT count(a.id) FROM #__uddeim AS a WHERE a.totrash=0 AND a.toread=0 AND a.toid=".(int)$myself;
+	$sql="SELECT count(a.id) FROM #__jj_pm AS a WHERE a.totrash=0 AND a.toread=0 AND a.toid=".(int)$myself;
 	$db->setQuery($sql);
 	$result=(int)$db->loadResult();
 	echo $result;
 }
 
-// CREATE TABLE IF NOT EXISTS `#__uddeim_spam` (
+// CREATE TABLE IF NOT EXISTS `#__jj_pm_spam` (
    // `id` int(10) unsigned NOT NULL auto_increment,
    // `mid` int(11) NOT NULL default '0',
    // `datum` int(11) default NULL,
@@ -2860,7 +2860,7 @@ function uddeIMreportSpam($myself, $item_id, $messageid, $recip, $ret, $limit, $
 	}
 	if (!uddeIMgetSpamStatus($messageid)) {
 
-		// and append to #__uddeim_spam
+		// and append to #__jj_pm_spam
 		foreach($displaymessages as $displaymessage) {
 			if ($displaymessage->cryptmode==2 || $displaymessage->cryptmode==4)
 				$cm = "Cannot display - Message is encrypted.";
@@ -2872,7 +2872,7 @@ function uddeIMreportSpam($myself, $item_id, $messageid, $recip, $ret, $limit, $
 
 			$dm = uddeIMencrypt($dm,"",CRYPT_MODE_STOREBASE64);
 
-			$sql  = "INSERT INTO #__uddeim_spam (mid, datum, reported, fromid, toid, message) VALUES (".
+			$sql  = "INSERT INTO #__jj_pm_spam (mid, datum, reported, fromid, toid, message) VALUES (".
 					(int)$displaymessage->id.", ".
 					(int)$displaymessage->datum.", ".
 					(int)uddetime($config->timezone).", ".

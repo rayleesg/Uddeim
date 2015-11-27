@@ -265,7 +265,7 @@ function uddeIM_com_install() {
 
 	// try to determine the best settings for uddeIM on this installation 
 	// is uddeIM already installed and are messages in the archive?
-	$sql="SELECT count(id) FROM #__uddeim WHERE archived=1";
+	$sql="SELECT count(id) FROM #__jj_pm WHERE archived=1";
 	$database->setQuery($sql);
 	$archivedmessages=$database->loadResult();
 	$config->allowarchive = 0;
@@ -419,7 +419,7 @@ function uddeIM_com_install() {
 		$welcome_user = "uddeIM";
 		$welcome_msg = _UDDEADM_WELCOMEMSG;
 		// its not a reply, so replyid=0
-		$sql="INSERT INTO #__uddeim (fromid, toid, toread, message, datum, systemflag, disablereply, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".$userid.", ".$userid.", 0, '".$welcome_msg."', ".$welcome_time.", 1, 1, '".$welcome_user."', 1, ".$welcome_time.")";
+		$sql="INSERT INTO #__jj_pm (fromid, toid, toread, message, datum, systemflag, disablereply, systemmessage, totrashoutbox, totrashdateoutbox) VALUES (".$userid.", ".$userid.", 0, '".$welcome_msg."', ".$welcome_time.", 1, 1, '".$welcome_user."', 1, ".$welcome_time.")";
 		$database->setQuery($sql);
 		if (!$database->query()) {
 			die("SQL error when attempting to save a message" . $database->stderr(true));

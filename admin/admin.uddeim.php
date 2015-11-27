@@ -440,7 +440,7 @@ function uddeIMsaveSettings($option, $task, $pathtoadmin, $config) {
 		return;
 
 // Change $config->notifydefault using "ALTER TABLE"
-//				$upgrade =  "ALTER TABLE `#__uddeim_emn` CHANGE `status` `status` INT( 1 ) NOT NULL DEFAULT '".$config->notifydefault."';";
+//				$upgrade =  "ALTER TABLE `#__jj_pm_emn` CHANGE `status` `status` INT( 1 ) NOT NULL DEFAULT '".$config->notifydefault."';";
 //				$database->setQuery($upgrade);
 //				if(!$database->query()) {
 //					// ALTER TABLE failed
@@ -504,7 +504,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$toread=$thepms->readstate;
 		
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -559,7 +559,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -605,7 +605,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -642,7 +642,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$toread=$thepms->opened;
 		
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -720,7 +720,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, systemflag, disablereply, archived, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, systemflag, disablereply, archived, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".
 						(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$systemflag.", ".(int)$disablereply.", ".(int)$archived.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
@@ -756,9 +756,9 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				if ($fromid==$toid) {
 					$trashoffset=((float)$config->TrashLifespan)*86400;
 					$deletetime=uddetime($config->timezone)-$trashoffset;
-					$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", 1, ".$deletetime.")";
+					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", 1, ".$deletetime.")";
 				} else {
-					$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+					$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				}
 				$database->setQuery( $sql );
 				if (!$database->query()) {
@@ -808,7 +808,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -857,7 +857,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -894,7 +894,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$toread=$thepms->readstate;
 		
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -940,7 +940,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdate=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -993,7 +993,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1052,7 +1052,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			}
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1102,7 +1102,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1140,7 +1140,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 			$totrashdateoutbox="NULL";
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1184,7 +1184,7 @@ function uddeIMimportPMS($option, $task, $act, $start, $count, $pathtoadmin, $co
 				$totrashdateoutbox=uddetime($config->timezone);
 
 			if($fromid && $toid && $pmessage) {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, toread, totrash, totrashdate, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$pmessage."', ".$unixdate.", ".(int)$toread.", ".(int)$totrash.", ".$totrashdate.", ".(int)$totrashoutbox.", ".$totrashdateoutbox.")";
 				$database->setQuery( $sql );
 				if (!$database->query()) {
 					die("SQL error" . $database->stderr(true));
@@ -1272,7 +1272,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 	$oldsetting_allowarchive = $config->allowarchive;
 	$oldsetting_longwaitingemail = $config->longwaitingemail;
 
-//	$sql = "SHOW FIELDS FROM #__uddeim_emn;";
+//	$sql = "SHOW FIELDS FROM #__jj_pm_emn;";
 //	$database->setQuery($sql);
 //	$rows = $database->loadObjectList();
 //	foreach ($rows as $row) {
@@ -1320,14 +1320,14 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 				echo "<span style='padding: 3px'>"._UDDEADM_INFORMATION."</span><br />";
 
 			if ($plugin_mcp) {
-				$sql  = "SELECT count(id) FROM #__uddeim WHERE `delayed`!=0";
+				$sql  = "SELECT count(id) FROM #__jj_pm WHERE `delayed`!=0";
 				$database->setQuery($sql);
 				$temp = (int)$database->loadResult();
 				echo "<span style='padding: 3px'><a href='".uddeIMredirectIndex()."?option=com_uddeim&task=mcp'>"._UDDEADM_MCP_STAT." ".$temp."</a></span><br />";
 			}
 
 			if ($plugin_spamcontrol) {
-				$sql  = "SELECT count(a.id) FROM #__uddeim_spam AS a LEFT JOIN #__uddeim AS b ON a.mid = b.id";
+				$sql  = "SELECT count(a.id) FROM #__jj_pm_spam AS a LEFT JOIN #__jj_pm AS b ON a.mid = b.id";
 				$database->setQuery($sql);
 				$temp = (int)$database->loadResult();
 				echo "<span style='padding: 3px'><a href='".uddeIMredirectIndex()."?option=com_uddeim&task=spamcontrol'>"._UDDEADM_SPAMCONTROL_STAT." ".$temp."</a></span><br />";
@@ -2235,7 +2235,7 @@ function uddeIMshowSettings($option, $task, $usedlanguage, $pathtoadmin, $pathto
 		}
 ?>
 <?php
-				$query = "SELECT value FROM #__uddeim_config WHERE varname='_backupdate'";
+				$query = "SELECT value FROM #__jj_pm_config WHERE varname='_backupdate'";
 				$database->setQuery($query);
 				$backupdate = $database->loadResult();
 ?>
@@ -2407,7 +2407,7 @@ function uddeIMarchivetoTrash($option, $task, $act, $config) {
 
 	if($act=="inbox") {
 		$rightnow=uddetime($config->timezone);
-		$sql="UPDATE #__uddeim SET archived=0 WHERE archived=1";
+		$sql="UPDATE #__jj_pm SET archived=0 WHERE archived=1";
 		$database->setQuery($sql);
 		if (!$database->query()) {
 			die("SQL error when attempting to unarchive messages" . $database->stderr(true));
@@ -2482,20 +2482,20 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 	$query = "SELECT min(id) FROM #__users WHERE id>0";
 	$database->setQuery($query);
 	$mmin = (int)$database->loadResult();
-	$query = "SELECT min(fromid) FROM #__uddeim WHERE fromid>0";	// don't select public users
+	$query = "SELECT min(fromid) FROM #__jj_pm WHERE fromid>0";	// don't select public users
 	$database->setQuery($query);
 	$mmin1 = (int)$database->loadResult();
-	$query = "SELECT min(toid) FROM #__uddeim WHERE toid>0";		// don't select public users
+	$query = "SELECT min(toid) FROM #__jj_pm WHERE toid>0";		// don't select public users
 	$database->setQuery($query);
 	$mmin2 = (int)$database->loadResult();
 
 	$query = "SELECT max(id) FROM #__users WHERE id>0";
 	$database->setQuery($query);
 	$mmax = (int)$database->loadResult();
-	$query = "SELECT max(fromid) FROM #__uddeim WHERE fromid>0";
+	$query = "SELECT max(fromid) FROM #__jj_pm WHERE fromid>0";
 	$database->setQuery($query);
 	$mmax1 = (int)$database->loadResult();
-	$query = "SELECT max(toid) FROM #__uddeim WHERE toid>0";
+	$query = "SELECT max(toid) FROM #__jj_pm WHERE toid>0";
 	$database->setQuery($query);
 	$mmax2 = (int)$database->loadResult();
 
@@ -2516,23 +2516,23 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 
 		if ($value==0) {
 			// the user does not exist, so count if there are still messages from or to him in the database
-			$query = 'SELECT COUNT(id) FROM #__uddeim WHERE fromid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE fromid='.(int)$i;
 			$database->setQuery($query);
 			$mvon = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__uddeim WHERE toid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE toid='.(int)$i;
 			$database->setQuery($query);
 			$man = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__uddeim_emn WHERE userid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm_emn WHERE userid='.(int)$i;
 			$database->setQuery($query);
 			$memn = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__uddeim_blocks WHERE blocker='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm_blocks WHERE blocker='.(int)$i;
 			$database->setQuery($query);
 			$mbl1 = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__uddeim_blocks WHERE blocked='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm_blocks WHERE blocked='.(int)$i;
 			$database->setQuery($query);
 			$mbl2 = (int)$database->loadResult();
 
@@ -2544,12 +2544,12 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 			}
 			if ($act=="trash" && ($mvon>0 || $man>0 || $memn>0 || $mbl1>0 || $mbl2>0)) {
 				echo _UDDEADM_MAINTENANCE_MT2." #$i<br />";
-				$query = "DELETE FROM #__uddeim_emn WHERE userid=".(int)$i;
+				$query = "DELETE FROM #__jj_pm_emn WHERE userid=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 
 				echo _UDDEADM_MAINTENANCE_MT3." #$i<br />";
-				$query = "DELETE FROM #__uddeim_blocks WHERE blocker=".(int)$i." OR blocked=".(int)$i;
+				$query = "DELETE FROM #__jj_pm_blocks WHERE blocker=".(int)$i." OR blocked=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 
@@ -2559,33 +2559,33 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 // when this is removed, deleted users are shown as "User deleted" in the outbox
 				echo _UDDEADM_MAINTENANCE_MT4." #$i<br />";		// Recdipient does not longer exist, so delete from all outboxes and from non-existing users inbox
 				// This following statement is ok, when also messages from purged users are listed in the Outbox, unfortunately they are not, so these messages are also purged.
-				//              $query = "UPDATE #__uddeim SET totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
-				$query = "UPDATE #__uddeim SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
+				//              $query = "UPDATE #__jj_pm SET totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
+				$query = "UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE toid=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 
 // when this is removed, deleted users are shown as "User deleted" in the inbox
 				echo _UDDEADM_MAINTENANCE_MT5." #$i<br />";
 				// This following statement is ok, when also messages from purged users are listed in the Inbox, unfortunately they are not, so these messages are also purged.
-				//              $query = "UPDATE #__uddeim SET totrashoutbox=1, totrashdateoutbox=".$deletetime." WHERE fromid=".(int)$i;
-				$query = "UPDATE #__uddeim SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE fromid=".(int)$i;
+				//              $query = "UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$deletetime." WHERE fromid=".(int)$i;
+				$query = "UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$deletetime.", totrash=1, totrashdate=".$deletetime." WHERE fromid=".(int)$i;
 				$database->setQuery($query);
 				if (!$database->query()) { die("SQL error" . $database->stderr(true)); }	
 			}
 		} else {		// user exists, so display some stats only
-			$query = 'SELECT COUNT(id) FROM #__uddeim WHERE totrashoutbox=0 AND fromid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrashoutbox=0 AND fromid='.(int)$i;
 			$database->setQuery($query);
 			$mvonoutbox = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__uddeim WHERE totrashoutbox=1 AND fromid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrashoutbox=1 AND fromid='.(int)$i;
 			$database->setQuery($query);
 			$mvonoutboxtrashed = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__uddeim WHERE totrash=0 AND toid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrash=0 AND toid='.(int)$i;
 			$database->setQuery($query);
 			$maninbox = (int)$database->loadResult();
 
-			$query = 'SELECT COUNT(id) FROM #__uddeim WHERE totrash=1 AND toid='.(int)$i;
+			$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrash=1 AND toid='.(int)$i;
 			$database->setQuery($query);
 			$maninboxtrashed = (int)$database->loadResult();
 
@@ -2600,11 +2600,11 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 	}
 	
 	// step 2: search other problems
-	$query = 'SELECT COUNT(id) FROM #__uddeim WHERE totrash=0 AND totrashdate IS NOT NULL';
+	$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrash=0 AND totrashdate IS NOT NULL';
 	$database->setQuery($query);
 	$datein = (int)$database->loadResult();
 
-	$query = 'SELECT COUNT(id) FROM #__uddeim WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
+	$query = 'SELECT COUNT(id) FROM #__jj_pm WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
 	$database->setQuery($query);
 	$dateout = (int)$database->loadResult();
 
@@ -2615,10 +2615,10 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 			$jobtodo=1;
 	}
 	if ($act=="trash" && ($datein>0 || $dateout>0)) {
-		$query = 'UPDATE #__uddeim SET totrashdate=NULL WHERE totrash=0 AND totrashdate IS NOT NULL';
+		$query = 'UPDATE #__jj_pm SET totrashdate=NULL WHERE totrash=0 AND totrashdate IS NOT NULL';
 		$database->setQuery($query);
 		$ret=$database->query();
-		$query = 'UPDATE #__uddeim SET totrashdateoutbox=NULL WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
+		$query = 'UPDATE #__jj_pm SET totrashdateoutbox=NULL WHERE totrashoutbox=0 AND totrashdateoutbox IS NOT NULL';
 		$database->setQuery($query);
 		$ret=$database->query();
 		echo "<br />";
@@ -2626,7 +2626,7 @@ function uddeIMmaintenanceCheckTrash($option, $task, $act, $config) {
 	}
 
 	// step 3: search orphaned files
-	$query = "SELECT count(id) FROM #__uddeim_attachments WHERE mid=-1";
+	$query = "SELECT count(id) FROM #__jj_pm_attachments WHERE mid=-1";
 	$database->setQuery($query);
 	$count = (int)$database->loadResult();
 	if ($act=="check") {
@@ -3129,12 +3129,12 @@ function uddeIMbackupRestoreConfig($option, $task, $act, $pathtoadmin, $config) 
 		$backup['postboxavatars']				= $config->postboxavatars;
 		$backup['replytext']					= $config->replytext;
 
-		$query = 'TRUNCATE TABLE #__uddeim_config';
+		$query = 'TRUNCATE TABLE #__jj_pm_config';
 		$database->setQuery($query);
 		if (!$database->query())
 			echo("SQL error: ".$database->stderr(true));
 		foreach ($backup as $key => $value) {
-			$query = 'INSERT INTO #__uddeim_config ( varname, value ) VALUES ( '.$database->Quote($key).', '.$database->Quote($value).' )';
+			$query = 'INSERT INTO #__jj_pm_config ( varname, value ) VALUES ( '.$database->Quote($key).', '.$database->Quote($value).' )';
 			$database->setQuery($query);
 			if (!$database->query())
 				echo("SQL error: ".$database->stderr(true));
@@ -3144,7 +3144,7 @@ function uddeIMbackupRestoreConfig($option, $task, $act, $pathtoadmin, $config) 
 		echo "<p><b><a href=".uddeIMredirectIndex()."?option=com_uddeim>"._UDDEADM_CONTINUE."</a></b></p></div>";
 	}
 	elseif ($act=="restore") {
-		$query = "SELECT varname, value FROM #__uddeim_config";
+		$query = "SELECT varname, value FROM #__jj_pm_config";
         $database->setQuery($query);
         $results = $database->loadObjectList();
 		if (!$database->query())
@@ -3276,27 +3276,27 @@ function uddeIMshowstatistics($option, $task, $config) {
 	echo "<p><b>"._UDDEADM_STATISTICS."</b></p>";
 
 	echo "<table border='0'>";
-	$query="SELECT count(id) FROM #__uddeim";
+	$query="SELECT count(id) FROM #__jj_pm";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT."</td><td>".$result."</td></tr>";
 
-	$query="SELECT count(id) FROM #__uddeim WHERE totrash=1";
+	$query="SELECT count(id) FROM #__jj_pm WHERE totrash=1";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT_RECIPIENT."</td><td>".$result."</td></tr>";
 
-	$query="SELECT count(id) FROM #__uddeim WHERE totrashoutbox=1";
+	$query="SELECT count(id) FROM #__jj_pm WHERE totrashoutbox=1";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT_SENDER."</td><td>".$result."</td></tr>";
 	
-	$query="SELECT count(id) FROM #__uddeim WHERE totrash=1 AND totrashoutbox=1";
+	$query="SELECT count(id) FROM #__jj_pm WHERE totrash=1 AND totrashoutbox=1";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNT_TRASH."</td><td>".$result."</td></tr>";
 
-	$query="SELECT max(id) FROM #__uddeim";
+	$query="SELECT max(id) FROM #__jj_pm";
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	$max = $result;
@@ -3304,13 +3304,13 @@ function uddeIMshowstatistics($option, $task, $config) {
 	
 	$rightnow=uddetime((int)$config->timezone);
 	$timeframe=$rightnow-(86400*7);
-	$query="SELECT min(datum) FROM #__uddeim WHERE datum>=".(int)$timeframe;
+	$query="SELECT min(datum) FROM #__jj_pm WHERE datum>=".(int)$timeframe;
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	if (!$result) {
 		$result = 0;
 	} else {
-		$query="SELECT min(id) FROM #__uddeim WHERE datum=".(int)$result." LIMIT 1";
+		$query="SELECT min(id) FROM #__jj_pm WHERE datum=".(int)$result." LIMIT 1";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		$result = $max - $result + 1;
@@ -3319,13 +3319,13 @@ function uddeIMshowstatistics($option, $task, $config) {
 
 	$rightnow=uddetime((int)$config->timezone);
 	$timeframe=$rightnow-(86400*30);
-	$query="SELECT min(datum) FROM #__uddeim WHERE datum>=".(int)$timeframe;
+	$query="SELECT min(datum) FROM #__jj_pm WHERE datum>=".(int)$timeframe;
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	if (!$result) {
 		$result = 0;
 	} else {
-		$query="SELECT min(id) FROM #__uddeim WHERE datum=".(int)$result." LIMIT 1";
+		$query="SELECT min(id) FROM #__jj_pm WHERE datum=".(int)$result." LIMIT 1";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		$result = $max - $result + 1;
@@ -3334,13 +3334,13 @@ function uddeIMshowstatistics($option, $task, $config) {
 
 	$rightnow=uddetime((int)$config->timezone);
 	$timeframe=$rightnow-(86400*365);
-	$query="SELECT min(datum) FROM #__uddeim WHERE datum>=".(int)$timeframe;
+	$query="SELECT min(datum) FROM #__jj_pm WHERE datum>=".(int)$timeframe;
 	$database->setQuery($query);
 	$result=(int)$database->loadResult();
 	if (!$result) {
 		$result = 0;
 	} else {
-		$query="SELECT min(id) FROM #__uddeim WHERE datum=".(int)$result." LIMIT 1";
+		$query="SELECT min(id) FROM #__jj_pm WHERE datum=".(int)$result." LIMIT 1";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		$result = $max - $result + 1;
@@ -3348,12 +3348,12 @@ function uddeIMshowstatistics($option, $task, $config) {
 	echo "<tr><td>"._UDDEADM_MAINTENANCE_365DAYS."</td><td>".$result."</td></tr>";
 
 	if ($config->enableattachment) {
-		$query="SELECT COUNT(id) FROM #__uddeim_attachments";
+		$query="SELECT COUNT(id) FROM #__jj_pm_attachments";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNTFILES."</td><td>".$result."</td></tr>";
 
-		$query="SELECT COUNT(DISTINCT fileid) FROM #__uddeim_attachments";
+		$query="SELECT COUNT(DISTINCT fileid) FROM #__jj_pm_attachments";
 		$database->setQuery($query);
 		$result=(int)$database->loadResult();
 		echo "<tr><td>"._UDDEADM_MAINTENANCE_COUNTFILESDISTINCT."</td><td>".$result."</td></tr>";
@@ -3365,7 +3365,7 @@ function uddeIMshowstatistics($option, $task, $config) {
 	$rightnow=uddetime($config->timezone);
 	$sincewhen=$rightnow-($config->longwaitingdays*86400);
 	$next = (int)$config->longwaitingdays*86400;
-	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__uddeim AS a, #__users AS b, #__uddeim_emn AS c "
+	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__jj_pm AS a, #__users AS b, #__jj_pm_emn AS c "
 		 . "WHERE a.toid=b.id AND a.toid=c.userid AND "
 		 . "a.toread=0 AND a.totrash=0 AND b.block=0 AND "
 		 . "a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart." AND "
@@ -3388,7 +3388,7 @@ function uddeIMshowstatistics($option, $task, $config) {
 	$rightnow=uddetime($config->timezone)+7*86400;
 	$sincewhen=$rightnow-($config->longwaitingdays*86400);
 	$next = (int)$config->longwaitingdays*86400;
-	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__uddeim AS a, #__users AS b, #__uddeim_emn AS c "
+	$sql = "SELECT min(a.id) AS mid, a.toid, b.name, a.datum, c.remindersent FROM #__jj_pm AS a, #__users AS b, #__jj_pm_emn AS c "
 		 . "WHERE a.toid=b.id AND a.toid=c.userid AND "
 		 . "a.toread=0 AND a.totrash=0 AND b.block=0 AND "
 		 . "a.datum<".$sincewhen." AND a.datum>".$config->forgetmenotstart." AND "
@@ -3415,7 +3415,7 @@ function uddeIMshowstatistics($option, $task, $config) {
 function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	$database = uddeIMgetDatabase();
 
-	$sql = "SHOW FIELDS FROM #__uddeim_userlists LIKE 'global';";
+	$sql = "SHOW FIELDS FROM #__jj_pm_userlists LIKE 'global';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3426,7 +3426,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("global" , $fields) )
 		return 0;	// it is 1.5 or below, since 1.6 has "global"
 
-	$sql = "SHOW FIELDS FROM #__uddeim_spam LIKE 'mid';";
+	$sql = "SHOW FIELDS FROM #__jj_pm_spam LIKE 'mid';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3437,7 +3437,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("mid" , $fields) )
 		return 0;	// it is 1.6 or below, since 1.7 has "mid"
 
-	$sql = "SHOW FIELDS FROM #__uddeim_emn LIKE 'locked';";
+	$sql = "SHOW FIELDS FROM #__jj_pm_emn LIKE 'locked';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3448,7 +3448,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("locked" , $fields) )
 		return 0;	// it is 1.6 or below, since 1.7 has "locked"
 
-	$sql = "SHOW FIELDS FROM #__uddeim_attachments LIKE 'filename';";
+	$sql = "SHOW FIELDS FROM #__jj_pm_attachments LIKE 'filename';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3459,7 +3459,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("filename" , $fields) )
 		return 0;	// it is 1.7 or 1.8, since 1.9 has "attachments"
 
-	$sql = "SHOW FIELDS FROM #__uddeim LIKE 'systemflag';";
+	$sql = "SHOW FIELDS FROM #__jj_pm LIKE 'systemflag';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)
@@ -3470,7 +3470,7 @@ function uddeIMcheckForValidDB($option, $task, $uddeimversion, $config) {
 	if ( !in_array("systemflag" , $fields) )
 		return 0;	// it is 1.9 or 2.0, since 2.1 has "systemflag"
 
-	$sql = "SHOW FIELDS FROM #__uddeim LIKE 'delayed';";
+	$sql = "SHOW FIELDS FROM #__jj_pm LIKE 'delayed';";
 	$database->setQuery($sql);
 	$rows = $database->loadObjectList();
 	if (!$rows)

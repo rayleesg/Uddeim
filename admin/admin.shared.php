@@ -644,26 +644,26 @@ function uddeIMdoPrune($config) {
 	$timeframe=$rightnow-$offset;
 	// $trashoffset=((float)$config->TrashLifespan)*86400;
 	// $trashframe=$rightnow-$trashoffset;
-	// $sql="DELETE FROM #__uddeim WHERE toread>0 AND totrash<1 AND datum<".$timeframe;
+	// $sql="DELETE FROM #__jj_pm WHERE toread>0 AND totrash<1 AND datum<".$timeframe;
 	// change in behaviour: (move to trash, don't erase after timeframe elapsed)
-	// $sql="UPDATE #__uddeim SET totrash=1, totrashdate=".$rightnow." WHERE toread=1 AND totrash=0 AND datum<".$timeframe." AND (totrashdate<".$trashframe." OR totrashdate IS NULL)";
-	$sql="UPDATE #__uddeim SET totrash=1, totrashdate=".$rightnow." WHERE archived=0 AND toread=1 AND totrash=0 AND datum<".$timeframe;
+	// $sql="UPDATE #__jj_pm SET totrash=1, totrashdate=".$rightnow." WHERE toread=1 AND totrash=0 AND datum<".$timeframe." AND (totrashdate<".$trashframe." OR totrashdate IS NULL)";
+	$sql="UPDATE #__jj_pm SET totrash=1, totrashdate=".$rightnow." WHERE archived=0 AND toread=1 AND totrash=0 AND datum<".$timeframe;
 	$database->setQuery($sql);
 	$queryresult = $database->query();
 	
 	// trash unread messages after configured time frame, doesn't matter if these messages are intern, from public users or deleted users
 	$offset=$config->UnreadMessagesLifespan*86400;
 	$timeframe=$rightnow-$offset;
-	// $sql="DELETE FROM #__uddeim WHERE totrash<1 AND datum<".$timeframe;
+	// $sql="DELETE FROM #__jj_pm WHERE totrash<1 AND datum<".$timeframe;
 	// change in behaviour: (move to trash, don't erase after timeframe elapsed)
-	$sql="UPDATE #__uddeim SET totrash=1, totrashdate=".$rightnow." WHERE archived=0 AND toread=0 AND totrash=0 AND datum<".$timeframe;	
+	$sql="UPDATE #__jj_pm SET totrash=1, totrashdate=".$rightnow." WHERE archived=0 AND toread=0 AND totrash=0 AND datum<".$timeframe;	
 	$database->setQuery($sql);
 	$queryresult = $database->query();
 	
 	// trash sent messages after configured time frame, doesn't matter if these messages are intern, from public users or deleted users
 	$offset=$config->SentMessagesLifespan*86400;
 	$timeframe=$rightnow-$offset;
-	$sql="UPDATE #__uddeim SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE totrashoutbox=0 AND datum<".$timeframe;
+	$sql="UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".$rightnow." WHERE totrashoutbox=0 AND datum<".$timeframe;
 	$database->setQuery($sql);
 	$queryresult = $database->query();
 
@@ -671,8 +671,8 @@ function uddeIMdoPrune($config) {
 	// delete messages from trashcans after configured time frame (both, sender and receiver, must have trashed the message), doesn't matter if these messages are intern, from public users or deleted users
 	$offset=((float)$config->TrashLifespan)*86400;
 	$timeframe=$rightnow-$offset;
-	// SSL: $sql="DELETE FROM #__uddeim WHERE totrash>0 AND totrashdate<".$timeframe;
-	$sql="DELETE FROM #__uddeim WHERE (totrashoutbox=1 AND totrashdateoutbox<".$timeframe.") AND (totrash=1 AND totrashdate<".$timeframe.")";
+	// SSL: $sql="DELETE FROM #__jj_pm WHERE totrash>0 AND totrashdate<".$timeframe;
+	$sql="DELETE FROM #__jj_pm WHERE (totrashoutbox=1 AND totrashdateoutbox<".$timeframe.") AND (totrash=1 AND totrashdate<".$timeframe.")";
 	$database->setQuery($sql);
 	$queryresult = $database->query();
 	
@@ -680,12 +680,12 @@ function uddeIMdoPrune($config) {
 	// delete "copy to author" messages from trashcans after configured time frame, fromid is same as toid
 	$offset=((float)$config->TrashLifespan)*86400;
 	$timeframe=$rightnow-$offset;
-	$sql="DELETE FROM #__uddeim WHERE (fromid=toid) AND (totrash=1 AND totrashdate<".$timeframe.")";
+	$sql="DELETE FROM #__jj_pm WHERE (fromid=toid) AND (totrash=1 AND totrashdate<".$timeframe.")";
 	$database->setQuery($sql);
 	$queryresult = $database->query();
 
 	// erase unread expired messages
-	$sql="DELETE FROM #__uddeim WHERE toread=0 AND expires>0 AND expires<".$rightnow;
+	$sql="DELETE FROM #__jj_pm WHERE toread=0 AND expires>0 AND expires<".$rightnow;
 	$database->setQuery($sql);
 	$queryresult = $database->query();
 }
@@ -696,7 +696,7 @@ function uddeIMdoFilePrune($config) {
 
 	$rightnow=uddetime($config->timezone);
 
-	$sql = "SELECT count(b.id) AS count,a.id,a.filename,a.tempname,a.fileid FROM #__uddeim_attachments AS a LEFT JOIN #__uddeim AS b ON a.mid=b.id GROUP BY a.fileid HAVING count=0";
+	$sql = "SELECT count(b.id) AS count,a.id,a.filename,a.tempname,a.fileid FROM #__jj_pm_attachments AS a LEFT JOIN #__jj_pm AS b ON a.mid=b.id GROUP BY a.fileid HAVING count=0";
 	$database->setQuery( $sql );
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -705,7 +705,7 @@ function uddeIMdoFilePrune($config) {
 	while (list($key, $row) = each($value)) {
 		if (file_exists($uploaddir."/".$row->tempname))
 			unlink($uploaddir."/".$row->tempname);
-		$sql="DELETE FROM #__uddeim_attachments WHERE fileid=".$database->Quote($row->fileid);
+		$sql="DELETE FROM #__jj_pm_attachments WHERE fileid=".$database->Quote($row->fileid);
 		$database->setQuery($sql);
 		if (!$database->query())
 			die("SQL error when attempting to delete an attachment" . $database->stderr(true));
@@ -716,7 +716,7 @@ function uddeIMpreSaveAttachmentsRemove($config) {
 	$database = uddeIMgetDatabase();
 	$uploaddir = uddeIMgetPath('absolute_path')."/images/uddeimfiles";
 	
-	$sql = "SELECT * FROM #__uddeim_attachments WHERE mid=-1";
+	$sql = "SELECT * FROM #__jj_pm_attachments WHERE mid=-1";
 	$database->setQuery( $sql );
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -727,7 +727,7 @@ function uddeIMpreSaveAttachmentsRemove($config) {
 			if (file_exists($uploaddir."/".$row->tempname))
 				unlink($uploaddir."/".$row->tempname);
 		}
-		$sql = "DELETE FROM #__uddeim_attachments WHERE mid=-1";
+		$sql = "DELETE FROM #__jj_pm_attachments WHERE mid=-1";
 		$database->setQuery($sql);
 		if (!$database->query())
 			die("SQL error when attempting to delete temporary attachment markers" . $database->stderr(true));

@@ -24,7 +24,7 @@ function uddeIMsaveRAWmessage($fromid, $toid, $replyid, $message, $date, $config
 	if ($cryptmode==1) {
 		$themode = 1;
 		$cm = uddeIMencrypt($message,$config->cryptkey,CRYPT_MODE_BASE64);
-		$sql  = "INSERT INTO #__uddeim (fromid, toid, replyid, message, datum, cryptmode, crypthash) VALUES (".
+		$sql  = "INSERT INTO #__jj_pm (fromid, toid, replyid, message, datum, cryptmode, crypthash) VALUES (".
 				(int)$fromid.", ".(int)$toid.", ".(int)$replyid.", '".$cm."', ".$date.", 1, '".md5($config->cryptkey)."')";
 	} elseif ($cryptmode==2) {
 		$themode = 2;
@@ -34,12 +34,12 @@ function uddeIMsaveRAWmessage($fromid, $toid, $replyid, $message, $date, $config
 			$thepass=$config->cryptkey;
 		}
 		$cm = uddeIMencrypt($message,$thepass,CRYPT_MODE_BASE64);
-		$sql  = "INSERT INTO #__uddeim (fromid, toid, replyid, message, datum, cryptmode, crypthash) VALUES (".
+		$sql  = "INSERT INTO #__jj_pm (fromid, toid, replyid, message, datum, cryptmode, crypthash) VALUES (".
 				(int)$fromid.", ".(int)$toid.", ".(int)$replyid.", '".$cm."', ".$date.", ".$themode.", '".md5($thepass)."')";
 	} elseif ($cryptmode==3) {
 		$themode = 3;
 		$cm = uddeIMencrypt($message,"",CRYPT_MODE_STOREBASE64);
-		$sql  = "INSERT INTO #__uddeim (fromid, toid, replyid, message, datum, cryptmode) VALUES (".
+		$sql  = "INSERT INTO #__jj_pm (fromid, toid, replyid, message, datum, cryptmode) VALUES (".
 				(int)$fromid.", ".(int)$toid.", ".(int)$replyid.", '".$cm."', ".$date.", 3)";
 	} elseif ($cryptmode==4) {
 		$themode = 4;
@@ -51,10 +51,10 @@ function uddeIMsaveRAWmessage($fromid, $toid, $replyid, $message, $date, $config
 			$cipher = CRYPT_MODE_BASE64;
 		}
 		$cm = uddeIMencrypt($message,$thepass,$cipher);
-		$sql  = "INSERT INTO #__uddeim (fromid, toid, replyid, message, datum, cryptmode, crypthash) VALUES (".
+		$sql  = "INSERT INTO #__jj_pm (fromid, toid, replyid, message, datum, cryptmode, crypthash) VALUES (".
 				(int)$fromid.", ".(int)$toid.", ".(int)$replyid.", '".$cm."', ".$date.", ".$themode.", '".md5($thepass)."')";
 	} else {
-		$sql  = "INSERT INTO #__uddeim (fromid, toid, replyid, message, datum) VALUES (".
+		$sql  = "INSERT INTO #__jj_pm (fromid, toid, replyid, message, datum) VALUES (".
 				(int)$fromid.", ".(int)$toid.", ".(int)$replyid.", '".$message."', ".$date.")";
 	}
 	$database->setQuery($sql);
@@ -71,7 +71,7 @@ function uddeIMsaveRAWmessage($fromid, $toid, $replyid, $message, $date, $config
 
 function uddeIMgetSpamStatus($messageid) {
 	$database = uddeIMgetDatabase();
-	$sql = "SELECT count(id) FROM #__uddeim_spam WHERE mid=".(int)$messageid;
+	$sql = "SELECT count(id) FROM #__jj_pm_spam WHERE mid=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -79,7 +79,7 @@ function uddeIMgetSpamStatus($messageid) {
 
 function uddeIMdeleteReport($myself, $messageid) {
 	$database = uddeIMgetDatabase();
-	$sql = "DELETE FROM #__uddeim_spam WHERE toid=".(int)$myself." AND mid=".(int)$messageid;
+	$sql = "DELETE FROM #__jj_pm_spam WHERE toid=".(int)$myself." AND mid=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query())
 		die("SQL error when attempting to recall a report" . $db->stderr(true));
@@ -338,7 +338,7 @@ function uddeIMisOnline($myself) {
 
 function uddeIMinsertBlockerBlocked($blocker, $blocked) {
 	$database = uddeIMgetDatabase();
-	$sql="INSERT INTO #__uddeim_blocks (blocker, blocked) VALUES (".(int)$blocker.",".(int)$blocked.")";
+	$sql="INSERT INTO #__jj_pm_blocks (blocker, blocked) VALUES (".(int)$blocker.",".(int)$blocked.")";
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to save a message" . $database->stderr(true));
@@ -347,7 +347,7 @@ function uddeIMinsertBlockerBlocked($blocker, $blocked) {
 
 function uddeIMcheckBlockerBlocked($blocker, $blocked) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT count(id) FROM #__uddeim_blocks WHERE blocker=".(int)$blocker." AND blocked=".(int)$blocked;
+	$sql="SELECT count(id) FROM #__jj_pm_blocks WHERE blocker=".(int)$blocker." AND blocked=".(int)$blocked;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -355,7 +355,7 @@ function uddeIMcheckBlockerBlocked($blocker, $blocked) {
 
 function uddeIMpurgeBlockerBlocked($blocker, $blocked) {
 	$database = uddeIMgetDatabase();
-	$sql="DELETE FROM #__uddeim_blocks WHERE blocker=".(int)$blocker." AND blocked=".(int)$blocked;
+	$sql="DELETE FROM #__jj_pm_blocks WHERE blocker=".(int)$blocker." AND blocked=".(int)$blocked;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to delete a blocking" . $database->stderr(true));
@@ -364,7 +364,7 @@ function uddeIMpurgeBlockerBlocked($blocker, $blocked) {
 
 function uddeIMselectBlockerBlockedList($blocker, $config) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT a.*, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__uddeim_blocks AS a, #__users AS b WHERE blocker=".(int)$blocker." AND a.blocked=b.id";
+	$sql="SELECT a.*, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__jj_pm_blocks AS a, #__users AS b WHERE blocker=".(int)$blocker." AND a.blocked=b.id";
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -379,9 +379,9 @@ function uddeIMselectBlockerBlockedList($blocker, $config) {
 function uddeIMgetUserlistCount($myself, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal)
-		$sql = "SELECT count(id) FROM #__uddeim_userlists WHERE (global<>0 OR userid=".(int)$myself.")";
+		$sql = "SELECT count(id) FROM #__jj_pm_userlists WHERE (global<>0 OR userid=".(int)$myself.")";
 	else
-		$sql = "SELECT count(id) FROM #__uddeim_userlists WHERE userid=".(int)$myself;
+		$sql = "SELECT count(id) FROM #__jj_pm_userlists WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -390,9 +390,9 @@ function uddeIMgetUserlistCount($myself, $withglobal=0) {
 function uddeIMexistsUserlistName($myself, $listid, $name, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal) 		// when it is a global list check globally
-		$sql="SELECT COUNT(id) FROM #__uddeim_userlists WHERE name=".$database->Quote($name)." AND id<>".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")";	// do I already have a list with this name?
+		$sql="SELECT COUNT(id) FROM #__jj_pm_userlists WHERE name=".$database->Quote($name)." AND id<>".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")";	// do I already have a list with this name?
 	else
-		$sql="SELECT COUNT(id) FROM #__uddeim_userlists WHERE name=".$database->Quote($name)." AND id<>".(int)$listid." AND userid=".(int)$myself;	// do I already have a list with this name?
+		$sql="SELECT COUNT(id) FROM #__jj_pm_userlists WHERE name=".$database->Quote($name)." AND id<>".(int)$listid." AND userid=".(int)$myself;	// do I already have a list with this name?
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -401,9 +401,9 @@ function uddeIMexistsUserlistName($myself, $listid, $name, $withglobal=0) {
 function uddeIMselectUserlists($myself, $limitstart, $limit, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal) 		// when it is a global list check globally
-		$sql = "SELECT * FROM #__uddeim_userlists WHERE (global<>0 OR userid=".(int)$myself.") ORDER BY name LIMIT ".(int)$limitstart.", ".(int)$limit;
+		$sql = "SELECT * FROM #__jj_pm_userlists WHERE (global<>0 OR userid=".(int)$myself.") ORDER BY name LIMIT ".(int)$limitstart.", ".(int)$limit;
 	else
-		$sql = "SELECT * FROM #__uddeim_userlists WHERE userid=".(int)$myself." ORDER BY name LIMIT ".(int)$limitstart.", ".(int)$limit;
+		$sql = "SELECT * FROM #__jj_pm_userlists WHERE userid=".(int)$myself." ORDER BY name LIMIT ".(int)$limitstart.", ".(int)$limit;
 	$database->setQuery( $sql );
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -414,9 +414,9 @@ function uddeIMselectUserlists($myself, $limitstart, $limit, $withglobal=0) {
 function uddeIMselectAllUserlists($myself, $my_gid, $config, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal) 		// when it is a global list check globally
-		$sql = "SELECT * FROM #__uddeim_userlists WHERE (global<>0 OR userid=".(int)$myself.") ORDER BY name";
+		$sql = "SELECT * FROM #__jj_pm_userlists WHERE (global<>0 OR userid=".(int)$myself.") ORDER BY name";
 	else
-		$sql = "SELECT * FROM #__uddeim_userlists WHERE userid=".(int)$myself." ORDER BY name";
+		$sql = "SELECT * FROM #__jj_pm_userlists WHERE userid=".(int)$myself." ORDER BY name";
 	$database->setQuery( $sql );
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -440,9 +440,9 @@ function uddeIMselectAllUserlists($myself, $my_gid, $config, $withglobal=0) {
 function uddeIMselectUserlistsListFromID($myself, $listid, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal) 		// when it is a global list check globally
-		$database->setQuery( "SELECT * FROM #__uddeim_userlists WHERE id=".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")");
+		$database->setQuery( "SELECT * FROM #__jj_pm_userlists WHERE id=".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")");
 	else
-		$database->setQuery( "SELECT * FROM #__uddeim_userlists WHERE id=".(int)$listid." AND userid=".(int)$myself);
+		$database->setQuery( "SELECT * FROM #__jj_pm_userlists WHERE id=".(int)$listid." AND userid=".(int)$myself);
 	$value = $database->loadObjectList(); 		
 	if (!$value)
 		$value = Array();
@@ -452,9 +452,9 @@ function uddeIMselectUserlistsListFromID($myself, $listid, $withglobal=0) {
 function uddeIMselectUserlistsListFromName($myself, $listname, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal) 		// when it is a global list check globally
-		$database->setQuery( "SELECT * FROM #__uddeim_userlists WHERE name=".$database->Quote($listname)." AND (global<>0 OR userid=".(int)$myself.")");
+		$database->setQuery( "SELECT * FROM #__jj_pm_userlists WHERE name=".$database->Quote($listname)." AND (global<>0 OR userid=".(int)$myself.")");
 	else
-		$database->setQuery( "SELECT * FROM #__uddeim_userlists WHERE name=".$database->Quote($listname)." AND userid=".(int)$myself);
+		$database->setQuery( "SELECT * FROM #__jj_pm_userlists WHERE name=".$database->Quote($listname)." AND userid=".(int)$myself);
 	$value = $database->loadObjectList();
 	if (!$value)
 		$value = Array();
@@ -464,9 +464,9 @@ function uddeIMselectUserlistsListFromName($myself, $listname, $withglobal=0) {
 function uddeIMpurgeUserlist($myself, $listid, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal) 		// when it is a global list check globally
-		$sql="DELETE FROM #__uddeim_userlists WHERE id=".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")";
+		$sql="DELETE FROM #__jj_pm_userlists WHERE id=".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")";
 	else
-		$sql="DELETE FROM #__uddeim_userlists WHERE id=".(int)$listid." AND userid=".(int)$myself;
+		$sql="DELETE FROM #__jj_pm_userlists WHERE id=".(int)$listid." AND userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to delete a list" . $database->stderr(true));
@@ -476,9 +476,9 @@ function uddeIMpurgeUserlist($myself, $listid, $withglobal=0) {
 function uddeIMupdateUserlist($myself, $listid, $listname, $listdesc, $listids, $lglobal, $withglobal=0) {
 	$database = uddeIMgetDatabase();
 	if ($withglobal) 		// when it is a global list check globally
-		$sql="UPDATE #__uddeim_userlists SET name=".$database->Quote($listname).", description=".$database->Quote($listdesc).", userids=".$database->Quote($listids).", global=".(int)$lglobal." WHERE id=".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")";
+		$sql="UPDATE #__jj_pm_userlists SET name=".$database->Quote($listname).", description=".$database->Quote($listdesc).", userids=".$database->Quote($listids).", global=".(int)$lglobal." WHERE id=".(int)$listid." AND (global<>0 OR userid=".(int)$myself.")";
 	else
-		$sql="UPDATE #__uddeim_userlists SET name=".$database->Quote($listname).", description=".$database->Quote($listdesc).", userids=".$database->Quote($listids).", global=".(int)$lglobal." WHERE id=".(int)$listid." AND userid=".(int)$myself;
+		$sql="UPDATE #__jj_pm_userlists SET name=".$database->Quote($listname).", description=".$database->Quote($listdesc).", userids=".$database->Quote($listids).", global=".(int)$lglobal." WHERE id=".(int)$listid." AND userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query())
 		die("SQL error when attempting to update a list" . $database->stderr(true));
@@ -486,7 +486,7 @@ function uddeIMupdateUserlist($myself, $listid, $listname, $listdesc, $listids, 
 
 function uddeIMinsertUserlist($myself, $listname, $listdesc, $listids, $lglobal) {
 	$database = uddeIMgetDatabase();
-	$sql="INSERT INTO #__uddeim_userlists (userid, name, description, userids, global) VALUES (".(int)$myself.", ".$database->Quote($listname).", ".$database->Quote($listdesc).", ".$database->Quote($listids).", ".(int)$lglobal.")";
+	$sql="INSERT INTO #__jj_pm_userlists (userid, name, description, userids, global) VALUES (".(int)$myself.", ".$database->Quote($listname).", ".$database->Quote($listdesc).", ".$database->Quote($listids).", ".(int)$lglobal.")";
 	$database->setQuery($sql);
 	if (!$database->query())
 		die("SQL error when attempting to save a list" . $database->stderr(true));
@@ -498,7 +498,7 @@ function uddeIMinsertUserlist($myself, $listname, $listdesc, $listids, $lglobal)
 
 function uddeIMgetEMNpublic($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT public FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT public FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -506,7 +506,7 @@ function uddeIMgetEMNpublic($myself) {
 
 function uddeIMgetEMNpopup($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT popup FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT popup FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -514,7 +514,7 @@ function uddeIMgetEMNpopup($myself) {
 
 function uddeIMgetEMNstatus($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT status FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT status FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -522,7 +522,7 @@ function uddeIMgetEMNstatus($myself) {
 
 function uddeIMgetEMNautoresponder($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT autoresponder FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT autoresponder FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -530,7 +530,7 @@ function uddeIMgetEMNautoresponder($myself) {
 
 function uddeIMgetEMNautorespondertext($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT autorespondertext FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT autorespondertext FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = $database->loadResult();
 	$value = stripslashes($value);
@@ -539,7 +539,7 @@ function uddeIMgetEMNautorespondertext($myself) {
 
 function uddeIMgetEMNautoforward($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT autoforward FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT autoforward FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -547,7 +547,7 @@ function uddeIMgetEMNautoforward($myself) {
 
 function uddeIMgetEMNautoforwardid($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT autoforwardid FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT autoforwardid FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -555,7 +555,7 @@ function uddeIMgetEMNautoforwardid($myself) {
 
 function uddeIMgetEMNremindersent($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT remindersent FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT remindersent FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -563,7 +563,7 @@ function uddeIMgetEMNremindersent($myself) {
 
 function uddeIMgetEMNlastsent($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT lastsent FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT lastsent FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -571,7 +571,7 @@ function uddeIMgetEMNlastsent($myself) {
 
 function uddeIMgetEMNlocked($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT locked FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT locked FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -579,7 +579,7 @@ function uddeIMgetEMNlocked($myself) {
 
 function uddeIMgetEMNmoderated($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT moderated FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT moderated FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -587,7 +587,7 @@ function uddeIMgetEMNmoderated($myself) {
 
 function uddeIMupdateEMNstatus($myself, $status) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET status=".(int)$status." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET status=".(int)$status." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -596,7 +596,7 @@ function uddeIMupdateEMNstatus($myself, $status) {
 
 function uddeIMupdateEMNreminder($myself, $reminder) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET remindersent=".(int)$reminder." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET remindersent=".(int)$reminder." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -605,7 +605,7 @@ function uddeIMupdateEMNreminder($myself, $reminder) {
 
 function uddeIMupdateEMNlastsent($myself, $lastsent) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET lastsent=".(int)$lastsent." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET lastsent=".(int)$lastsent." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -614,7 +614,7 @@ function uddeIMupdateEMNlastsent($myself, $lastsent) {
 
 function uddeIMupdateEMNpublic($myself, $public) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET public=".(int)$public." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET public=".(int)$public." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -623,7 +623,7 @@ function uddeIMupdateEMNpublic($myself, $public) {
 
 function uddeIMupdateEMNpopup($myself, $popup) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET popup=".(int)$popup." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET popup=".(int)$popup." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -632,7 +632,7 @@ function uddeIMupdateEMNpopup($myself, $popup) {
 
 function uddeIMupdateEMNautoresponder($myself, $autoresponder) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET autoresponder=".(int)$autoresponder." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET autoresponder=".(int)$autoresponder." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -641,7 +641,7 @@ function uddeIMupdateEMNautoresponder($myself, $autoresponder) {
 
 function uddeIMupdateEMNautorespondertext($myself, $autorespondertext) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET autorespondertext='".addslashes(strip_tags($autorespondertext))."' WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET autorespondertext='".addslashes(strip_tags($autorespondertext))."' WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -650,7 +650,7 @@ function uddeIMupdateEMNautorespondertext($myself, $autorespondertext) {
 
 function uddeIMupdateEMNautoforward($myself, $autoforward) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET autoforward=".(int)$autoforward." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET autoforward=".(int)$autoforward." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -659,7 +659,7 @@ function uddeIMupdateEMNautoforward($myself, $autoforward) {
 
 function uddeIMupdateEMNautoforwardid($myself, $autoforwardid) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim_emn SET autoforwardid=".(int)$autoforwardid." WHERE userid=".(int)$myself;
+	$sql="UPDATE #__jj_pm_emn SET autoforwardid=".(int)$autoforwardid." WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error" . $database->stderr(true));
@@ -668,7 +668,7 @@ function uddeIMupdateEMNautoforwardid($myself, $autoforwardid) {
 
 function uddeIMexistsEMN($myself) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT count(id) FROM #__uddeim_emn WHERE userid=".(int)$myself;
+	$sql="SELECT count(id) FROM #__jj_pm_emn WHERE userid=".(int)$myself;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -686,7 +686,7 @@ function uddeIMinsertEMNdefaults($myself, $config) {
 	$mod	= 0;
 	if (uddeIMisReggedOnly($config->usergid))
 		$mod	= $config->modnewusers;
-	$sql="INSERT INTO #__uddeim_emn (moderated, locked, status, popup, public, autoresponder, autoforward, autoforwardid, userid) VALUES (".
+	$sql="INSERT INTO #__jj_pm_emn (moderated, locked, status, popup, public, autoresponder, autoforward, autoforwardid, userid) VALUES (".
 			(int)$mod.", ".
 			(int)$locked.", ".
 			(int)$status.", ".
@@ -710,14 +710,14 @@ function uddeIMinsertEMNdefaults($myself, $config) {
 
 function uddeIMgetArchiveCount($myself, $filter_user=0, $filter_unread=0, $filter_flagged=0) {
 	$database = uddeIMgetDatabase();
-//	$sql = "SELECT count(a.id) FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.totrash=0 AND archived=1 AND a.toid=".(int)$myself;
+//	$sql = "SELECT count(a.id) FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.totrash=0 AND archived=1 AND a.toid=".(int)$myself;
 // OPT
 	$filter="";
 	if ($filter_user) $filter = " AND a.fromid=".(int)$filter_user;
 	if ($filter_user==-1) $filter = " AND a.fromid=0";
 	if ($filter_unread) $filter .= " AND a.toread=0";
 	if ($filter_flagged) $filter .= " AND a.flagged<>0";
-	$sql = "SELECT count(a.id) FROM #__uddeim AS a WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter;
+	$sql = "SELECT count(a.id) FROM #__jj_pm AS a WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter;
 	$database->setQuery($sql);
 	$total = (int)$database->loadResult();
 	return $total;
@@ -725,14 +725,14 @@ function uddeIMgetArchiveCount($myself, $filter_user=0, $filter_unread=0, $filte
 
 function uddeIMgetInboxCount($myself, $filter_user=0, $filter_unread=0, $filter_flagged=0) {
 	$database = uddeIMgetDatabase();
-//	$sql = "SELECT count(a.id) FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0";
+//	$sql = "SELECT count(a.id) FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0";
 // OPT
 	$filter="";
 	if ($filter_user) $filter = " AND a.fromid=".(int)$filter_user;
 	if ($filter_user==-1) $filter = " AND a.fromid=0";
 	if ($filter_unread) $filter .= " AND a.toread=0";
 	if ($filter_flagged) $filter .= " AND a.flagged<>0";
-	$sql = "SELECT count(a.id) FROM #__uddeim AS a WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0 AND `a`.`delayed`=0".$filter;
+	$sql = "SELECT count(a.id) FROM #__jj_pm AS a WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0 AND `a`.`delayed`=0".$filter;
 	$database->setQuery($sql);
 	$total = (int)$database->loadResult();
 	return $total;
@@ -740,9 +740,9 @@ function uddeIMgetInboxCount($myself, $filter_user=0, $filter_unread=0, $filter_
 
 function uddeIMgetInboxArchiveCount($myself) {
 	$database = uddeIMgetDatabase();
-//	$sql = "SELECT count(a.id) FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0";
+//	$sql = "SELECT count(a.id) FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0";
 // OPT
-	$sql = "SELECT count(a.id) FROM #__uddeim AS a WHERE a.toid=".(int)$myself." AND a.totrash=0 AND `a`.`delayed`=0";
+	$sql = "SELECT count(a.id) FROM #__jj_pm AS a WHERE a.toid=".(int)$myself." AND a.totrash=0 AND `a`.`delayed`=0";
 	$database->setQuery($sql);
 	$total = (int)$database->loadResult();
 	return $total;
@@ -755,7 +755,7 @@ function uddeIMgetOutboxCount($myself, $filter_user=0, $filter_unread=0, $filter
 	if ($filter_user==-1) $filter = " AND a.toid=0";
 	if ($filter_unread) $filter .= " AND a.toread=0";
 	if ($filter_flagged) $filter .= " AND a.flagged<>0";
-	$sql = "SELECT count(a.id) FROM #__uddeim AS a WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0".$filter." AND a.systemflag=0";
+	$sql = "SELECT count(a.id) FROM #__jj_pm AS a WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0".$filter." AND a.systemflag=0";
 	$database->setQuery($sql);
 	$total = (int)$database->loadResult();
 	return $total;
@@ -764,11 +764,11 @@ function uddeIMgetOutboxCount($myself, $filter_user=0, $filter_unread=0, $filter
 function uddeIMgetTrashcanCount($myself, $timeframe) {
 	$database = uddeIMgetDatabase();
 	// how many messages total?
-	//	$sql="SELECT count(id) FROM #__uddeim WHERE (totrashdate>=".$timeframe." AND toid=".(int)$myself." AND totrash=1) OR (totrashdateoutbox>=".$timeframe." AND fromid=".(int)$myself." AND totrashoutbox=1)";
+	//	$sql="SELECT count(id) FROM #__jj_pm WHERE (totrashdate>=".$timeframe." AND toid=".(int)$myself." AND totrash=1) OR (totrashdateoutbox>=".$timeframe." AND fromid=".(int)$myself." AND totrashoutbox=1)";
 	// don't count messages that are "copy to me" messages and sender has already trashed the message (totrashoutbox=1 and fromid=toid)
 	// !!! systemmessages from me to others should not be shown here when  totrashoutbox=1 and totrashdateoutbox=valid (==add: && systemflag=0)
 	$sql = "SELECT count(a.id)
-				FROM #__uddeim AS a 
+				FROM #__jj_pm AS a 
 				WHERE (totrashdate       >= ".(int)$timeframe." AND a.totrash=1       AND a.toid  =".(int)$myself.") 
 				   OR (totrashdateoutbox >= ".(int)$timeframe." AND a.totrashoutbox=1 AND a.fromid=".(int)$myself." AND a.toid<>".(int)$myself." AND systemflag=0)"; 
 	$database->setQuery($sql);
@@ -778,7 +778,7 @@ function uddeIMgetTrashcanCount($myself, $timeframe) {
 
 function uddeIMgetAttachmentCount($messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT COUNT(id) FROM #__uddeim_attachments WHERE mid=".(int)$messageid;
+	$sql="SELECT COUNT(id) FROM #__jj_pm_attachments WHERE mid=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -786,7 +786,7 @@ function uddeIMgetAttachmentCount($messageid) {
 
 function uddeIMgetFlagged($messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT flagged FROM #__uddeim WHERE id=".(int)$messageid;
+	$sql="SELECT flagged FROM #__jj_pm WHERE id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -794,7 +794,7 @@ function uddeIMgetFlagged($messageid) {
 
 function uddeIMgetDelayed($messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT `delayed` FROM #__uddeim WHERE id=".(int)$messageid;
+	$sql="SELECT `delayed` FROM #__jj_pm WHERE id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -802,7 +802,7 @@ function uddeIMgetDelayed($messageid) {
 
 function uddeIMgetToread($messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT toread FROM #__uddeim WHERE id=".(int)$messageid;
+	$sql="SELECT toread FROM #__jj_pm WHERE id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -810,7 +810,7 @@ function uddeIMgetToread($messageid) {
 
 function uddeIMgetArchived($messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT archived FROM #__uddeim WHERE id=".(int)$messageid;
+	$sql="SELECT archived FROM #__jj_pm WHERE id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -818,7 +818,7 @@ function uddeIMgetArchived($messageid) {
 
 function uddeIMgetArchivedFromTrashedMessage($myself, $messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT archived FROM #__uddeim WHERE (toid=".(int)$myself." AND id=".(int)$messageid." AND totrash=1) OR (fromid=".(int)$myself." AND id=".(int)$messageid." AND totrashoutbox=1)";
+	$sql="SELECT archived FROM #__jj_pm WHERE (toid=".(int)$myself." AND id=".(int)$messageid." AND totrash=1) OR (fromid=".(int)$myself." AND id=".(int)$messageid." AND totrashoutbox=1)";
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -826,7 +826,7 @@ function uddeIMgetArchivedFromTrashedMessage($myself, $messageid) {
 
 function uddeIMgetTotrash($myself, $messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT totrash FROM #__uddeim WHERE toid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="SELECT totrash FROM #__jj_pm WHERE toid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -834,7 +834,7 @@ function uddeIMgetTotrash($myself, $messageid) {
 
 function uddeIMgetTotrashoutbox($myself, $messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT totrashoutbox FROM #__uddeim WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="SELECT totrashoutbox FROM #__jj_pm WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -842,7 +842,7 @@ function uddeIMgetTotrashoutbox($myself, $messageid) {
 
 function uddeIMupdateFlagged($myself, $messageid, $value) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim SET flagged=".(int)$value." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET flagged=".(int)$value." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to mark a message" . $database->stderr(true));
@@ -851,7 +851,7 @@ function uddeIMupdateFlagged($myself, $messageid, $value) {
 
 function uddeIMupdateDelayed($myself, $messageid, $value) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim SET `delayed`=".(int)$value." WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET `delayed`=".(int)$value." WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to mark a message" . $database->stderr(true));
@@ -860,8 +860,8 @@ function uddeIMupdateDelayed($myself, $messageid, $value) {
 
 function uddeIMupdateToread($myself, $messageid, $value) {
 	$database = uddeIMgetDatabase();
-//	$sql="UPDATE #__uddeim SET toread=".(int)$value." WHERE toid=".(int)$myself." AND archived=0 AND id=".(int)$messageid;
-	$sql="UPDATE #__uddeim SET toread=".(int)$value." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
+//	$sql="UPDATE #__jj_pm SET toread=".(int)$value." WHERE toid=".(int)$myself." AND archived=0 AND id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET toread=".(int)$value." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to trash a message" . $database->stderr(true));
@@ -870,7 +870,7 @@ function uddeIMupdateToread($myself, $messageid, $value) {
 
 function uddeIMupdateArchived($messageid, $value) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim SET archived=".(int)$value." WHERE id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET archived=".(int)$value." WHERE id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to archive a message" . $database->stderr(true));
@@ -879,7 +879,7 @@ function uddeIMupdateArchived($messageid, $value) {
 
 function uddeIMupdateArchivedToid($myself, $messageid, $value) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim SET archived=".(int)$value." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET archived=".(int)$value." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to archive a message" . $database->stderr(true));
@@ -888,7 +888,7 @@ function uddeIMupdateArchivedToid($myself, $messageid, $value) {
 
 function uddeIMexistsMessage($id) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT count(id) FROM #__uddeim WHERE id=".(int)$id;
+	$sql="SELECT count(id) FROM #__jj_pm WHERE id=".(int)$id;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -896,7 +896,7 @@ function uddeIMexistsMessage($id) {
 
 function uddeIMexistsMessageToUser($toid, $messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="SELECT count(id) FROM #__uddeim WHERE toid=".(int)$toid." AND id=".(int)$messageid;
+	$sql="SELECT count(id) FROM #__jj_pm WHERE toid=".(int)$toid." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = (int)$database->loadResult();
 	return $value;
@@ -904,7 +904,7 @@ function uddeIMexistsMessageToUser($toid, $messageid) {
 
 function uddeIMpurgeMessageFromUser($fromid, $messageid) {
 	$database = uddeIMgetDatabase();
-	$sql="DELETE FROM #__uddeim WHERE fromid=".(int)$fromid." AND id=".(int)$messageid;
+	$sql="DELETE FROM #__jj_pm WHERE fromid=".(int)$fromid." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to delete a message" . $database->stderr(true));
@@ -913,7 +913,7 @@ function uddeIMpurgeMessageFromUser($fromid, $messageid) {
 
 function uddeIMdeleteMessageFromInbox($myself, $messageid, $deletetime) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim SET totrash=1, totrashdate=".(int)$deletetime." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET totrash=1, totrashdate=".(int)$deletetime." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to delete a message" . $database->stderr(true));
@@ -922,7 +922,7 @@ function uddeIMdeleteMessageFromInbox($myself, $messageid, $deletetime) {
 
 function uddeIMdeleteMessageFromArchive($myself, $messageid, $deletetime) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim SET totrash=1, totrashdate=".(int)$deletetime." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET totrash=1, totrashdate=".(int)$deletetime." WHERE toid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to delete a message" . $database->stderr(true));
@@ -931,7 +931,7 @@ function uddeIMdeleteMessageFromArchive($myself, $messageid, $deletetime) {
 
 function uddeIMdeleteMessageFromOutbox($myself, $messageid, $deletetime) {
 	$database = uddeIMgetDatabase();
-	$sql="UPDATE #__uddeim SET totrashoutbox=1, totrashdateoutbox=".(int)$deletetime." WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
+	$sql="UPDATE #__jj_pm SET totrashoutbox=1, totrashdateoutbox=".(int)$deletetime." WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
 	$database->setQuery($sql);
 	if (!$database->query()) {
 		die("SQL error when attempting to delete a message" . $database->stderr(true));
@@ -946,14 +946,14 @@ function uddeIMrestoreMessageToInboxOutboxArchive($myself, $messageid) {
 	// Check if the message is send to me (so it was either in the Inbox or the Archive)
 	if (uddeIMgetTotrash($myself, $messageid)) {
 		// so when the message was from the inbox/archivem then restore it to there and do not restore to outbox (might be also valid e.g. for copy2me messages)
-		$sql="UPDATE #__uddeim SET totrash=0, totrashdate=NULL WHERE toid=".(int)$myself." AND id=".(int)$messageid;
+		$sql="UPDATE #__jj_pm SET totrash=0, totrashdate=NULL WHERE toid=".(int)$myself." AND id=".(int)$messageid;
 		$database->setQuery($sql);
 		if (!$database->query()) {
 			die("SQL error when attempting to restore a message" . $database->stderr(true));
 		}
 	} else {
 		// Check if the message was send by me (so it was in the Outbox)
-		$sql="UPDATE #__uddeim SET totrashoutbox=0, totrashdateoutbox=NULL WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
+		$sql="UPDATE #__jj_pm SET totrashoutbox=0, totrashdateoutbox=NULL WHERE fromid=".(int)$myself." AND id=".(int)$messageid;
 		$database->setQuery($sql);
 		if (!$database->query()) {
 			die("SQL error when attempting to restore a message" . $database->stderr(true));
@@ -969,16 +969,16 @@ function uddeIMselectFilter($myself, $type, $config) {
 	$database = uddeIMgetDatabase();
 	switch($type) {
 		case 'postbox':	$sql = "SELECT id, displayname FROM (
-								(SELECT b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__uddeim AS a ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND a.archived=0) 
+								(SELECT b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__jj_pm AS a ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND a.archived=0) 
 								UNION
-								(SELECT b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__uddeim AS a ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0)
+								(SELECT b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__jj_pm AS a ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0)
 								) AS comb_table ORDER BY displayname";
 						break;
-		case 'inbox':	$sql = "SELECT distinct b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__uddeim AS a ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND a.archived=0 ORDER BY ".($config->realnames ? "name" : "username");
+		case 'inbox':	$sql = "SELECT distinct b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__jj_pm AS a ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND a.archived=0 ORDER BY ".($config->realnames ? "name" : "username");
 						break;
-		case 'outbox':	$sql = "SELECT distinct b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__uddeim AS a ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0 ORDER BY ".($config->realnames ? "name" : "username");
+		case 'outbox':	$sql = "SELECT distinct b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__jj_pm AS a ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0 ORDER BY ".($config->realnames ? "name" : "username");
 						break;
-		case 'archive':	$sql = "SELECT distinct b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__uddeim AS a ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND a.archived=1 ORDER BY ".($config->realnames ? "name" : "username");
+		case 'archive':	$sql = "SELECT distinct b.id, b.".($config->realnames ? "name" : "username")." AS displayname FROM #__users AS b LEFT JOIN #__jj_pm AS a ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND a.archived=1 ORDER BY ".($config->realnames ? "name" : "username");
 						break;
 		default:		return Array();
 						break;
@@ -998,7 +998,7 @@ function uddeIMselectMessage($myself, $messageid, $config, $trashed=-1) {
 		$filter = " AND totrash=".(int)$trashed;
 		$filter2 = " AND totrashoutbox=".(int)$trashed;
 	}
-	$sql = "SELECT * FROM #__uddeim WHERE id=".(int)$messageid." AND (toid=".(int)$myself.$filter." OR fromid=".(int)$myself.$filter2.")";
+	$sql = "SELECT * FROM #__jj_pm WHERE id=".(int)$messageid." AND (toid=".(int)$myself.$filter." OR fromid=".(int)$myself.$filter2.")";
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -1008,7 +1008,7 @@ function uddeIMselectMessage($myself, $messageid, $config, $trashed=-1) {
 
 function uddeIMselectInbox($myself, $limitstart, $limit, $config, $filter_user=0, $filter_unread=0, $filter_flagged=0, $sort_mode=0) {
 	$database = uddeIMgetDatabase();
-//	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0 ORDER BY datum DESC LIMIT ".(int)$limitstart.", ".(int)$limit;
+//	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0 ORDER BY datum DESC LIMIT ".(int)$limitstart.", ".(int)$limit;
 // OPT
 	$filter = "";
 	if ($filter_user) $filter = " AND a.fromid=".(int)$filter_user;
@@ -1029,10 +1029,10 @@ function uddeIMselectInbox($myself, $limitstart, $limit, $config, $filter_user=0
 		$sort .= " DESC";		// 0 = DESC
 
 //	if ($config->showlistattachment)
-//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, c.id AS attid FROM (#__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id) LEFT JOIN #__uddeim_attachments AS c ON a.id=c.mid WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0".$filter." GROUP BY a.id".$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
+//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, c.id AS attid FROM (#__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id) LEFT JOIN #__jj_pm_attachments AS c ON a.id=c.mid WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0".$filter." GROUP BY a.id".$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
 //	else
-//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, NULL AS attid FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
-	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0 AND `a`.`delayed`=0".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
+//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, NULL AS attid FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
+	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=0 AND `a`.`delayed`=0".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
 
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
@@ -1046,7 +1046,7 @@ function uddeIMselectInboxMessage($myself, $messageid, $config, $trashed=-1) {
 	$filter = "";
 	if($trashed>=0)
 		$filter = " AND a.totrash=".(int)$trashed;
-	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND `a`.`delayed`=0 AND a.id=".(int)$messageid.$filter;
+	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND `a`.`delayed`=0 AND a.id=".(int)$messageid.$filter;
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -1056,7 +1056,7 @@ function uddeIMselectInboxMessage($myself, $messageid, $config, $trashed=-1) {
 
 function uddeIMselectArchive($myself, $limitstart, $limit, $config, $filter_user=0, $filter_unread=0, $filter_flagged=0, $sort_mode=0) {
 	$database = uddeIMgetDatabase();
-//	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.totrash=0 AND archived=1 AND a.toid=".(int)$myself." ORDER BY datum DESC LIMIT ".(int)$limitstart.", ".(int)$limit;
+//	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.totrash=0 AND archived=1 AND a.toid=".(int)$myself." ORDER BY datum DESC LIMIT ".(int)$limitstart.", ".(int)$limit;
 // OPT
 	$filter = "";
 	if ($filter_user) $filter = " AND a.fromid=".(int)$filter_user;
@@ -1077,10 +1077,10 @@ function uddeIMselectArchive($myself, $limitstart, $limit, $config, $filter_user
 		$sort .= " DESC";		// 0 = DESC
 
 //	if ($config->showlistattachment)
-//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, c.id AS attid FROM (#__uddeim AS a FORCE INDEX(datum) LEFT JOIN #__users AS b ON a.fromid=b.id) LEFT JOIN #__uddeim_attachments AS c ON a.id=c.mid WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter." GROUP BY a.id".$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
+//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, c.id AS attid FROM (#__jj_pm AS a FORCE INDEX(datum) LEFT JOIN #__users AS b ON a.fromid=b.id) LEFT JOIN #__jj_pm_attachments AS c ON a.id=c.mid WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter." GROUP BY a.id".$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
 //	else
-//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, NULL AS attid FROM #__uddeim AS a FORCE INDEX(datum) LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
-	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__uddeim AS a FORCE INDEX(datum) LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
+//		$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname, NULL AS attid FROM #__jj_pm AS a FORCE INDEX(datum) LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
+	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a FORCE INDEX(datum) LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.totrash=0 AND archived=1".$filter.$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
 
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
@@ -1092,7 +1092,7 @@ function uddeIMselectArchive($myself, $limitstart, $limit, $config, $filter_user
 function uddeIMselectArchiveMessage($myself, $messageid, $config) {
 	$database = uddeIMgetDatabase();
 	// does not test on " AND archived=1", but thats ok
-	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.id=".(int)$messageid;
+	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS fromname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.fromid=b.id WHERE a.toid=".(int)$myself." AND a.id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -1128,7 +1128,7 @@ function uddeIMselectOutbox($myself, $limitstart, $limit, $config, $filter_user=
 	else
 		$sort .= " DESC";		// 0 = DESC
 
-	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS toname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0".$filter." AND a.systemflag=0".$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
+	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS toname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.totrashoutbox=0".$filter." AND a.systemflag=0".$sort." LIMIT ".(int)$limitstart.", ".(int)$limit;
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -1141,7 +1141,7 @@ function uddeIMselectOutboxMessage($myself, $messageid, $config, $trashed=-1) {
 	$filter = "";
 	if($trashed>=0)
 		$filter = " AND a.totrashoutbox=".(int)$trashed;
-	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS toname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.id=".(int)$messageid.$filter;
+	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS toname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.fromid=".(int)$myself." AND a.id=".(int)$messageid.$filter;
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -1151,7 +1151,7 @@ function uddeIMselectOutboxMessage($myself, $messageid, $config, $trashed=-1) {
 
 function uddeIMselectOutboxMessageIfUnread($myself, $messageid, $config) {
 	$database = uddeIMgetDatabase();
-	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS toname FROM #__uddeim AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.toread=0 AND a.fromid=".(int)$myself." AND a.id=".(int)$messageid;
+	$sql = "SELECT a.*, b.".($config->realnames ? "name" : "username")." AS toname FROM #__jj_pm AS a LEFT JOIN #__users AS b ON a.toid=b.id WHERE a.toread=0 AND a.fromid=".(int)$myself." AND a.id=".(int)$messageid;
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)
@@ -1166,7 +1166,7 @@ function uddeIMselectTrashcan($myself, $timeframe, $limitstart, $limit, $config)
 	// I do also not show systemmsgs which have "fromid"<>"toid" but have "systemflag" set
 	$sql = "SELECT a.*, ufrom.".($config->realnames ? "name" : "username")." AS fromname, 
 						  uto.".($config->realnames ? "name" : "username")." AS toname
-				FROM (#__uddeim AS a FORCE INDEX(PRIMARY) LEFT JOIN #__users AS ufrom ON a.fromid = ufrom.id) 
+				FROM (#__jj_pm AS a FORCE INDEX(PRIMARY) LEFT JOIN #__users AS ufrom ON a.fromid = ufrom.id) 
 									 LEFT JOIN #__users AS uto   ON a.toid   = uto.id
 				WHERE (totrashdate       >= ".$timeframe." AND a.totrash=1       AND a.toid  =".(int)$myself.") 
 				   OR (totrashdateoutbox >= ".$timeframe." AND a.totrashoutbox=1 AND a.fromid=".(int)$myself." AND a.toid<>".(int)$myself." AND systemflag=0) 
@@ -1232,12 +1232,12 @@ function uddeIMselectCBbuddies($myself, $config, $extrafilter="") {
 function uddeIMselectMessageReplies($currentid, $type, $myself) {
 	$database = uddeIMgetDatabase();
 	if ($type=='inbox')
-//		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__uddeim WHERE toid=".  (int)$myself." AND replyid=".(int)$currentid." LIMIT 10";
-		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__uddeim WHERE toid=".  (int)$myself." AND replyid=".(int)$currentid." AND totrash=0 LIMIT 10";
+//		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__jj_pm WHERE toid=".  (int)$myself." AND replyid=".(int)$currentid." LIMIT 10";
+		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__jj_pm WHERE toid=".  (int)$myself." AND replyid=".(int)$currentid." AND totrash=0 LIMIT 10";
 	else
-//		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__uddeim WHERE fromid=".(int)$myself." AND replyid=".(int)$currentid." LIMIT 10";
-		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__uddeim WHERE fromid=".(int)$myself." AND replyid=".(int)$currentid." AND (totrashoutbox=0 OR (totrash=0 AND fromid=toid)) LIMIT 10";
-//		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__uddeim WHERE fromid=".(int)$myself." AND replyid=".(int)$currentid." AND totrashoutbox=0 LIMIT 10";
+//		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__jj_pm WHERE fromid=".(int)$myself." AND replyid=".(int)$currentid." LIMIT 10";
+		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__jj_pm WHERE fromid=".(int)$myself." AND replyid=".(int)$currentid." AND (totrashoutbox=0 OR (totrash=0 AND fromid=toid)) LIMIT 10";
+//		$sql="SELECT id,fromid,toid,replyid,cryptmode FROM #__jj_pm WHERE fromid=".(int)$myself." AND replyid=".(int)$currentid." AND totrashoutbox=0 LIMIT 10";
 	$database->setQuery($sql);
 	$value = $database->loadObjectList();
 	if (!$value)

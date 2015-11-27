@@ -344,13 +344,13 @@ class uddeIMAPI {
 			if ($this->config->cryptmode==1 || $this->config->cryptmode==2 || $this->config->cryptmode==4) {
 				$themode = 1;
 				$cm = uddeIMencrypt($savemessage,$this->config->cryptkey,CRYPT_MODE_BASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($this->config->cryptkey)."')";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode, crypthash) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",1,'".md5($this->config->cryptkey)."')";
 			} elseif ($this->config->cryptmode==3) {
 				$themode = 3;
 				$cm = uddeIMencrypt($savemessage,"",CRYPT_MODE_STOREBASE64);
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox, cryptmode) VALUES (".(int)$fromid.", ".(int)$toid.", '".$cm."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1, ".$savedatum.",3)";
 			} else {
-				$sql="INSERT INTO #__uddeim (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
+				$sql="INSERT INTO #__jj_pm (fromid, toid, message, datum, expires, systemmessage, systemflag, disablereply, totrashoutbox, totrashdateoutbox) VALUES (".(int)$fromid.", ".(int)$toid.", '".$savemessage."', ".$savedatum.", ".$validuntil.", '".$savesysflag."', 1,".$savedisablereply.", 1,".$savedatum.")";
 			}
 			$database->setQuery($sql);
 			if (!$database->query()) {
